@@ -1,0 +1,8 @@
+ Jamie:   
+    implement alphabet stored as dictionary in casearShift
+    write code that checks for english words in decrpyted text using asynchronously loaded dictionary
+Logan:
+    uhhhhhh
+Fenwick:
+    uhhhhhh
+    ballz
