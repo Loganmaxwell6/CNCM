@@ -10,8 +10,7 @@ function decryptCaesarCipher(){
     for (let i = 0; i < 26; i ++) {
         let t = caesarShift(text, i);
         if (isEnglish(t)){
-            document.getElementById("textOut").value = t.toLowerCase();
-            return t;
+            document.getElementById("textOut").value += t.toLowerCase() +"\n";
         }
     }
 }
