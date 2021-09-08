@@ -1,6 +1,6 @@
 function test(){
     const d = new Date();
-    alert("working " + (d.getUTCDate()));
+    alert("working " + d);
 }
 
 function decryptCaesarCipher(text){
