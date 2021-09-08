@@ -103,7 +103,30 @@ function affineShift(text,num,num2){
     return text.join("");
 }
 
+<<<<<<< HEAD
+=======
+//-------------------------------------------------------------
+//logan will do this/is doing it
+>>>>>>> ca4f2e0c329bb66bfe8a6086ecc56eb75a14396b
 function isEnglish(text){
     //to create
     return true;
 }
+
+//mapping of alpha to f as a index 0 in both etc.
+function frequencyAnalysis(text){
+    let f = [];
+    for (let i = 0; i < 26; i++){
+        while (true) {
+            pos = text.indexOf(i, pos);
+            if (pos >= 0) {
+                n++;
+                pos++;
+            } else break;
+        }
+        f.push(n);
+    }
+    return f;
+}
+
+//------------------------------------------------------------
