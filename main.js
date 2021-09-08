@@ -82,7 +82,16 @@ function affineShift(text,num,num2){
 //-------------------------------------------------------------
 //logan will do this/is doing it
 function isEnglish(text){
-    //to create
+    /**got:
+     *  frequencyAnalysis
+     * 
+     * need:
+     *  threshold implementation
+     *  bigram score
+     *  trigram score
+     *  IoC
+     * 
+     */
     return true;
 }
 
