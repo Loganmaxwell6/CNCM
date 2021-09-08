@@ -1,6 +1,3 @@
-import inte from './cipher.js';
-console.log(inte);
-
 class Cipher{
 
     constructor(name, singleDecrypt, fullDecrypt, encrypt){
