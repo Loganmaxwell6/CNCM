@@ -1,5 +1,40 @@
+class Cipher{
+
+    constructor(name, singleDecrypt, fullDecrypt, encrypt){
+        this.name = name;
+        this.single = singleDecrypt;
+        this.full = fullDecrypt;
+        this.encrypt = encrypt;
+
+    }
+
+    decrypt(full, single){
+        decryptCalled();
+        full(single);
+    }
+
+    createButton(){
+        window.onload=function(){
+            document.body.appendChild(button);
+        }
+        let button = document.createElement("button");
+        button.innerHTML = this.name;
+        
+        console.log(this.full , this.single)
+        button.addEventListener("click",this.decrypt.bind(this, this.full,this.single));
+        button.style.padding="10px";
+    }
+
+}
+
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
+
+caesar = new Cipher("Caesar Shift", caesarShift, decryptCaesarCipher, caesarShift);
+caesar.createButton();
+
+affine = new Cipher("Affine Cipher", affineShift, decrpytAffineCipher, function(){});
+affine.createButton();
 
 function test(){
     alert("working " + d);
@@ -9,27 +44,16 @@ function mod(n, m) {
     return ((n % m) + m) % m;
 }
 
-function executeFunctionByName(functionName, context , args ) {
-    var args = Array.prototype.slice.call(arguments, 2);
-    var namespaces = functionName.split(".");
-    var func = namespaces.pop();
-    for(var i = 0; i < namespaces.length; i++) {
-      context = context[namespaces[i]];
-    }
-    return context[func].apply(context, args);
-  }
-
 //general function for decrypting any cipher
-function decryptCalled(f){
+function decryptCalled(){
     document.getElementById("textOut").value = "";
-    //executeFunctionByName(f, window);
-    executeFunctionByName(f,window)
 }
 
-function decryptCaesarCipher(){
+function decryptCaesarCipher(f){
+    console.log(f);
     text = document.getElementById("textIn").value
     for (let i = 0; i < 26; i ++) {
-        let t = caesarShift(text, i);
+        let t = f(text, i);
         if (isEnglish(t)){
             document.getElementById("textOut").value += t.toLowerCase() +"\n";
         }
@@ -49,11 +73,11 @@ function caesarShift(text, shift){
     return newString;
 }
 
-function decrpytAffineCipher(){
+function decrpytAffineCipher(f){
     text = document.getElementById("textIn").value
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
-            let t = affineShift(text, i, x);
+            let t = f(text, i, x);
             if (isEnglish(t)){
                 document.getElementById("textOut").value += t.toLowerCase() +"\n";
             }
@@ -78,7 +102,6 @@ function affineShift(text,num,num2){
     }
     return text.join("");
 }
-
 //-------------------------------------------------------------
 //logan will do this/is doing it
 function isEnglish(text){
