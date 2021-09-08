@@ -102,12 +102,8 @@ function affineShift(text,num,num2){
     }
     return text.join("");
 }
-
-<<<<<<< HEAD
-=======
 //-------------------------------------------------------------
 //logan will do this/is doing it
->>>>>>> ca4f2e0c329bb66bfe8a6086ecc56eb75a14396b
 function isEnglish(text){
     //to create
     return true;
