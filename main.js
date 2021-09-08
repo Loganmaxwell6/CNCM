@@ -1,17 +1,18 @@
 function test(){
-    alert("function working");
+    const d = new Date();
+    alert("working " + (d.getUTCDate().toString));
 }
 
-function decryptCasearCipher(text){
+function decryptCaesarCipher(text){
     for (let i = 0; i < 26; i ++) {
         //implement check against dict here
-        if (checkAgainstDict(casearShift(text, i))){
+        if (checkAgainstDict(caesarShift(text, i))){
             
         }
     }
 }
 
-function casearShift(text, shift){
+function caesarShift(text, shift){
     text = text.toUpperCase().split("");
     let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     let newString = "";
