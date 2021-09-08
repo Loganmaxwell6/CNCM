@@ -1,4 +1,4 @@
-import inte from 'cipher.js';
+import inte from './cipher';
 console.log(inte);
 
 class Cipher{
