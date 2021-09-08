@@ -102,11 +102,12 @@ function affineShift(text,num,num2){
     }
     return text.join("");
 }
+
 //-------------------------------------------------------------
 //logan will do this/is doing it
+const check = JSON.parse(scoring);
 function isEnglish(text){
     /**got:
-     *  frequencyAnalysis
      * 
      * need:
      *  threshold implementation
@@ -114,12 +115,14 @@ function isEnglish(text){
      *  trigram score
      *  IoC
      * 
+     * doing:
+     *  chi squared
      */
     return true;
 }
 
 //mapping of alpha to f as a index 0 in both etc.
-function frequencyAnalysis(text){
+function countLetter(text){
     let f = [];
     for (let i = 0; i < 26; i++){
         while (true) {
