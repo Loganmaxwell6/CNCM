@@ -1,24 +1,25 @@
+const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const d = new Date();
+
 function test(){
-    const d = new Date();
     alert("working " + d);
 }
 
 function decryptCaesarCipher(text){
     for (let i = 0; i < 26; i ++) {
-        //implement check against dict here
-        if (checkAgainstDict(caesarShift(text, i))){
-            
+        let t = caesarShift(text, i);
+        if (isEnglish(t)){
+            return t;
         }
     }
 }
 
 function caesarShift(text, shift){
     text = text.toUpperCase().split("");
-    let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     let newString = "";
     for (i in text) {   
-        if (alphabet.includes(text[i])) {
-            newString += alphabet[(alphabet.indexOf(text[i]) + shift)%26];
+        if (ALPHA.includes(text[i])) {
+            newString += ALPHA[(ALPHA.indexOf(text[i]) + shift)%26];
         }else{
             newString += text[i];
         }      
@@ -26,7 +27,7 @@ function caesarShift(text, shift){
     return newString;
 }
 
-function checkAgainstDict(text){
+function isEnglish(text){
     //to create
     return true;
 }
