@@ -1,21 +1,18 @@
 class Cipher{
 
-    constructor(name, singleDecrypt, fullDecrypt, encrypt, options){
+    constructor(name, options){
         this.name = name;
-        this.single = singleDecrypt;
-        this.full = fullDecrypt;
-        this.encrypt = encrypt;
         this.optionsPage = options;
     }
 
-    openOptions(page){
-        console.log(page)
-        page.openOptions();
+    openOptions(cls){
+        cls.optionsPage.openOptions();//open options page
+        openNewPage(cls);
     }
 
     createButton(){
         let button = document.getElementById(this.name);
-        button.addEventListener("click", this.openOptions.bind(this, this.optionsPage));
+        button.addEventListener("click", this.openOptions.bind(this, this)); //button opens options page on being clicked
     }
 
 }
@@ -31,26 +28,27 @@ class optionsPage{
             let current = this.options[i];
             let button = document.getElementById(current.name);
             button.style.visibility = "visible";
-            button.addEventListener("click", current.click)
+            button.addEventListener("click", function(){
+                decryptCalled(current.click);
+            })
         }
-
     }
-
     closeOptions(){
-
+        for (let i =0; i<this.options.length; i++){
+            let current = this.options[i];
+            let button = document.getElementById(current.name);
+            button.style.visibility = "hidden";
+        }
     }
 }
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
 
+//calls the initialisation of the ciphers
 window.onload = function(){
-    caesar = new Cipher("caesarShift", caesarShift, decryptCaesarCipher, caesarShift,new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher.bind(this, caesarShift)}]));
-    caesar.createButton();
-
-    affine = new Cipher("affineShift", affineShift, decryptAffineCipher, function(){}, new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher.bind(this, affineShift)}]));
-    affine.createButton();
- 
+    initCiphers("caesarShift", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher}]));
+    initCiphers("affineShift", new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher}]));
 }
 
 function test(){
@@ -61,15 +59,31 @@ function mod(n, m) {
     return ((n % m) + m) % m;
 }
 
-//general function for decrypting any cipher
-function decryptCalled(){
+function openNewPage (page){
+    t = typeof currentOpen;
+    
+    if (t == 'object'){
+        currentOpen.optionsPage.closeOptions();
+    }
+    currentOpen = page;
+}
+
+//general function for calling the decrypt of a cipher, used in optionsPage class
+function decryptCalled(f){
     document.getElementById("textOut").value = "";
+    f();
+}
+
+//initialises the ciphers
+function initCiphers(cipherName, cipherOptionsPage){
+    let cipher = new Cipher(cipherName, cipherOptionsPage);
+    cipher.createButton();
 }
 
 function decryptCaesarCipher(f){
     text = document.getElementById("textIn").value
     for (let i = 0; i < 26; i ++) {
-        let t = f(text, i);
+        let t = caesarShift(text, i);
         if (isEnglish(t)){
             document.getElementById("textOut").value += t.toLowerCase() +"\n";
         }
@@ -93,7 +107,7 @@ function decryptAffineCipher(f){
     text = document.getElementById("textIn").value
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
-            let t = f(text, i, x);
+            let t = affineShift(text, i, x);
             if (isEnglish(t)){
                 document.getElementById("textOut").value += t.toLowerCase() +"\n";
             }
