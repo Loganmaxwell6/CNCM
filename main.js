@@ -32,7 +32,6 @@ class optionsPage{
                 decryptCalled(current.click); //set onclick to perform this opttions function
             })
         }
-        console.log("init")
         this.init = true;
     }
 
@@ -76,6 +75,14 @@ function mod(n, m) {
     return ((n % m) + m) % m;
 }
 
+function swapText(){
+    if (!(document.getElementById("textOut").value == "")){
+        document.getElementById("textIn").value = document.getElementById("textOut").value
+        document.getElementById("textOut").value = ""
+    }
+    
+}
+
 function openNewPage (page){
     t = typeof currentOpen;
     if (t == 'object'){
@@ -83,7 +90,6 @@ function openNewPage (page){
             currentOpen.optionsPage.closeOptions();
         }
     }
-    console.log(page)
     currentOpen = page;
 }
 
