@@ -25,6 +25,7 @@ class optionsPage{
 
     openOptions(){
         for (let i =0; i<this.options.length; i++){
+            console.log(i);
             let current = this.options[i];
             let button = document.getElementById(current.name);
             button.style.visibility = "visible";
@@ -47,7 +48,7 @@ const d = new Date();
 
 //calls the initialisation of the ciphers
 window.onload = function(){
-    initCiphers("caesarShift", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher}],[{name:"caesarEncrypt", click:decryptCaesarCipher}]));
+    initCiphers("caesarShift", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},{name:"caesarEncrypt", click:decryptCaesarCipher}]));
     initCiphers("affineShift", new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher}]));
 }
 
