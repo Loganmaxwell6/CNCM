@@ -22,7 +22,7 @@ class Cipher{
 class optionsPage{
     constructor(options){
         this.options = options;
-        
+
         this.initOptions();
     }
 
@@ -178,7 +178,7 @@ function isEnglish(text){
      * doing:
      *  
      */
-    return true;
+    return chiTest(text) <= 200;
 }
 
 //mapping of alpha to f as a index 0 in both etc.
