@@ -15,14 +15,14 @@ class Cipher{
 
     createButton(){
         window.onload=function(){
-            document.body.appendChild(button);
+            document.getElementById('cipherButtons').appendChild(button);
         }
         let button = document.createElement("button");
         button.innerHTML = this.name;
         
         console.log(this.full , this.single)
         button.addEventListener("click",this.decrypt.bind(this, this.full,this.single));
-        button.style.padding="10px";
+        button.style.display='block';
     }
 
 }
