@@ -19,13 +19,11 @@ class Cipher{
 
 class optionsPage{
     constructor(options){
-        console.log("pum")
         this.options = options;
     }
 
     openOptions(){
         for (let i =0; i<this.options.length; i++){
-            console.log(i);
             let current = this.options[i];
             let button = document.getElementById(current.name);
             button.style.visibility = "visible";
@@ -62,17 +60,21 @@ function mod(n, m) {
 
 function openNewPage (page){
     t = typeof currentOpen;
-    
-    if (t == 'object'){
-        currentOpen.optionsPage.closeOptions();
+    if (!(currentOpen == page )){
+        if (t == 'object'){
+            currentOpen.optionsPage.closeOptions();
+        }
+        currentOpen = page;
     }
-    currentOpen = page;
+    
 }
 
 //general function for calling the decrypt of a cipher, used in optionsPage class
 function decryptCalled(f){
     document.getElementById("textOut").value = "";
-    f();
+    if(!(document.getElementById("textIn").value) == ''){
+        f();
+    }
 }
 
 //initialises the ciphers
@@ -81,7 +83,7 @@ function initCiphers(cipherName, cipherOptionsPage){
     cipher.createButton();
 }
 
-function decryptCaesarCipher(f){
+function decryptCaesarCipher(){
     text = document.getElementById("textIn").value
     for (let i = 0; i < 26; i ++) {
         let t = caesarShift(text, i);
@@ -104,7 +106,7 @@ function caesarShift(text, shift){
     return newString;
 }
 
-function decryptAffineCipher(f){
+function decryptAffineCipher(){
     text = document.getElementById("textIn").value
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
