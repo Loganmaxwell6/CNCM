@@ -22,7 +22,8 @@ class Cipher{
 class optionsPage{
     constructor(options){
         this.options = options;
-        this.init
+        
+        this.initOptions();
     }
 
     //initialise buttons with their onclicks
@@ -34,14 +35,10 @@ class optionsPage{
                 decryptCalled(current.click); //set onclick to perform this opttions function
             })
         }
-        this.init = true;
     }
 
     //set all options visible and initialise
     openOptions(){
-        if (!this.init){
-            this.initOptions(); //if not initialised, initialise
-        }
 
         for (let i =0; i<this.options.length; i++){
             let current = this.options[i]; //one option in list of options that form the options page
