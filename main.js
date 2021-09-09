@@ -13,16 +13,13 @@ class Cipher{
         full(single);
     }
 
+    check(){
+        console.log(document.getElementById(this.name))
+    }
+
     createButton(){
-        window.onload=function(){
-            document.getElementById('cipherButtons').appendChild(button);
-        }
-        let button = document.createElement("button");
-        button.innerHTML = this.name;
-        
-        console.log(this.full , this.single)
+        let button = document.getElementById(this.name);
         button.addEventListener("click",this.decrypt.bind(this, this.full,this.single));
-        button.style.display='block';
     }
 
 }
@@ -30,11 +27,14 @@ class Cipher{
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
 
-caesar = new Cipher("Caesar Shift", caesarShift, decryptCaesarCipher, caesarShift);
-caesar.createButton();
+window.onload = function(){
+    caesar = new Cipher("caesarShift", caesarShift, decryptCaesarCipher, caesarShift);
+    caesar.createButton();
 
-affine = new Cipher("Affine Cipher", affineShift, decrpytAffineCipher, function(){});
-affine.createButton();
+    affine = new Cipher("affineShift", affineShift, decrpytAffineCipher, function(){});
+    affine.createButton();
+ 
+}
 
 function test(){
     alert("working " + d);
@@ -50,7 +50,6 @@ function decryptCalled(){
 }
 
 function decryptCaesarCipher(f){
-    console.log(f);
     text = document.getElementById("textIn").value
     for (let i = 0; i < 26; i ++) {
         let t = f(text, i);
