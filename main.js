@@ -187,10 +187,7 @@ function observedCount(text){
         o.push(0);
     }
     for (let i = 0; i <text.length; i++){
-        if(ALPHA.includes(text[i] )){
-            o[alphaDict[text[i]]] ++;
-        }
-       
+        o[alphaDict[text[i]]] ++;
     }
     return o;
 }
@@ -278,6 +275,9 @@ var alphaDict = {
     "Y":24,
     "Z":25
 }
+
+aT = 0;
+bT= 0;
 
 function time(d, num){
     
