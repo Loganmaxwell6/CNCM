@@ -113,6 +113,7 @@ function decryptCaesarCipher(){
     text = document.getElementById("textIn").value
     for (let i = 0; i < 26; i ++) {
         let t = caesarShift(text, i);
+        console.log(i)
         if (isEnglish(t)){
             document.getElementById("textOut").value += t.toLowerCase() +"\n";
         }
@@ -178,7 +179,7 @@ function isEnglish(text){
      *  
      */
     console.log(chiTest(text))
-    return chiTest(text) <= 200;
+    return chiTest(text) <= 400;
 }
 
 //mapping of alpha to f as a index 0 in both etc.
@@ -188,7 +189,10 @@ function observedCount(text){
         o.push(0);
     }
     for (let i = 0; i <text.length; i++){
-        o[ALPHA.indexOf(text[i])] ++;
+        if(ALPHA.includes(text[i] )){
+            o[ALPHA.indexOf(text[i])] ++;
+        }
+       
     }
     return o;
 }
@@ -196,7 +200,7 @@ function observedCount(text){
 function expectedCount(t){
     let e = [];
     for(a in ALPHA){
-        e.push(check[ALPHA[a]]);
+        e.push(check[ALPHA[a]] * t);
     }
     return e;
 }
@@ -211,12 +215,12 @@ function chiHelper(o,e){
 function chiTest(text){
     let o = observedCount(text);
     let e = expectedCount(text.length);
-    console.log(o, e)
     let sum = 0;
+    console.log(o,e)
     for(let i = 0; i < 26; i++){
         sum += chiHelper(o[i],e[i]);
     }
-    return sum;
+    return Math.sqrt(sum);
 }
 
 //------------------------------------------------------------
