@@ -3,6 +3,8 @@ class Cipher{
     constructor(name, options){
         this.name = name;
         this.optionsPage = options;
+
+        this.createButton();
     }
 
     openOptions(cls){
@@ -108,7 +110,6 @@ function decryptCalled(f){
 //initialises the ciphers
 function initCiphers(cipherName, cipherOptionsPage){
     let cipher = new Cipher(cipherName, cipherOptionsPage);
-    cipher.createButton();
 }
 
 function decryptCaesarCipher(){
