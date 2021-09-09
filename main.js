@@ -108,6 +108,7 @@ function affineShift(text,num,num2){
 const check = JSON.parse(scoring);
 function isEnglish(text){
     /**got:
+     *  chiTest(text);
      * 
      * need:
      *  threshold implementation
@@ -116,14 +117,14 @@ function isEnglish(text){
      *  IoC
      * 
      * doing:
-     *  chi squared
+     *  
      */
     return true;
 }
 
 //mapping of alpha to f as a index 0 in both etc.
-function countLetter(text){
-    let f = [];
+function observedCount(text){
+    let o = [];
     for (let i = 0; i < 26; i++){
         while (true) {
             pos = text.indexOf(i, pos);
@@ -132,9 +133,34 @@ function countLetter(text){
                 pos++;
             } else break;
         }
-        f.push(n);
+        o.push(n);
     }
-    return f;
+    return o;
+}
+
+function expectedCount(t){
+    let e = [];
+    for(a in ALPHA){
+        e.push(check[a] * t);
+    }
+    return e;
+}
+
+//observed - expected ^ 2 / expected
+function chiHelper(o,e){
+    let d = (o - e)**2;
+    return d/e;
+}
+
+//<150 should be english
+function chiTest(text){
+    let o = observedCount(text);
+    let e = expectedCount(text.length());
+    let sum = 0;
+    for(let i = 0; i < 26; i++){
+        sum += chiHelper(o[i],e[i]);
+    }
+    return sum;
 }
 
 //------------------------------------------------------------
