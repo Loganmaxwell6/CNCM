@@ -215,7 +215,7 @@ function chiHelper(o,e){
 //<150 should be english
 function chiTest(text){
     let o = observedCount(text);
-    let e = expectedCount(text.length());
+    let e = expectedCount(text.length);
     let sum = 0;
     for(let i = 0; i < 26; i++){
         sum += chiHelper(o[i],e[i]);
