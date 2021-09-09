@@ -190,7 +190,7 @@ function observedCount(text){
     }
     for (let i = 0; i <text.length; i++){
         if(ALPHA.includes(text[i] )){
-            o[ALPHA.indexOf(text[i])] ++;
+            o[alphaDict[text[i]]] ++;
         }
        
     }
