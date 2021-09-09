@@ -79,6 +79,8 @@ function swapText(){
     if (!(document.getElementById("textOut").value == "")){
         document.getElementById("textIn").value = document.getElementById("textOut").value
         document.getElementById("textOut").value = ""
+    }else{
+        alert("No output text to swap")
     }
     
 }
@@ -98,6 +100,8 @@ function decryptCalled(f){
     document.getElementById("textOut").value = "";
     if(!(document.getElementById("textIn").value) == ''){
         f();
+    }else{
+        alert("Enter text into input box first")
     }
 }
 
