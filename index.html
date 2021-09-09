@@ -15,16 +15,19 @@
     </div>
     <button id="swapText" onclick="swapText()">↑</button>
     <div id="cipherButtons">
-      <button id="caesarShift">Caesar Cipher</button>
-      <button id="affineShift">Affine Cipher</button>
+      <button id="caesarCipher">Caesar Cipher</button>
+      <button id="affineCipher">Affine Cipher</button>
+      <button id="substitutionCipher">Substitution Cipher</button>
+      <button id="transpositionCipher">Transposition Cipher</button>
+      <button id="vigenereCipher">Vigenère cipher</button>
     </div>
     <div id="optionsButtons">
       <div id="caesarOptions">
-        <button style="visibility:hidden;" id="caesarDecrypt">decrypt</button> 
-        <button style="visibility:hidden;" id="caesarEncrypt">encrypt</button> 
+        <button style="visibility:hidden;position: relative;top:3px" id="caesarDecrypt">decrypt</button> 
+        <button style="visibility:hidden;position: relative;top:+3px" id="caesarEncrypt">encrypt</button> 
       </div>
       <div id="affineOptions">
-        <button style="visibility:hidden;" id="affineDecrypt">decrypt</button> 
+        <button style="visibility:hidden;position:relative;top:-25px" id="affineDecrypt" >decrypt</button> 
       </div>
     </div>
   </body>
