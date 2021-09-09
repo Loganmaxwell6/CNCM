@@ -1,5 +1,5 @@
  Jamie:
-    write code that checks for english words in decrpyted text using asynchronously loaded dictionary
+    
 Logan:
     add html input output shit
     popout button thing jamie suggsted

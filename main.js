@@ -20,18 +20,36 @@ class Cipher{
 class optionsPage{
     constructor(options){
         this.options = options;
+        this.init
     }
 
-    openOptions(){
+    //initialise buttons with their onclicks
+    initOptions(){
         for (let i =0; i<this.options.length; i++){
-            let current = this.options[i];
-            let button = document.getElementById(current.name);
-            button.style.visibility = "visible";
+            let current = this.options[i]; //one option in list of options that form the options page
+            let button = document.getElementById(current.name); 
             button.addEventListener("click", function(){
-                decryptCalled(current.click);
+                decryptCalled(current.click); //set onclick to perform this opttions function
             })
         }
+        console.log("init")
+        this.init = true;
     }
+
+    //set all options visible and initialise
+    openOptions(){
+        if (!this.init){
+            this.initOptions(); //if not initialised, initialise
+        }
+
+        for (let i =0; i<this.options.length; i++){
+            let current = this.options[i]; //one option in list of options that form the options page
+            let button = document.getElementById(current.name);  
+            button.style.visibility = "visible"; //set button visible
+        }
+    }
+
+    //close options page, set all hidden
     closeOptions(){
         for (let i =0; i<this.options.length; i++){
             let current = this.options[i];
@@ -60,13 +78,13 @@ function mod(n, m) {
 
 function openNewPage (page){
     t = typeof currentOpen;
-    if (!(currentOpen == page )){
-        if (t == 'object'){
+    if (t == 'object'){
+        if (!(currentOpen == page)){
             currentOpen.optionsPage.closeOptions();
         }
-        currentOpen = page;
     }
-    
+    console.log(page)
+    currentOpen = page;
 }
 
 //general function for calling the decrypt of a cipher, used in optionsPage class
