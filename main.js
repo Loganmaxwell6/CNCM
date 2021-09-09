@@ -63,8 +63,8 @@ const d = new Date();
 
 //calls the initialisation of the ciphers
 window.onload = function(){
-    initCiphers("caesarShift", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},{name:"caesarEncrypt", click:decryptCaesarCipher}]));
-    initCiphers("affineShift", new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher}]));
+    initCiphers("caesarCipher", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},{name:"caesarEncrypt", click:decryptCaesarCipher}]));
+    initCiphers("affineCipher", new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher}]));
 }
 
 function test(){
