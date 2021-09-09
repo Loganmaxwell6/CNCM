@@ -1,37 +1,54 @@
 class Cipher{
 
-    constructor(name, singleDecrypt, fullDecrypt, encrypt){
+    constructor(name, singleDecrypt, fullDecrypt, encrypt, options){
         this.name = name;
         this.single = singleDecrypt;
         this.full = fullDecrypt;
         this.encrypt = encrypt;
-
+        this.optionsPage = options;
     }
 
-    decrypt(full, single){
-        decryptCalled();
-        full(single);
-    }
-
-    check(){
-        console.log(document.getElementById(this.name))
+    openOptions(page){
+        console.log(page)
+        page.openOptions();
     }
 
     createButton(){
         let button = document.getElementById(this.name);
-        button.addEventListener("click",this.decrypt.bind(this, this.full,this.single));
+        button.addEventListener("click", this.openOptions.bind(this, this.optionsPage));
     }
 
+}
+
+class optionsPage{
+    constructor(options){
+        console.log("pum")
+        this.options = options;
+    }
+
+    openOptions(){
+        for (let i =0; i<this.options.length; i++){
+            let current = this.options[i];
+            let button = document.getElementById(current.name);
+            button.style.visibility = "visible";
+            button.addEventListener("click", current.click)
+        }
+
+    }
+
+    closeOptions(){
+
+    }
 }
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
 
 window.onload = function(){
-    caesar = new Cipher("caesarShift", caesarShift, decryptCaesarCipher, caesarShift);
+    caesar = new Cipher("caesarShift", caesarShift, decryptCaesarCipher, caesarShift,new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher.bind(this, caesarShift)}]));
     caesar.createButton();
 
-    affine = new Cipher("affineShift", affineShift, decrpytAffineCipher, function(){});
+    affine = new Cipher("affineShift", affineShift, decryptAffineCipher, function(){}, new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher.bind(this, affineShift)}]));
     affine.createButton();
  
 }
@@ -72,7 +89,7 @@ function caesarShift(text, shift){
     return newString;
 }
 
-function decrpytAffineCipher(f){
+function decryptAffineCipher(f){
     text = document.getElementById("textIn").value
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
