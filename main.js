@@ -177,22 +177,18 @@ function isEnglish(text){
      * doing:
      *  
      */
+    console.log(chiTest(text))
     return chiTest(text) <= 200;
 }
 
 //mapping of alpha to f as a index 0 in both etc.
 function observedCount(text){
     let o = [];
-    let n=0,pos=0;
     for (let i = 0; i < 26; i++){
-        while (true) {
-            pos = text.indexOf(i, pos);
-            if (pos >= 0) {
-                n++;
-                pos++;
-            } else break;
-        }
-        o.push(n);
+        o.push(0);
+    }
+    for (let i = 0; i <text.length; i++){
+        o[ALPHA.indexOf(text[i])] ++;
     }
     return o;
 }
@@ -200,7 +196,7 @@ function observedCount(text){
 function expectedCount(t){
     let e = [];
     for(a in ALPHA){
-        e.push(check[a] * t);
+        e.push(check[ALPHA[a]]);
     }
     return e;
 }
@@ -215,6 +211,7 @@ function chiHelper(o,e){
 function chiTest(text){
     let o = observedCount(text);
     let e = expectedCount(text.length);
+    console.log(o, e)
     let sum = 0;
     for(let i = 0; i < 26; i++){
         sum += chiHelper(o[i],e[i]);
