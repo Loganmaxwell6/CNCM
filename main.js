@@ -184,6 +184,7 @@ function isEnglish(text){
 //mapping of alpha to f as a index 0 in both etc.
 function observedCount(text){
     let o = [];
+    let n=0,pos=0;
     for (let i = 0; i < 26; i++){
         while (true) {
             pos = text.indexOf(i, pos);
