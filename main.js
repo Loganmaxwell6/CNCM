@@ -62,6 +62,7 @@ class optionsPage{
             let button = document.getElementById(current.name);
             button.style.borderColor = "red";
         }
+    }
 }
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
