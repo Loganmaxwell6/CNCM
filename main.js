@@ -239,7 +239,7 @@ function bigramTest(text){
 
 }
 
-function time(){
+function time(t){
     let s = 0;
     for (let i = 0; i < 1000; i++){
         let a = performance.now();
