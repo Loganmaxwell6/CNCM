@@ -16,6 +16,11 @@ class Cipher{
         let button = document.getElementById(this.name);
         button.addEventListener("click", this.openOptions.bind(this, this)); //button opens options page on being clicked
     }
+    
+    selectOptions(){
+        let button = document.getElementById(this.name);
+        button.style.background = "grey";
+    }
 
 }
 
@@ -53,14 +58,6 @@ class optionsPage{
             let current = this.options[i];
             let button = document.getElementById(current.name);
             button.style.visibility = "hidden";
-        }
-    }
-    
-    selectOptions(){
-        for (let i =0; i<this.options.length; i++){
-            let current = this.options[i];
-            let button = document.getElementById(current.name);
-            button.style.background = "grey";
         }
     }
 }
