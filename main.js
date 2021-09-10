@@ -60,7 +60,7 @@ class optionsPage{
         for (let i =0; i<this.options.length; i++){
             let current = this.options[i];
             let button = document.getElementById(current.name);
-            button.style.borderColor = "red";
+            button.style.background = "grey";
         }
     }
 }
