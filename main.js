@@ -233,22 +233,32 @@ function observedBigramCount(text){
     for (let i = 0; i < 676; i++){
         o.push(0);
     }
+    for (let i = 0; i < text.length-1; i++){
+        let p = text.substring(i,i+1);
+        o[((ALPHA[p[0]] * 26) + (ALPHA[p[1]]))]++;
+    }
+    return o;
+}
+
+function expectedBigramCount(t){
+    let e = [];
+    for (a in ALPHA){
+        for (b in ALPHA){
+            let p = ALPHA[a] + ALPHA[b];
+            e.push(check[p] * t);
+        }
+    }
+    return e;
 }
 
 function bigramTest(text){
-
-}
-
-function time(t){
-    let s = 0;
-    for (let i = 0; i < 1000; i++){
-        let a = performance.now();
-        observedBigramCount(t);
-        let b = performance.now();
-        s += (b-a);
+    let o = observedBigramCount(text);
+    let e = expectedBigramCount(text.length);
+    let sum = 0;
+    for (let i = 0; i < 676; i++){
+        sum += chiHelper(o[i],e[i]);
     }
-    console.log(s/1000);
-    
+    return Math.sqrt(sum);
 }
 
 //------------------------------------------------------------
