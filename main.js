@@ -55,6 +55,13 @@ class optionsPage{
             button.style.visibility = "hidden";
         }
     }
+    
+    selectOptions(){
+        for (let i =0; i<this.options.length; i++){
+            let current = this.options[i];
+            let button = document.getElementById(current.name);
+            button.style.borderColor = "red";
+        }
 }
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -89,6 +96,7 @@ function openNewPage (page){
     if (t == 'object'){
         if (!(currentOpen == page)){
             currentOpen.optionsPage.closeOptions();
+            currentOpen.optionsPage.selectOptions();
         }
     }
     currentOpen = page;
