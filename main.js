@@ -17,9 +17,14 @@ class Cipher{
         button.addEventListener("click", this.openOptions.bind(this, this)); //button opens options page on being clicked
     }
     
-    selectOptions(){
+    selectOption(){
         let button = document.getElementById(this.name);
         button.style.background = "grey";
+    }
+    
+    deselectOption(){
+        let button = document.getElementById(this.name);
+        button.style.background = "light-grey";
     }
 
 }
@@ -94,10 +99,11 @@ function openNewPage (page){
     if (t == 'object'){
         if (!(currentOpen == page)){
             currentOpen.optionsPage.closeOptions();
-            currentOpen.selectOptions();
+            currentOpen.deselectOption();
         }
     }
     currentOpen = page;
+    currentOpen.selectOption();
 }
 
 //general function for calling the decrypt of a cipher, used in optionsPage class
