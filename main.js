@@ -24,7 +24,8 @@ class Cipher{
     
     deselectOption(){
         let button = document.getElementById(this.name);
-        button.style.background = "light-grey";
+        console.log(button)
+        button.style.background = "";
     }
 
 }
@@ -92,6 +93,11 @@ function swapText(){
         alert("No output text to swap")
     }
     
+}
+
+function clearText(){
+    document.getElementById("textOut").value = ""
+    document.getElementById("textIn").value = ""
 }
 
 function openNewPage (page){
