@@ -97,7 +97,7 @@ function openNewPage (page){
     if (t == 'object'){
         if (!(currentOpen == page)){
             currentOpen.optionsPage.closeOptions();
-            currentOpen.optionsPage.selectOptions();
+            currentOpen.selectOptions();
         }
     }
     currentOpen = page;
