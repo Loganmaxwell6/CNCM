@@ -2,6 +2,11 @@ textarea{
     resize:none;
     width:70em;
     height:20em;
+    margin: 5px 1px;
+}
+
+button{
+  margin: 9px 0px;
 }
 
 .slider{
