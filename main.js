@@ -229,6 +229,7 @@ function chiTest(text){
 
 function indexOfCoincidence(text){
     let o = observedCount(text);
+    console.log(o);
     let n = text.length;
     let N = (n * (n - 1))/26;
     let sum = 0;
