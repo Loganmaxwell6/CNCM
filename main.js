@@ -229,13 +229,13 @@ function chiTest(text){
 
 function indexOfCoincidence(text){
     let o = observedCount(text);
-    console.log(o);
     let n = text.length;
     let N = (n * (n - 1))/26;
     let sum = 0;
     for (let i = 0; i < 26; i++){
         sum += o[i] * (o[i] - 1);
     }
+    console.log(sum);
     return sum / N;
 }
 
