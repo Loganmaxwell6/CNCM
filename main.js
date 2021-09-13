@@ -177,18 +177,18 @@ function affineShift(text,num,num2){
 
 //-------------------------------------------------------------
 //logan will do this/is doing it
+var thresholdSlider = document.getElementById("threshold");
+var threshold = 50;
+var thresholdOut = document.getElementById("thresholdOut");
+thresholdSlider.oninput = function(){
+    threshold = this.value;
+    thresholdOut.innerHTML = threshold.toString() + "%";
+}
+
 function isEnglish(text){
-    /**got:
-     *  chi test
-     *  bigram test
-     * 
-     * need:
-     *  threshold implementation
-     * 
-     * doing:
-     *  IoC
-     */
-    return chiTest(text) <= 60;
+    let chiT = 250 - 2 * threshold; 
+
+    
 }
 
 //mapping of alpha to f as a index 0 in both etc.

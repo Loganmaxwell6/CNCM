@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools28.css">
+    <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="main.js"></script>
     <title>Crooked Nazgul Code Men</title>
   </head>
@@ -12,8 +13,14 @@
     <div id="outputPart">
       <textarea id="textOut" rows="10" cols="100" placeholder="Output text here" disabled="disabled"></textarea>
     </div>
-    <button id="swapText" onclick="swapText()">↑</button>
-    <button id="clearText" onclick="clearText()">Clear</button>
+    <div id="options">
+      <button id="swapText" onclick="swapText()">↑</button>
+      <button id="clearText" onclick="clearText()">Clear</button>
+    </div>
+    <div id="thresholdSlider">
+      <input type="range" min="0" max="100" value="50" class="slider" id="threshold">
+      <textarea id="thresholdOut" rows="1" cols="4" disabled="disabled"></textarea>
+    </div>
     <div id="cipherButtons">
       <button id="caesarCipher">Caesar Cipher</button>
       <button id="affineCipher">Affine Cipher</button>
