@@ -236,7 +236,6 @@ function indexOfCoincidence(text){
         n += o[i];
     }
     let N = (n * (n - 1))/26;
-    console.log(sum);
     return sum / N;
 }
 
