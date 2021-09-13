@@ -236,7 +236,7 @@ function indexOfCoincidence(text){
         n += o[i];
     }
     let N = (n * (n - 1))/26;
-    return sum / N;
+    return (sum / N) / 26;
 }
 
 function observedBigramCount(text){
