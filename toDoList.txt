@@ -1,9 +1,7 @@
  Jamie:
     
 Logan:
-    add html input output shit
-    popout button thing jamie suggsted
-    will try and do bigram checking thing if i can find the code we used last year
+    finalising isEnglish
 Fenwick:
     ballz
     css
