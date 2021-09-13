@@ -72,7 +72,7 @@ const d = new Date();
 
 //calls the initialisation of the ciphers
 window.onload = function(){
-    initCiphers("caesarCipher", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},{name:"caesarEncrypt", click:decryptCaesarCipher}]));
+    initCiphers("caesarCipher", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},{name:"caesarEncrypt", click:openCaesarEncrypt}]));
     initCiphers("affineCipher", new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher}]));
 }
 
@@ -97,6 +97,10 @@ function swapText(){
 function clearText(){
     document.getElementById("textOut").value = ""
     document.getElementById("textIn").value = ""
+}
+
+function reverseText() {
+    document.getElementById("textIn").value = document.getElementById("textIn").value.split("").reverse().join("");
 }
 
 function openNewPage (page){
@@ -124,6 +128,19 @@ function decryptCalled(f){
 //initialises the ciphers
 function initCiphers(cipherName, cipherOptionsPage){
     let cipher = new Cipher(cipherName, cipherOptionsPage);
+}
+
+function openCaesarEncrypt(){
+    button = document.getElementById("caesarEncryptInput");
+    num = button.value;
+    button.style.visibility = "visible";
+
+    text = document.getElementById("textIn").value.toUpperCase();
+    console.log(text)
+
+    t = caesarShift(text, num);
+
+    document.getElementById("textOut").value = t.toLowerCase() +"\n"; 
 }
 
 function decryptCaesarCipher(){
@@ -177,13 +194,14 @@ function affineShift(text,num,num2){
 
 //-------------------------------------------------------------
 //logan will do this/is doing it
-var thresholdSlider = document.getElementById("threshold");
-var threshold = 50;
-var thresholdOut = document.getElementById("thresholdOut");
-thresholdSlider.oninput = function(){
-    threshold = this.value;
-    thresholdOut.innerHTML = threshold.toString() + "%";
-}
+//sorry logan it was messing with me so i commented it out :3
+// var thresholdSlider = document.getElementById("threshold");
+// var threshold = 50;
+// var thresholdOut = document.getElementById("thresholdOut");
+// thresholdSlider.oninput = function(){
+//     threshold = this.value;
+//     thresholdOut.innerHTML = threshold.toString() + "%";
+// }
 
 function isEnglish(text){
     let chiT = 250 - 2 * threshold; 

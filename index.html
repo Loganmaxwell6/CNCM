@@ -16,6 +16,7 @@
     <div id="options">
       <button id="swapText" onclick="swapText()">↑</button>
       <button id="clearText" onclick="clearText()">Clear</button>
+      <button id="reverseText" onclick ="reverseText()">Reverse</button>
     </div>
     <div id="thresholdSlider">
       <input type="range" min="0" max="100" value="50" class="slider" id="threshold">
@@ -31,11 +32,22 @@
     </div>
     <div id="optionsButtons">
       <div id="caesarOptions">
-        <button style="visibility:hidden;position: relative;top:3px" id="caesarDecrypt">decrypt</button> 
-        <button style="visibility:hidden;position: relative;top:+3px" id="caesarEncrypt">encrypt</button> 
+        <div class ="caesarDecrypt">
+          <button style="visibility:hidden;position: relative;top:3px" id="caesarDecrypt">decrypt</button> 
+        </div>
+        <div class ="caesarEncrypt">
+          <button style="visibility:hidden;position: relative;top:+3px" id="caesarEncrypt">encrypt</button> 
+          <input type="number" style="visibility:hidden;position:relative;top:-25px" id="caesarEncryptInput" >
+        </div>
       </div>
       <div id="affineOptions">
-        <button style="visibility:hidden;position:relative;top:-25px" id="affineDecrypt" >decrypt</button> 
+        <div class = "affineDecrypt">
+          <button style="visibility:hidden;position:relative;top:-25px" id="affineDecrypt" >decrypt</button> 
+        </div>
+        <div class = "affineEncrypt">
+          <button style="visibility:hidden;position:relative;top:-25px" id="affineEncrypt" >encrypt</button> 
+        </div>
+        
       </div>
     </div>
   </body>
