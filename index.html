@@ -20,35 +20,36 @@
     </div>
     <div id="thresholdSlider">
       <input type="range" min="0" max="100" value="50" class="slider" id="threshold">
-      <textarea id="thresholdOut" rows="1" cols="4" disabled="disabled"></textarea>
+      <! ––<textarea id="thresholdOut" rows="1" cols="4" disabled="disabled"></textarea>-->
     </div>
-    <div id="cipherButtons">
-      <button id="caesarCipher">Caesar Cipher</button>
-      <button id="affineCipher">Affine Cipher</button>
-      <button id="substitutionCipher">Substitution Cipher</button>
-      <button id="transpositionCipher">Transposition Cipher</button>
-      <button id="vigenereCipher">Vigenère cipher</button>
-      <button id="keywordCipher">Keyword cipher</button>
-    </div>
-    <div id="optionsButtons">
-      <div id="caesarOptions">
-        <div class ="caesarDecrypt">
-          <button style="visibility:hidden;position: relative;top:3px" id="caesarDecrypt">decrypt</button> 
-        </div>
-        <div class ="caesarEncrypt">
-          <button style="visibility:hidden;position: relative;top:+3px" id="caesarEncrypt">encrypt</button> 
-          <input type="number" style="visibility:hidden;position:relative;top:-25px" id="caesarEncryptInput" >
-        </div>
+    <div id="cipher" onclick="console.log(this.id)">
+      <div id="cipherButtons" onclick="reverseText()">
+            <button id="caesarCipher">Caesar Cipher</button>
+            <button id="affineCipher">Affine Cipher</button>
+            <button id="substitutionCipher">Substitution Cipher</button>
+            <button id="transpositionCipher">Transposition Cipher</button>
+            <button id="vigenereCipher">Vigenère cipher</button>
+            <button id="keywordCipher" onclick="console.log(this.id);">Keyword cipher</button>
       </div>
-      <div id="affineOptions">
-        <div class = "affineDecrypt">
-          <button style="visibility:hidden;position:relative;top:-25px" id="affineDecrypt" >decrypt</button> 
+      <div id="optionsButtons">
+          <div id="caesarOptions">
+            <div class ="caesarDecrypt">
+              <button style="visibility:hidden;position: relative;top:3px" onclick="console.log(this.id)" id="caesarDecrypt">decrypt</button> 
+            </div>
+            <div class ="caesarEncrypt">
+              <button style="visibility:hidden;position: relative;top:+3px" id="caesarEncrypt">encrypt</button> 
+              <input type="number" style="visibility:hidden;position:relative;top:-25px" id="caesarEncryptInput" >
+            </div>
+          </div>
+          <div id="affineOptions">
+            <div class = "affineDecrypt">
+              <button style="visibility:hidden;position:relative;top:-25px" id="affineDecrypt" >decrypt</button> 
+            </div>
+            <div class = "affineEncrypt">
+              <button style="visibility:hidden;position:relative;top:-25px" id="affineEncrypt" >encrypt</button> 
+            </div>
+          </div>
         </div>
-        <div class = "affineEncrypt">
-          <button style="visibility:hidden;position:relative;top:-25px" id="affineEncrypt" >encrypt</button> 
-        </div>
-        
-      </div>
     </div>
   </body>
 </html>

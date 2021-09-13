@@ -40,7 +40,17 @@ class optionsPage{
     initOptions(){
         for (let i =0; i<this.options.length; i++){
             let current = this.options[i]; //one option in list of options that form the options page
-            let button = document.getElementById(current.name); 
+            let button = document.getElementById(current.name);
+            
+            if (!("click" in current)){
+                console.log(current.options[0])
+                current.click = function(){
+                    for(let i = 0; i < current.options.length; i++){
+                        current.options[i].openOptions; 
+                    }
+                    
+                } 
+            }
             button.addEventListener("click", function(){
                 decryptCalled(current.click); //set onclick to perform this opttions function
             })
@@ -72,7 +82,8 @@ const d = new Date();
 
 //calls the initialisation of the ciphers
 window.onload = function(){
-    initCiphers("caesarCipher", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},{name:"caesarEncrypt", click:openCaesarEncrypt}]));
+    initCiphers("caesarCipher", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},
+                                                 {name:"caesarEncrypt", options:new optionsPage([{name:"caesarEncryptInput", click:openCaesarEncrypt}])}]));
     initCiphers("affineCipher", new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher}]));
 }
 
@@ -133,14 +144,16 @@ function initCiphers(cipherName, cipherOptionsPage){
 function openCaesarEncrypt(){
     button = document.getElementById("caesarEncryptInput");
     num = button.value;
-    button.style.visibility = "visible";
-
-    text = document.getElementById("textIn").value.toUpperCase();
-    console.log(text)
-
-    t = caesarShift(text, num);
-
-    document.getElementById("textOut").value = t.toLowerCase() +"\n"; 
+    if (!num ==''){
+        if (!num < 0){
+            text = document.getElementById("textIn").value.toUpperCase();
+            t = caesarShift(text, parseInt(num));
+            document.getElementById("textOut").value = t.toLowerCase() +"\n";  
+        }else{
+            alert("Enter positive number"+"\n"+"Hint, a shift of "+num+ " equals a shift of "+(mod(parseInt(num),26)) )
+        }
+        
+    }
 }
 
 function decryptCaesarCipher(){
@@ -156,6 +169,7 @@ function decryptCaesarCipher(){
 function caesarShift(text, shift){
     text = text.toUpperCase().split("");
     let newString = "";
+    
     for (i in text) {   
         if (alphaDict[text[i]]) {
             newString += ALPHA[(alphaDict[text[i]] + shift)%26];
