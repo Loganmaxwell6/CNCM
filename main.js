@@ -194,18 +194,13 @@ function affineShift(text,num,num2){
 
 //-------------------------------------------------------------
 //logan will do this/is doing it
-//sorry logan it was messing with me so i commented it out :3
-// var thresholdSlider = document.getElementById("threshold");
-// var threshold = 50;
-// var thresholdOut = document.getElementById("thresholdOut");
-// thresholdSlider.oninput = function(){
-//     threshold = this.value;
-//     thresholdOut.innerHTML = threshold.toString() + "%";
-// }
+threshold = 50;
 
 function isEnglish(text){
     let chiT = 250 - 2 * threshold; 
-
+    if (chiTest(text) < chiT){
+        console.log(bigramTest(text));
+    }
     
 }
 
