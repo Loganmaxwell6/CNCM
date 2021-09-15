@@ -18,6 +18,7 @@
       <button id="clearText" onclick="clearText()">Clear</button>
       <button id="reverseText" onclick ="reverseText()">Reverse</button>
     </div>
+<<<<<<< HEAD
     <div id="thresholdSlider">
       <input type="range" min="0" max="100" value="50" class="slider" id="threshold">
       <! ––<textarea id="thresholdOut" rows="1" cols="4" disabled="disabled"></textarea>-->
@@ -30,6 +31,25 @@
             <button id="transpositionCipher">Transposition Cipher</button>
             <button id="vigenereCipher">Vigenère cipher</button>
             <button id="keywordCipher" onclick="console.log(this.id);">Keyword cipher</button>
+=======
+    <div id="cipherButtons">
+      <button id="caesarCipher">Caesar Cipher</button>
+      <button id="affineCipher">Affine Cipher</button>
+      <button id="substitutionCipher">Substitution Cipher</button>
+      <button id="transpositionCipher">Transposition Cipher</button>
+      <button id="vigenereCipher">Vigenère cipher</button>
+      <button id="keywordCipher">Keyword cipher</button>
+    </div>
+    <div id="optionsButtons">
+      <div id="caesarOptions">
+        <div class ="caesarDecrypt">
+          <button style="visibility:hidden;position: relative;top:3px" id="caesarDecrypt">decrypt</button> 
+        </div>
+        <div class ="caesarEncrypt">
+          <button style="visibility:hidden;position: relative;top:+3px" id="caesarEncrypt">encrypt</button> 
+          <input type="number" style="visibility:hidden;position:relative;top:-25px" id="caesarEncryptInput" >
+        </div>
+>>>>>>> fd670d8a73b4567ba49727b5d87e6e08802d525c
       </div>
       <div id="optionsButtons">
           <div id="caesarOptions">
