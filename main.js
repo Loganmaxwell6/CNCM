@@ -1,19 +1,19 @@
 class Button {
-    constructor(name, parent, children, click){
+    constructor(name, parent, children, click=null){
         this.name = name;
         this.parent = parent;
         this.children = children;
         this.click = click;
-
+        
         this.initButton();
     }
 
     initButton(){
-        if (this.children.length == 0){
-            document.getElementById(this.name).onclick = this.click;
-        }else{
-            document.getElementById(this.name).onclick = this.openChildren.bind(this, this.children);
+        if (this.click == null){
+            this.click = this.openChildren.bind(this);
         }
+        document.getElementById(this.name).onclick = this.click;
+        document.getElementById(this.name).addEventListener("click",this.swapBranch.bind(this));
     }
 
     openButton(){
@@ -24,26 +24,42 @@ class Button {
         document.getElementById(this.name).style.visibility = "hidden";
     }
 
-    openChildren(children){
-        for (let i = 0; i < children.length; i++){
-            for (let x = 0; x < buttons.length; x++){
-                if (buttons[x].name == children[i]){
-                    buttons[x].openButton();
-                }
+    swapBranch(){
+        if (!(currentButton == "")){
+            currentButton.closeBelow();
+            let a = this.findPath();
+            for (i in a){
+                getButton(a[i].name).click();
             }
+        }
+        if (this.parent == null){
+            currentButton = this;
+        }
+    }
+
+    findPath(){
+        let a = [];
+        let button = this;
+        a.push(button);
+        while (!(button.parent == null)){
+            button = getButton(button.parent);
+            a.push(button);
+        }
+        return a;
+    }
+
+    openChildren(){
+        for (let i = 0; i < this.children.length; i++){
+            getButton(this.children[i]).openButton();
         }
     }
 
     closeBelow(top=this.name){
         for (let i = 0; i < this.children.length; i++) {
-            for(let x = 0; x < buttons.length; x++){
-                if (buttons[x].name == this.children[i]){
-                   buttons[x].closeBelow(top);
-                }
-            }
+            getButton(this.children[i]).closeBelow(top);
         }
         if (!(this.name == top)){
-            document.getElementById(this.name).style.visibility = "hidden";
+            this.closeButton();
         }
         
     }
@@ -65,6 +81,9 @@ window.onload = function(){
     new Button("affineEncrypt", "affineCipher",[])];
 }
 
+currentButton = "";
+
+
 //calls the initialisation of the ciphers
 
 function test(){
@@ -83,6 +102,14 @@ function swapText(){
         alert("No output text to swap")
     }
     
+}
+
+function getButton(name){
+    for ( i in buttons){
+        if (buttons[i].name == name) {
+            return buttons[i];
+        }
+    }
 }
 
 function clearText(){
