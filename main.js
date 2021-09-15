@@ -29,7 +29,7 @@ class Button {
             currentButton.closeBelow();
             let a = this.findPath();
             for (i in a){
-                getButton(a[i].name).click();
+                getButton(a[i].name).openChildren();
             }
         }
         if (this.parent == null){
@@ -76,22 +76,32 @@ window.onload = function(){
     new Button("caesarEncrypt","caesarCipher",["caesarEncryptInput", "caesarEncryptGo"]),
     new Button("caesarEncryptInput","caesarEncrypt",[]),
     new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
-    new Button("affineDecrypt", "affineCipher",[]),
+    new Button("affineDecrypt", "affineCipher",[], decryptAffineCipher),
     new Button("caesarEncryptGo","caesarEncrypt",[],openCaesarEncrypt),
     new Button("affineEncrypt", "affineCipher",[])];
 }
 
 currentButton = "";
 
-
-//calls the initialisation of the ciphers
-
-function test(){
-    alert("working " + d);
-}
+numthing = 0;
 
 function mod(n, m) {
     return ((n % m) + m) % m;
+}
+
+function updateText(){
+    globalText = cleanText(document.getElementById("textIn").value);
+}
+
+function cleanText(text){
+    a = []
+    for (let i = 0; i < text.length; i++){
+        char = text[i].toUpperCase();
+        if (alphaDict[char]) {
+            a.push(char)
+        }
+    }
+    return a
 }
 
 function swapText(){
@@ -121,18 +131,7 @@ function reverseText() {
     document.getElementById("textIn").value = document.getElementById("textIn").value.split("").reverse().join("");
 }
 
-//general function for calling the decrypt of a cipher, used in optionsPage class
-function decryptCalled(f){
-    document.getElementById("textOut").value = "";
-    if(!(document.getElementById("textIn").value) == ''){
-        f();
-    }else{
-        alert("Enter text into input box first")
-    }
-}
-
 function decryptCaesarCipher(){
-    text = document.getElementById("textIn").value
     for (let i = 0; i < 26; i ++) {
         let t = caesarShift(text, i);
         if (isEnglish(t)){
@@ -142,7 +141,6 @@ function decryptCaesarCipher(){
 }
 
 function caesarShift(text, shift){
-    text = text.toUpperCase().split("");
     let newString = "";
     
     for (i in text) {   
@@ -160,7 +158,6 @@ function openCaesarEncrypt(){
     num = button.value;
     if (!num ==''){
         if (num >=0){
-            text = document.getElementById("textIn").value.toUpperCase();
             t = caesarShift(text, parseInt(num));
             document.getElementById("textOut").value = t.toLowerCase() +"\n";  
         }else{
@@ -171,11 +168,14 @@ function openCaesarEncrypt(){
 }
 
 function decryptAffineCipher(){
-    text = document.getElementById("textIn").value
+    let text = globalText.slice(0,globalText.length);
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
             let t = affineShift(text, i, x);
+            
             if (isEnglish(t)){
+                //console.log(affitext);
+                console.log(i,x)
                 document.getElementById("textOut").value += t.toLowerCase() +"\n";
             }
         }
@@ -184,8 +184,8 @@ function decryptAffineCipher(){
 }
 
 function affineShift(text,num,num2){
+    console.log(text)
     let multis ={0:'1',1:'9',2:'21',3:'15',4:'3',5:'19',6:'7',7:'23',8:'11',9:'5',10:'17',11:'25'};
-    text = text.toUpperCase().split("");
     for (i in text){
         
         if (ALPHA.includes(text[i])){
@@ -198,12 +198,13 @@ function affineShift(text,num,num2){
 
 //-------------------------------------------------------------
 //logan will do this/is doing it
-threshold = 50;
+threshold = 85;
 
 function isEnglish(text){
     let chiT = 250 - 2 * threshold; 
     if (chiTest(text) < chiT){
-        return (bigramTest(text));
+        numthing ++;
+        return bigramTest(text) < 100;
     }
     return false;
 }
