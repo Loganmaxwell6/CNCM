@@ -72,7 +72,7 @@ const d = new Date();
 // list of the buttons it opens on being clicked, onclick function if applicable)
 window.onload = function(){
     buttons = [new Button("caesarCipher",null,["caesarDecrypt", "caesarEncrypt"]), 
-    new Button("caesarDecrypt","caesarCipher",[]),
+    new Button("caesarDecrypt","caesarCipher",[],decryptCaesarCipher),
     new Button("caesarEncrypt","caesarCipher",["caesarEncryptInput", "caesarEncryptGo"]),
     new Button("caesarEncryptInput","caesarEncrypt",[]),
     new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
