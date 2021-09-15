@@ -207,15 +207,18 @@ function affineShift(text,num,num2){
 }
 
 //-------------------------------------------------------------
-//logan will do this/is doing it
+// change threshold as value between 0 - 100 %
+// will return the bigram score if it is english
+// if not english returns false
+// use to rank the potential ones by bigram score
 threshold = 50;
 
 function isEnglish(text){
     let chiT = 250 - 2 * threshold; 
     if (chiTest(text) < chiT){
-        console.log(bigramTest(text));
+        return bigramTest(text);
     }
-    
+    return false; 
 }
 
 //mapping of alpha to f as a index 0 in both etc.
