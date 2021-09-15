@@ -133,6 +133,7 @@ function reverseText() {
 
 function decryptCaesarCipher(){
     for (let i = 0; i < 26; i ++) {
+        var text = globalText.substring(0,globalText.length)
         let t = caesarShift(text, i);
         if (isEnglish(t)){
             document.getElementById("textOut").value += t.toLowerCase() +"\n";
@@ -168,9 +169,10 @@ function openCaesarEncrypt(){
 }
 
 function decryptAffineCipher(){
-    let text = globalText.slice(0,globalText.length);
+    
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
+            var text = globalText.slice(0,globalText.length);
             let t = affineShift(text, i, x);
             
             if (isEnglish(t)){
