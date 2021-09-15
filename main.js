@@ -203,9 +203,9 @@ threshold = 50;
 function isEnglish(text){
     let chiT = 250 - 2 * threshold; 
     if (chiTest(text) < chiT){
-        console.log(bigramTest(text));
+        return (bigramTest(text));
     }
-    
+    return false;
 }
 
 //mapping of alpha to f as a index 0 in both etc.
