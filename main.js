@@ -1,91 +1,69 @@
-class Cipher{
-
-    constructor(name, options){
+class Button {
+    constructor(name, parent, children, click){
         this.name = name;
-        this.optionsPage = options;
+        this.parent = parent;
+        this.children = children;
+        this.click = click;
 
-        this.createButton();
+        this.initButton();
     }
 
-    openOptions(cls){
-        cls.optionsPage.openOptions();//open options page
-        openNewPage(cls);
+    initButton(){
+        if (this.children == []){
+            document.getElementById(this.name).onclick = this.click;
+        }else{
+            document.getElementById(this.name).onclick = this.openChildren.bind(this, this.children);
+        }
     }
 
-    createButton(){
-        let button = document.getElementById(this.name);
-        button.addEventListener("click", this.openOptions.bind(this, this)); //button opens options page on being clicked
-    }
-    
-    selectOption(){
-        let button = document.getElementById(this.name);
-        button.style.background = "grey";
-    }
-    
-    deselectOption(){
-        let button = document.getElementById(this.name);
-        button.style.background = "";
+    openButton(){
+        console.log(document.getElementById(this.name).style.visibility);
+        document.getElementById(this.name).style.visibility = "visible";
     }
 
-}
-
-class optionsPage{
-    constructor(options){
-        this.options = options;
-
-        this.initOptions();
+    closeButton(){
+        document.getElementById(this.name).style.visibility = "hidden";
     }
 
-    //initialise buttons with their onclicks
-    initOptions(){
-        for (let i =0; i<this.options.length; i++){
-            let current = this.options[i]; //one option in list of options that form the options page
-            let button = document.getElementById(current.name);
-            
-            if (!("click" in current)){
-                console.log(current.options.options[0].name)
-                current.click = function(){
-                    for(let i = 0; i < current.options.length; i++){
-                        current.options.options[i].openOptions; 
-                    }
-                    
-                } 
+    openChildren(children){
+        
+        for (let i = 0; i < children.length; i++){
+            for (let x = 0; x < buttons.length; x++){
+                if (buttons[x].name == children[i]){
+                    buttons[x].openButton();
+                }
             }
-            button.addEventListener("click", function(){
-                decryptCalled(current.click); //set onclick to perform this opttions function
-            })
         }
     }
 
-    //set all options visible and initialise
-    openOptions(){
-
-        for (let i =0; i<this.options.length; i++){
-            let current = this.options[i]; //one option in list of options that form the options page
-            let button = document.getElementById(current.name);  
-            button.style.visibility = "visible"; //set button visible
+    closeBelow(top=this.name){
+        for (let i = 0; i < this.children.length; i++) {
+            for(let x = 0; x < buttons.length; x++){
+                if (buttons[x].name == this.children[i]){
+                   buttons[x].closeBelow(top);
+                }
+            }
         }
-    }
-
-    //close options page, set all hidden
-    closeOptions(){
-        for (let i =0; i<this.options.length; i++){
-            let current = this.options[i];
-            let button = document.getElementById(current.name);
-            button.style.visibility = "hidden";
+        if (!(this.name == top)){
+            document.getElementById(this.name).style.visibility = "hidden";
         }
+        
     }
 }
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
 
-//calls the initialisation of the ciphers
 window.onload = function(){
-    initCiphers("caesarCipher", new optionsPage([{name:"caesarDecrypt", click:decryptCaesarCipher},
-                                                 {name:"caesarEncrypt", options:new optionsPage([{name:"caesarEncryptInput", click:openCaesarEncrypt}])}]));
-    initCiphers("affineCipher", new optionsPage([{name:"affineDecrypt", click:decryptAffineCipher}]));
+    buttons = [new Button("caesarCipher",null,["caesarDecrypt", "caesarEncrypt"]), 
+    new Button("caesarDecrypt","caesarCipher",[]),
+    new Button("caesarEncrypt","caesarCipher",["caesarEncryptInput"]),
+    new Button("caesarEncryptInput","caesarEncrypt",[]),
+    new Button("affineCipher", null, ["affineDecrypt"]),
+    new Button("affineDecrypt", "affineCipher",[])];
 }
+
+//calls the initialisation of the ciphers
 
 function test(){
     alert("working " + d);
@@ -114,18 +92,6 @@ function reverseText() {
     document.getElementById("textIn").value = document.getElementById("textIn").value.split("").reverse().join("");
 }
 
-function openNewPage (page){
-    t = typeof currentOpen;
-    if (t == 'object'){
-        if (!(currentOpen == page)){
-            currentOpen.optionsPage.closeOptions();
-            currentOpen.deselectOption();
-        }
-    }
-    currentOpen = page;
-    currentOpen.selectOption();
-}
-
 //general function for calling the decrypt of a cipher, used in optionsPage class
 function decryptCalled(f){
     document.getElementById("textOut").value = "";
@@ -133,26 +99,6 @@ function decryptCalled(f){
         f();
     }else{
         alert("Enter text into input box first")
-    }
-}
-
-//initialises the ciphers
-function initCiphers(cipherName, cipherOptionsPage){
-    let cipher = new Cipher(cipherName, cipherOptionsPage);
-}
-
-function openCaesarEncrypt(){
-    button = document.getElementById("caesarEncryptInput");
-    num = button.value;
-    if (!num ==''){
-        if (!num < 0){
-            text = document.getElementById("textIn").value.toUpperCase();
-            t = caesarShift(text, parseInt(num));
-            document.getElementById("textOut").value = t.toLowerCase() +"\n";  
-        }else{
-            alert("Enter positive number"+"\n"+"Hint, a shift of "+num+ " equals a shift of "+(mod(parseInt(num),26)) )
-        }
-        
     }
 }
 
@@ -207,18 +153,15 @@ function affineShift(text,num,num2){
 }
 
 //-------------------------------------------------------------
-// change threshold as value between 0 - 100 %
-// will return the bigram score if it is english
-// if not english returns false
-// use to rank the potential ones by bigram score
+//logan will do this/is doing it
 threshold = 50;
 
 function isEnglish(text){
     let chiT = 250 - 2 * threshold; 
     if (chiTest(text) < chiT){
-        return bigramTest(text);
+        console.log(bigramTest(text));
     }
-    return false; 
+    
 }
 
 //mapping of alpha to f as a index 0 in both etc.
