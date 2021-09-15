@@ -18,29 +18,15 @@ button{
   margin: 9px 0px;
 }
 
-#optionsButtons{
+.optionsButtons{
   position:relative;
 }
-/*
-#caesarOptions{
-  position:absolute;
-}
-#affineOptions{
-  position:absolute;
-}
-#substitiutionOptions{
-  position:absolute;
-}
-*/
 
-.encrypt{
-  position:absolute;
-  top:50px;
-}
-.decrypt{
+.caesarOptions{
   position:absolute;
 }
-.caesarEncryptInput{
+
+.affineOptions{
   position:absolute;
-  top:150px;
+  left:127px;
 }
