@@ -52,3 +52,31 @@ button{
   background: #04AA6D;
   cursor: pointer;
 }
+
+
+#optionsButtons{
+  position:relative;
+}
+/*
+#caesarOptions{
+  position:absolute;
+}
+#affineOptions{
+  position:absolute;
+}
+#substitiutionOptions{
+  position:absolute;
+}
+*/
+
+.encrypt{
+  position:absolute;
+  top:50px;
+}
+.decrypt{
+  position:absolute;
+}
+.caesarEncryptInput{
+  position:absolute;
+  top:150px;
+}
