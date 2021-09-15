@@ -43,10 +43,10 @@ class optionsPage{
             let button = document.getElementById(current.name);
             
             if (!("click" in current)){
-                console.log(current.options[0])
+                console.log(current.options.options[0].name)
                 current.click = function(){
                     for(let i = 0; i < current.options.length; i++){
-                        current.options[i].openOptions; 
+                        current.options.options[i].openOptions; 
                     }
                     
                 } 
