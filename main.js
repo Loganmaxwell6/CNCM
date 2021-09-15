@@ -111,7 +111,7 @@ function swapText(){
     }else{
         alert("No output text to swap")
     }
-    
+    updateText();
 }
 
 function getButton(name){
@@ -125,15 +125,17 @@ function getButton(name){
 function clearText(){
     document.getElementById("textOut").value = ""
     document.getElementById("textIn").value = ""
+    updateText();
 }
 
 function reverseText() {
     document.getElementById("textIn").value = document.getElementById("textIn").value.split("").reverse().join("");
+    updateText();
 }
 
 function decryptCaesarCipher(){
     for (let i = 0; i < 26; i ++) {
-        var text = globalText.slice(0,globalText.length)
+        var text = globalText.slice(0,globalText.length);
         let t = caesarShift(text, i);
         if (isEnglish(t)){
             document.getElementById("textOut").value += t.toLowerCase() +"\n";
@@ -157,6 +159,7 @@ function caesarShift(text, shift){
 function openCaesarEncrypt(){
     button = document.getElementById("caesarEncryptInput");
     num = button.value;
+    var text = globalText
     if (!num ==''){
         if (num >=0){
             t = caesarShift(text, parseInt(num));
