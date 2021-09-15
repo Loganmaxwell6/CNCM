@@ -9,7 +9,7 @@ class Button {
     }
 
     initButton(){
-        if (this.children == []){
+        if (this.children.length == 0){
             document.getElementById(this.name).onclick = this.click;
         }else{
             document.getElementById(this.name).onclick = this.openChildren.bind(this, this.children);
@@ -17,7 +17,6 @@ class Button {
     }
 
     openButton(){
-        console.log(document.getElementById(this.name).style.visibility);
         document.getElementById(this.name).style.visibility = "visible";
     }
 
@@ -26,7 +25,6 @@ class Button {
     }
 
     openChildren(children){
-        
         for (let i = 0; i < children.length; i++){
             for (let x = 0; x < buttons.length; x++){
                 if (buttons[x].name == children[i]){
@@ -54,13 +52,17 @@ class Button {
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
 
+// Button (name which corresponds to the html id, parent button - null if n/a, 
+// list of the buttons it opens on being clicked, onclick function if applicable)
 window.onload = function(){
     buttons = [new Button("caesarCipher",null,["caesarDecrypt", "caesarEncrypt"]), 
     new Button("caesarDecrypt","caesarCipher",[]),
-    new Button("caesarEncrypt","caesarCipher",["caesarEncryptInput"]),
+    new Button("caesarEncrypt","caesarCipher",["caesarEncryptInput", "caesarEncryptGo"]),
     new Button("caesarEncryptInput","caesarEncrypt",[]),
-    new Button("affineCipher", null, ["affineDecrypt"]),
-    new Button("affineDecrypt", "affineCipher",[])];
+    new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
+    new Button("affineDecrypt", "affineCipher",[]),
+    new Button("caesarEncryptGo","caesarEncrypt",[],openCaesarEncrypt),
+    new Button("affineEncrypt", "affineCipher",[])];
 }
 
 //calls the initialisation of the ciphers
@@ -124,6 +126,21 @@ function caesarShift(text, shift){
         }      
     } 
     return newString;
+}
+
+function openCaesarEncrypt(){
+    button = document.getElementById("caesarEncryptInput");
+    num = button.value;
+    if (!num ==''){
+        if (num >=0){
+            text = document.getElementById("textIn").value.toUpperCase();
+            t = caesarShift(text, parseInt(num));
+            document.getElementById("textOut").value = t.toLowerCase() +"\n";  
+        }else{
+            alert("Enter positive number"+"\n"+"Hint, a shift of "+num+ " equals a shift of "+(mod(parseInt(num),26)) )
+        }
+        
+    }
 }
 
 function decryptAffineCipher(){
