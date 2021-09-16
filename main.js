@@ -90,18 +90,37 @@ function mod(n, m) {
 }
 
 function updateText(){
-    globalText = cleanText(document.getElementById("textIn").value);
+    clean = cleanText(document.getElementById("textIn").value)
+    globalText = clean[0];
+    globalGrammar = clean[1];
+}
+
+function output(text){
+    text = addGrammar(text);
+    document.getElementById("textOut").value += text + "\n";
+}
+
+function addGrammar(text){
+    text = text.split("");
+    for (let [key, value] of Object.entries(globalGrammar)){
+        console.log(key)
+        text.splice(key, 0, value)
+    }
+    return text.join("")
 }
 
 function cleanText(text){
     a = []
+    b= {}
     for (let i = 0; i < text.length; i++){
         char = text[i].toUpperCase();
         if (alphaDict[char]) {
             a.push(char)
+        }else{
+            b[i] = char;
         }
     }
-    return a
+    return [a,b]
 }
 
 function swapText(){
@@ -138,7 +157,7 @@ function decryptCaesarCipher(){
         var text = globalText.slice(0,globalText.length);
         let t = caesarShift(text, i);
         if (isEnglish(t)){
-            document.getElementById("textOut").value += t.toLowerCase() +"\n";
+            output(t);
         }
     }
 }
@@ -163,7 +182,7 @@ function openCaesarEncrypt(){
     if (!num ==''){
         if (num >=0){
             t = caesarShift(text, parseInt(num));
-            document.getElementById("textOut").value = t.toLowerCase() +"\n";  
+            output(t); 
         }else{
             alert("Enter positive number"+"\n"+"Hint, a shift of "+num+ " equals a shift of "+(mod(parseInt(num),26)) )
         }
@@ -179,7 +198,7 @@ function decryptAffineCipher(){
             let t = affineShift(text, i, x);
             
             if (isEnglish(t)){
-                document.getElementById("textOut").value += t.toLowerCase() +"\n";
+                output(t);
             }
         }
         
@@ -188,14 +207,15 @@ function decryptAffineCipher(){
 
 function affineShift(text,num,num2){
     let multis ={0:'1',1:'9',2:'21',3:'15',4:'3',5:'19',6:'7',7:'23',8:'11',9:'5',10:'17',11:'25'};
+    let newString = "";
     for (i in text){
         
         if (ALPHA.includes(text[i])){
             index = alphaDict[text[i]]+1;
-            text[i] = ALPHA[(multis[num-1]*mod(index-num2,26))%26];
+            newString += ALPHA[(multis[num-1]*mod(index-num2,26))%26];
         }
     }
-    return text.join("");
+    return newString;
 }
 
 //-------------------------------------------------------------
