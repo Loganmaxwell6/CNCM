@@ -82,7 +82,7 @@ window.onload = function(){
     new Button("caesarEncryptGo","caesarEncrypt",[],openCaesarEncrypt),
     new Button("affineEncrypt", "affineCipher",[]),
     new Button("vigenereCipher", null, ["vigenereDecrypt", "vigenereEncrypt"]),
-    new Button("vigenereDecrypt", "vigenereCipher",[]),
+    new Button("vigenereDecrypt", "vigenereCipher",[],decryptVigenereCipher),
     new Button("vigenereEncrypt","vigenereCipher",[])];
 }
 
@@ -117,7 +117,6 @@ function output(text){
 function addGrammar(text){
     text = text.split("");
     for (let [key, value] of Object.entries(globalGrammar)){
-        console.log(key)
         text.splice(key, 0, value)
     }
     return text.join("")
@@ -128,8 +127,8 @@ function cleanText(text){
     b= {}
     for (let i = 0; i < text.length; i++){
         char = text[i].toUpperCase();
-        if (alphaDict[char]) {
-            a.push(char)
+        if (char in alphaDict) {
+            a.push(char);
         }else{
             b[i] = char;
         }
@@ -180,7 +179,7 @@ function caesarShift(text, shift){
     let newString = "";
     
     for (i in text) {   
-        if (alphaDict[text[i]]) {
+        if (text[i] in alphaDict) {
             newString += ALPHA[(alphaDict[text[i]] + shift)%26];
         }else{
             newString += text[i];
@@ -231,6 +230,72 @@ function affineShift(text,num,num2){
     }
     return newString;
 }
+
+//full brute force decrypt
+function decryptVigenereCipher(){
+    var min = 3; //minimum keylength tested by the brute force method
+    var max = 6; //maximum keylength ||
+    for (let i = min; i <max +1;i++){
+        decryptVigenere(i);
+    }
+}
+
+//decrypt for one keylength
+function decryptVigenere(num){
+   let str = globalText.join("");
+   let allVals = [];
+   let allLikely = []
+   for (let x = 0; x < num; x++){
+       allVals.push([])
+   }
+   for (let i =0; i < str.length; i++){
+       allVals[i %num].push(str[i])
+   }
+   for (let i =0; i <num; i++){
+       allLikely.push(findMostLikelyShifts(allVals[i]))
+   }
+   let full = combos(allLikely);
+
+   for (i of full){
+       t = encryptVigenere(str, i);
+       if (isEnglish(t)){
+           output(t);
+       }
+   }
+}
+
+function encryptVigenere(text, key){
+    arr = text.split("");
+    for (let i = 0; i < arr.length; i ++){
+        arr[i] = caesarShift(arr[i], key[i%key.length]);
+    }
+    return arr.join("");
+}
+
+//returns the most likely values for the text to have been shifted by
+function findMostLikelyShifts(text){
+    var accuracy = 3; //the depth of the accuracy
+    count = observedCount(text);
+    a= [];
+    for(const [key, value] of Object.entries(count)){
+        a.push([key,value])
+    }
+    a = a.sort(function(a,b) {
+        return b[1]-a[1]
+    });
+    for(let i =0; i < accuracy; i++){
+        a[i] = mod(4 - parseInt(a[i][0]), 26);
+    }
+    return a.slice(0,accuracy);
+}
+
+function combos(list, n = 0, result = [], current = []){
+    if (n === list.length) result.push(current)
+    else list[n].forEach(item => combos(list, n+1, result, [...current, item]))
+ 
+    return result
+}
+
 //-------------------------------------------------------------
 function determineCipher(){
     //chi test if eng then transposition
