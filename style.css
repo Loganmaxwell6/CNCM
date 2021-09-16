@@ -32,6 +32,11 @@
     position:absolute;
     left:127px;
   }
+
+  .vigenereOptions{
+    position:absolute;
+    left:586px;
+  }
 }
 
 /*portrait (mobile)*/

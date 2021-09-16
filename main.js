@@ -11,6 +11,8 @@ class Button {
     initButton(){
         if (this.click == null){
             this.click = this.openChildren.bind(this);
+        }else{
+            this.click = input.bind(this, this.click)
         }
         document.getElementById(this.name).onclick = this.click;
         document.getElementById(this.name).addEventListener("click",this.swapBranch.bind(this));
@@ -78,7 +80,10 @@ window.onload = function(){
     new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
     new Button("affineDecrypt", "affineCipher",[], decryptAffineCipher),
     new Button("caesarEncryptGo","caesarEncrypt",[],openCaesarEncrypt),
-    new Button("affineEncrypt", "affineCipher",[])];
+    new Button("affineEncrypt", "affineCipher",[]),
+    new Button("vigenereCipher", null, ["vigenereDecrypt", "vigenereEncrypt"]),
+    new Button("vigenereDecrypt", "vigenereCipher",[]),
+    new Button("vigenereEncrypt","vigenereCipher",[])];
 }
 
 currentButton = "";
@@ -93,6 +98,15 @@ function updateText(){
     clean = cleanText(document.getElementById("textIn").value)
     globalText = clean[0];
     globalGrammar = clean[1];
+}
+
+function input(f){
+    document.getElementById("textOut").value = "";
+    if(!(document.getElementById("textIn").value) == ''){
+        f();
+    }else{
+        alert("Enter text into input box first")
+    }
 }
 
 function output(text){
