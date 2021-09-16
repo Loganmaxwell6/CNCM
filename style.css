@@ -1,32 +1,40 @@
-body{
-  padding: 40px;
+/*landscape (desktop)*/
+@media only screen and (orientation: landscape){
+  body{
+    padding: 40px;
+  }
+  
+  input{
+    display: block;
+    margin: auto;
+  }
+  
+  textarea{
+      resize:none;
+      width:70em;
+      height:20em;
+      margin: 5px 1px;
+  }
+  
+  button{
+    margin: 9px 0px;
+  }
+  
+  .optionsButtons{
+    position:relative;
+  }
+  
+  .caesarOptions{
+    position:absolute;
+  }
+  
+  .affineOptions{
+    position:absolute;
+    left:127px;
+  }
 }
 
-input{
-  display: block;
-  margin: auto;
-}
+/*portrait (mobile)*/
+@media only screen and (orientation: portrait){
 
-textarea{
-    resize:none;
-    width:70em;
-    height:20em;
-    margin: 5px 1px;
-}
-
-button{
-  margin: 9px 0px;
-}
-
-.optionsButtons{
-  position:relative;
-}
-
-.caesarOptions{
-  position:absolute;
-}
-
-.affineOptions{
-  position:absolute;
-  left:127px;
 }
