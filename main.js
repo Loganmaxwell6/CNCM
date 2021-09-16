@@ -197,9 +197,25 @@ function affineShift(text,num,num2){
     }
     return text.join("");
 }
-
 //-------------------------------------------------------------
-//logan will do this/is doing it
+function determineCipher(){
+    //chi test if eng then transposition
+    //ioc if eng then substitution
+    //periodic ioc then vignere
+}
+
+function indexOfCoincidence(text){
+    let o = observedCount(text);
+    let n = 0;
+    let sum = 0;
+    for (let i = 0; i < 26; i++){
+        sum += o[i] * (o[i] - 1);
+        n += o[i];
+    }
+    let N = (n * (n - 1))/26;
+    return (sum / N) / 26;
+}
+//-------------------------------------------------------------
 threshold = 85;
 
 function isEnglish(text){
@@ -245,18 +261,6 @@ function chiTest(text){
         sum += chiHelper(o[i],e[i]);
     }
     return Math.sqrt(sum);
-}
-
-function indexOfCoincidence(text){
-    let o = observedCount(text);
-    let n = 0;
-    let sum = 0;
-    for (let i = 0; i < 26; i++){
-        sum += o[i] * (o[i] - 1);
-        n += o[i];
-    }
-    let N = (n * (n - 1))/26;
-    return (sum / N) / 26;
 }
 
 function observedBigramCount(text){
