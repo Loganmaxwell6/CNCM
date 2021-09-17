@@ -249,6 +249,29 @@ function indexOfCoincidence(text){
     let N = (n * (n - 1))/26;
     return (sum / N) / 26;
 }
+
+// fuck this bit make it work bruhhhhhhhh
+function getKeyLength(text){
+    console.log(indexOfCoincidence(text));
+    let limit = 13;
+    let keyLength = [];
+    for (let step = 2; step < limit; step++){
+        console.log(step);
+        let sum = 0;
+        for (let offset = 0; offset < step; offset++){
+            let s = "";
+            for (let i = offset; i < text.length; i += step){
+                s += text[i];
+            }
+            console.log(indexOfCoincidence(s));
+            sum += indexOfCoincidence(s);
+        }
+        let avg = sum/step;
+        keyLength.push(avg);
+        console.log(" ");
+    }
+    return keyLength;
+}
 //-------------------------------------------------------------
 threshold = 85;
 
