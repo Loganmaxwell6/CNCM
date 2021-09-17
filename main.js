@@ -234,7 +234,7 @@ function affineShift(text,num,num2){
 //full brute force decrypt
 function decryptVigenereCipher(){
     var min = 3; //minimum keylength tested by the brute force method
-    var max = 10; //maximum keylength ||
+    var max = 15; //maximum keylength ||
     for (let i = min; i <max +1;i++){
         decryptVigenere(i);
     }
@@ -243,34 +243,21 @@ function decryptVigenereCipher(){
 //decrypt for one keylength
 function decryptVigenere(num){
    let str = globalText.join("");
-   let allVals = [];
-   let allLikely = []
-   for (let x = 0; x < num; x++){
-       allVals.push([])
-   }
-   for (let i =0; i < str.length; i++){
-       allVals[i %num].push(str[i])
-   }
-   for (let i =0; i <num; i++){
-       allLikely.push(findMostLikelyShifts(allVals[i]))
-   }
+   let allVals = returnEveryNth(str, num);
    let shifts = [];
    for (let i =0; i < allVals.length; i++){
-       highest = [-1,10000000000000000];
-       for(x of allLikely[i]){
+       scores = []
+       for(let x =0; x < 26; x++){
             chi = chiTest(caesarShift(allVals[i].join(""), x));
-            if (chi < highest[1]){
-                highest[0] = x;
-                highest[1] = chi;
-            }
+            scores.push([x , chi])
        }
-       shifts.push(highest[0]);
+       scores = scores.sort(function(a,b) {return a[1]-b[1]});
+       shifts.push(scores[0][0]);
    }
    t = putVignereTogether(str, shifts);
    if (isEnglish(t)){
         output(t);
-   }
-       
+   }  
 }
 
 function encryptVigenere(text, key){
@@ -289,29 +276,31 @@ function putVignereTogether(text, shifts){
     return text.join("");
 }
 
-//returns the most likely values for the text to have been shifted by
-function findMostLikelyShifts(text){
-    var accuracy = 3; //the depth of the accuracy
-    count = observedCount(text);
-    a= [];
-    for(const [key, value] of Object.entries(count)){
-        a.push([key,value])
-    }
-    a = a.sort(function(a,b) {
-        return b[1]-a[1]
-    });
-    for(let i =0; i < accuracy; i++){
-        a[i] = mod(4 - parseInt(a[i][0]), 26);
-    }
-    return a.slice(0,accuracy);
-}
+//old no longer used vigenere code, may be useful for other things later
+//
+// //returns the most likely values for the text to have been shifted by
+// function findMostLikelyShifts(text){
+//     var accuracy = 3; //the depth of the accuracy
+//     count = observedCount(text);
+//     a= [];
+//     for(const [key, value] of Object.entries(count)){
+//         a.push([key,value])
+//     }
+//     a = a.sort(function(a,b) {
+//         return b[1]-a[1]
+//     });
+//     for(let i =0; i < accuracy; i++){
+//         a[i] = mod(4 - parseInt(a[i][0]), 26);
+//     }
+//     return a.slice(0,accuracy);
+// }
 
-function combos(list, n = 0, result = [], current = []){
-    if (n === list.length) result.push(current)
-    else list[n].forEach(item => combos(list, n+1, result, [...current, item]))
+// function combos(list, n = 0, result = [], current = []){
+//     if (n === list.length) result.push(current)
+//     else list[n].forEach(item => combos(list, n+1, result, [...current, item]))
  
-    return result
-}
+//     return result
+// }
 
 //-------------------------------------------------------------
 function determineCipher(){
@@ -340,11 +329,10 @@ function getKeyLength(text){
     for (let step = 2; step < limit; step++){
         console.log(step);
         let sum = 0;
-        for (let offset = 0; offset < step; offset++){
-            let s = "";
-            for (let i = offset; i < text.length; i += step){
-                s += text[i];
-            }
+        let allVals = returnEveryNth(text, step);
+        
+        for (i of allVals){
+            s = i.join("");
             console.log(indexOfCoincidence(s));
             sum += indexOfCoincidence(s);
         }
@@ -384,6 +372,17 @@ function expectedCount(t){
         e.push(check[ALPHA[a]] * t);
     }
     return e;
+}
+
+function returnEveryNth(text, step){
+    let allVals = [];
+    for (let x = 0; x < step; x++){
+        allVals.push([])
+    }
+    for (let i =0; i < text.length; i++){
+        allVals[i %step].push(text[i])
+    }
+    return allVals;
 }
 
 //observed - expected ^ 2 / expected
