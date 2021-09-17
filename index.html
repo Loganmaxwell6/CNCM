@@ -7,50 +7,56 @@
     <title>Crooked Nazgul Code Men</title>
   </head>
   <body>
-    <div id="inputPart">
-      <textarea id="textIn" rows="10" cols="100" placeholder="Input text here..." oninput="updateText()"></textarea>
+    <div class = "header">
+      <h1>Crooked Nazgul Code Men Official Website</h1>
+      <h5>SEMATARY GRAVE MAN FROM THE HAUNTED MOUND REAL NAZGUL SKINCARVER DEER GOD KEEPER OF THE TREES TRUE RELIGION FIEND HAUNTED MOUND LORD</h5>
     </div>
-    <div id="outputPart">
-      <textarea id="textOut" rows="10" cols="100" placeholder="Output text here" disabled="disabled"></textarea>
-    </div>
-    <div id="options">
-      <button id="swapText" onclick="swapText()">↑</button>
-      <button id="clearText" onclick="clearText()">Clear</button>
-      <button id="reverseText" onclick ="reverseText()">Reverse</button>
-    </div>
-    <div id="cipherButtons">
-      <button id="caesarCipher">Caesar Cipher</button>
-      <button id="affineCipher">Affine Cipher</button>
-      <button id="substitutionCipher">Substitution Cipher</button>
-      <button id="transpositionCipher">Transposition Cipher</button>
-      <button id="vigenereCipher">Vigenère cipher</button>
-      <button id="keywordCipher">Keyword cipher</button>
-    </div>
-    <div class="optionsButtons">
-      <div class="caesarOptions">
-        <div class ="caesarDecrypt">
-          <button style="visibility:hidden" id="caesarDecrypt">decrypt</button> 
-        </div>
-        <div class ="caesarEncrypt">
-          <button style="visibility:hidden" id="caesarEncrypt">encrypt</button> 
-          <input style="visibility:hidden" type="number" id="caesarEncryptInput">
-          <button style="visibility:hidden" id="caesarEncryptGo">go</button> 
-        </div>
+    <div id = "notHeader">
+      <div id="inputPart">
+        <textarea id="textIn" rows="10" cols="100" placeholder="Input text here..." oninput="updateText()"></textarea>
       </div>
-      <div class="affineOptions">
-        <div class = "affineDecrypt">
-          <button style="visibility:hidden" id="affineDecrypt" >decrypt</button> 
-        </div>
-        <div class = "affineEncrypt">
-          <button style="visibility:hidden" id="affineEncrypt" >encrypt</button>
-        </div>
+      <div id="outputPart">
+        <textarea id="textOut" rows="10" cols="100" placeholder="Output text here" disabled="disabled"></textarea>
       </div>
-      <div class="vigenereOptions">
-        <div class = "vigenereDecrypt">
-          <button style="visibility:hidden" id="vigenereDecrypt" >decrypt</button> 
+      <div id="options">
+        <button id="swapText" onclick="swapText()">↑</button>
+        <button id="clearText" onclick="clearText()">Clear</button>
+        <button id="reverseText" onclick ="reverseText()">Reverse</button>
+      </div>
+      <div id="cipherButtons">
+        <button id="caesarCipher">Caesar Cipher</button>
+        <button id="affineCipher">Affine Cipher</button>
+        <button id="substitutionCipher">Substitution Cipher</button>
+        <button id="transpositionCipher">Transposition Cipher</button>
+        <button id="vigenereCipher">Vigenère cipher</button>
+        <button id="keywordCipher">Keyword cipher</button>
+      </div>
+      <div class="optionsButtons">
+        <div class="caesarOptions">
+          <div class ="caesarDecrypt">
+            <button id="caesarDecrypt" class="optionButton">decrypt</button> 
+          </div>
+          <div class ="caesarEncrypt">
+            <button id="caesarEncrypt" class="optionButton">encrypt</button> 
+            <input type="number" id="caesarEncryptInput" style="visibility:hidden">
+            <button id="caesarEncryptGo" class="optionButton">Go</button> 
+          </div>
         </div>
-        <div class = "vigenereEncrypt">
-          <button style="visibility:hidden" id="vigenereEncrypt" >encrypt</button>
+        <div class="affineOptions">
+          <div class = "affineDecrypt">
+            <button id="affineDecrypt" class="optionButton">decrypt</button> 
+          </div>
+          <div class = "affineEncrypt">
+            <button id="affineEncrypt" class="optionButton">encrypt</button>
+          </div>
+        </div>
+        <div class="vigenereOptions">
+          <div class = "vigenereDecrypt">
+            <button id="vigenereDecrypt" class="optionButton">decrypt</button> 
+          </div>
+          <div class = "vigenereEncrypt">
+            <button id="vigenereEncrypt" class="optionButton" >encrypt</button>
+          </div>
         </div>
       </div>
     </div>

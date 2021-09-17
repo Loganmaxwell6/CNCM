@@ -1,6 +1,6 @@
 /*landscape (desktop)*/
 @media only screen and (orientation: landscape){
-  body{
+  #notHeader{
     padding: 40px;
   }
   
@@ -18,6 +18,21 @@
   
   button{
     margin: 9px 0px;
+  }
+
+  .header {
+    width: 100%;
+    padding:40px 0px;
+    text-align: center;
+    background: #e0d6c0;
+    color: white;
+  }
+
+  .optionButton {
+    visibility: hidden;
+    font-size: 14px;
+    /*background-color: #e8e8e8 - changing background colour removes style from w3 sheet*/;
+    margin: 3px 0px;
   }
   
   .optionsButtons{
