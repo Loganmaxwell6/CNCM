@@ -234,7 +234,7 @@ function affineShift(text,num,num2){
 //full brute force decrypt
 function decryptVigenereCipher(){
     var min = 3; //minimum keylength tested by the brute force method
-    var max = 6; //maximum keylength ||
+    var max = 10; //maximum keylength ||
     for (let i = min; i <max +1;i++){
         decryptVigenere(i);
     }
@@ -254,14 +254,23 @@ function decryptVigenere(num){
    for (let i =0; i <num; i++){
        allLikely.push(findMostLikelyShifts(allVals[i]))
    }
-   let full = combos(allLikely);
-
-   for (i of full){
-       t = encryptVigenere(str, i);
-       if (isEnglish(t)){
-           output(t);
+   let shifts = [];
+   for (let i =0; i < allVals.length; i++){
+       highest = [-1,10000000000000000];
+       for(x of allLikely[i]){
+            chi = chiTest(caesarShift(allVals[i].join(""), x));
+            if (chi < highest[1]){
+                highest[0] = x;
+                highest[1] = chi;
+            }
        }
+       shifts.push(highest[0]);
    }
+   t = putVignereTogether(str, shifts);
+   if (isEnglish(t)){
+        output(t);
+   }
+       
 }
 
 function encryptVigenere(text, key){
@@ -270,6 +279,14 @@ function encryptVigenere(text, key){
         arr[i] = caesarShift(arr[i], key[i%key.length]);
     }
     return arr.join("");
+}
+
+function putVignereTogether(text, shifts){
+    text = text.split("");
+    for (let i = 0; i < text.length; i++){
+        text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
+    }
+    return text.join("");
 }
 
 //returns the most likely values for the text to have been shifted by
