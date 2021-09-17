@@ -239,7 +239,6 @@ function decryptVigenereCipher(){
         decryptVigenere(i);
     }
 }
-
 //decrypt for one keylength
 function decryptVigenere(num){
    let str = globalText.join("");
@@ -259,6 +258,13 @@ function decryptVigenere(num){
         output(t);
    }  
 }
+function putVignereTogether(text, shifts){
+    text = text.split("");
+    for (let i = 0; i < text.length; i++){
+        text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
+    }
+    return text.join("");
+}
 
 function encryptVigenere(text, key){
     arr = text.split("");
@@ -268,13 +274,6 @@ function encryptVigenere(text, key){
     return arr.join("");
 }
 
-function putVignereTogether(text, shifts){
-    text = text.split("");
-    for (let i = 0; i < text.length; i++){
-        text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
-    }
-    return text.join("");
-}
 
 //old no longer used vigenere code, may be useful for other things later
 //
