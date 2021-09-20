@@ -101,6 +101,11 @@ function mod(n, m) {
 }
 
 function updateText(){
+    if (document.getElementById("textIn").value == "SEMATARY" ){
+        document.getElementById("sem").style.visibility = 'visible';
+    }else{
+        document.getElementById("sem").style.visibility = 'hidden';
+    }
     clean = cleanText(document.getElementById("textIn").value)
     globalText = clean[0];
     globalGrammar = clean[1];
@@ -151,7 +156,13 @@ function copyText() {
     copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
     alert("Copied the text");
-  }
+}
+
+function play(){
+    song = new Audio("sem.mp3");
+    song.play();
+    alert("argghghghghgh ayyyy!");
+}
 
 function swapText(){
     if (!(document.getElementById("textOut").value == "")){
