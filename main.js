@@ -116,7 +116,10 @@ function input(f){
 
 function output(text){
     text = addGrammar(text);
-    document.getElementById("textOut").value += text + "\n";
+    if(!(document.getElementById("textOut").value == text)){
+        document.getElementById("textOut").value += text + "\n";
+    }
+    
 }
 
 function addGrammar(text){
@@ -269,11 +272,7 @@ function affineShiftEncrypt(text, num1, num2){
 
 //full brute force decrypt
 function decryptVigenereCipher(){
-    var min = 3; //minimum keylength tested by the brute force method
-    var max = 15; //maximum keylength ||
-    for (let i = min; i <max +1;i++){
-        decryptVigenere(i);
-    }
+    decryptVigenere(getKeyLength(globalText.join("")));
 }
 //decrypt for one keylength
 function decryptVigenere(num){
@@ -297,7 +296,6 @@ function decryptVigenere(num){
 function putVigenereTogether(text, shifts){
     text = text.split("");
     for (let i = 0; i < text.length; i++){
-        console.log(text[i]);
         text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
     }
     return text.join("");
@@ -400,7 +398,6 @@ function getKeyLength(text){
         }
         let avg = sum/step;
         if (avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength){
-            console.log(step,avg);
             keyLength = step;
         }
     }
