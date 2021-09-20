@@ -88,7 +88,8 @@ window.onload = function(){
     new Button("vigenereDecrypt", "vigenereCipher",[],decryptVigenereCipher),
     new Button("vigenereEncrypt","vigenereCipher",["vigenereEncryptInput", "vigenereEncryptGo"]),
     new Button("vigenereEncryptInput", "vigenereEncrypt", []),
-    new Button("vigenereEncryptGo", "vigenereEncrypt", [], openVigenereEncrypt) ];
+    new Button("vigenereEncryptGo", "vigenereEncrypt", [], openVigenereEncrypt),
+    new Button("determineCipher", null, [], generalDecrypt)];
 }
 
 currentButton = "";
@@ -353,21 +354,32 @@ function textKeyToNum(text){
 // }
 
 //-------------------------------------------------------------
-function determineCipher(text){
+function generalDecrypt(){
+    f  = determineCipher();
+    if(typeof f == 'function'){
+        f();
+    }
+}
+
+function determineCipher(){
+    text = globalText.join("");
     let c = chiTest(text);
     if (c < 120){
         console.log(c);
         console.log("transposition");
+        //return decryptCaesarCipher;
     }
     let i = indexOfCoincidence(text);
     if (i >= 0.06){
         console.log(i);
         console.log("substitution");
+        return decryptCaesarCipher; //placeholder until we narrow down substitution ciphers
     }
     let k = getKeyLength(text)
     if (k != 0){
         console.log(k);
         console.log("vigenere");
+        return decryptVigenereCipher;
     }
     return;
 }
