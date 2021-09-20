@@ -80,10 +80,15 @@ window.onload = function(){
     new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
     new Button("affineDecrypt", "affineCipher",[], decryptAffineCipher),
     new Button("caesarEncryptGo","caesarEncrypt",[],openCaesarEncrypt),
-    new Button("affineEncrypt", "affineCipher",[]),
+    new Button("affineEncrypt", "affineCipher",["affineEncryptGo", "affineEncryptInputMultiply", "affineEncryptInputAdd"]),
+    new Button("affineEncryptGo", "affineEncrypt", [], openAffineEncrypt),
+    new Button("affineEncryptInputMultiply", "affineEncrypt", []),
+    new Button("affineEncryptInputAdd", "affineEncrypt", []),
     new Button("vigenereCipher", null, ["vigenereDecrypt", "vigenereEncrypt"]),
     new Button("vigenereDecrypt", "vigenereCipher",[],decryptVigenereCipher),
-    new Button("vigenereEncrypt","vigenereCipher",[])];
+    new Button("vigenereEncrypt","vigenereCipher",["vigenereEncryptInput", "vigenereEncryptGo"]),
+    new Button("vigenereEncryptInput", "vigenereEncrypt", []),
+    new Button("vigenereEncryptGo", "vigenereEncrypt", [], openVigenereEncrypt) ];
 }
 
 currentButton = "";
@@ -191,30 +196,26 @@ function caesarShift(text, shift){
 function openCaesarEncrypt(){
     button = document.getElementById("caesarEncryptInput");
     num = button.value;
-    var text = globalText
+    var text = globalText;
     if (!num ==''){
         if (num >=0){
             t = caesarShift(text, parseInt(num));
             output(t); 
         }else{
             alert("Enter positive number"+"\n"+"Hint, a shift of "+num+ " equals a shift of "+(mod(parseInt(num),26)) )
-        }
-        
+        } 
     }
 }
 
 function decryptAffineCipher(){
-    
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
             var text = globalText.slice(0,globalText.length);
             let t = affineShift(text, i, x);
-            
             if (isEnglish(t)){
                 output(t);
             }
-        }
-        
+        } 
     }
 }
 
@@ -226,6 +227,41 @@ function affineShift(text,num,num2){
         if (ALPHA.includes(text[i])){
             index = alphaDict[text[i]]+1;
             newString += ALPHA[(multis[num-1]*mod(index-num2,26))%26];
+        }
+    }
+    return newString;
+}
+
+function openAffineEncrypt(){
+    let mulitplyButton = document.getElementById("affineEncryptInputMultiply");
+    let addButton = document.getElementById("affineEncryptInputAdd");
+    let num1 = mulitplyButton.value % 26;
+    let num2 = addButton.value;
+    var text = globalText;
+    if (!(num1 =='') && !(num2 == '')){
+        if (num1 >=0 && num2 >=0){
+            if (!(num1 % 2 ==0) && !(num1==13)){
+                t = affineShiftEncrypt(text, parseInt(num1 % 26), parseInt(num2 % 26));
+                output(t); 
+            }else{
+                alert(num1 + " not coprime with 26, pick new value for multiple");
+            }
+            
+        }else{
+            alert("Enter positive numbers")
+        } 
+    }else{
+        alert("Enter two positive numbers")
+    }
+}
+
+function affineShiftEncrypt(text, num1, num2){
+    newString = ""
+    for (let i = 0; i < text.length; i ++){
+        if (text[i] in alphaDict){
+            newString += ALPHA[((alphaDict[text[i]] * num1) + num2) % 26];
+        }else{
+            newString += text[i];
         }
     }
     return newString;
@@ -253,25 +289,42 @@ function decryptVigenere(num){
        scores = scores.sort(function(a,b) {return a[1]-b[1]});
        shifts.push(scores[0][0]);
    }
-   t = putVignereTogether(str, shifts);
+   t = putVigenereTogether(str, shifts);
    if (isEnglish(t)){
         output(t);
    }  
 }
-function putVignereTogether(text, shifts){
+function putVigenereTogether(text, shifts){
     text = text.split("");
     for (let i = 0; i < text.length; i++){
+        console.log(text[i]);
         text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
     }
     return text.join("");
 }
 
-function encryptVigenere(text, key){
-    arr = text.split("");
-    for (let i = 0; i < arr.length; i ++){
-        arr[i] = caesarShift(arr[i], key[i%key.length]);
+function openVigenereEncrypt(){
+    let button = document.getElementById("vigenereEncryptInput");
+    let key = button.value;
+    var text = globalText;
+    if (!key ==''){
+        if (/^[a-zA-Z()]+$/.test(key)){
+            t = putVigenereTogether(text.join(""), textKeyToNum(key));
+            output(t); 
+        }else{
+            alert("Enter key with only letters and no spaces e.g. ABCD" );
+        } 
+    }else{
+        alert("Enter key")
     }
-    return arr.join("");
+}
+
+function textKeyToNum(text){
+    key = [];
+    for (i of text){
+        key.push(alphaDict[i.toUpperCase()]);
+    }
+    return key;
 }
 
 
