@@ -145,6 +145,14 @@ function cleanText(text){
     return [a,b]
 }
 
+function copyText() {
+    var copyText = document.getElementById("textOut");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    alert("Copied the text");
+  }
+
 function swapText(){
     if (!(document.getElementById("textOut").value == "")){
         document.getElementById("textIn").value = document.getElementById("textOut").value
