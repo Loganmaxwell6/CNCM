@@ -302,10 +302,23 @@ function encryptVigenere(text, key){
 // }
 
 //-------------------------------------------------------------
-function determineCipher(){
-    //chi test if eng then transposition
-    //ioc if eng then substitution
-    //periodic ioc then vignere
+function determineCipher(text){
+    let c = chiTest(text);
+    if (c < 120){
+        console.log(c);
+        console.log("transposition");
+    }
+    let i = indexOfCoincidence(text);
+    if (i >= 0.06){
+        console.log(i);
+        console.log("substitution");
+    }
+    let k = getKeyLength(text)
+    if (k != 0){
+        console.log(k);
+        console.log("vigenere");
+    }
+    return;
 }
 
 function indexOfCoincidence(text){
@@ -320,24 +333,23 @@ function indexOfCoincidence(text){
     return (sum / N) / 26;
 }
 
-// fuck this bit make it work bruhhhhhhhh
+// it worky now :)
 function getKeyLength(text){
-    console.log(indexOfCoincidence(text));
     let limit = 13;
-    let keyLength = [];
+    let keyLength = 0; 
+    let ioc = 0;
     for (let step = 2; step < limit; step++){
-        console.log(step);
         let sum = 0;
-        let allVals = returnEveryNth(text, step);
-        
+        let allVals = returnEveryNth(text, step);     
         for (i of allVals){
             s = i.join("");
-            console.log(indexOfCoincidence(s));
             sum += indexOfCoincidence(s);
         }
         let avg = sum/step;
-        keyLength.push(avg);
-        console.log(" ");
+        if (avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength){
+            console.log(step,avg);
+            keyLength = step;
+        }
     }
     return keyLength;
 }
