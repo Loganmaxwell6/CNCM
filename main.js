@@ -89,6 +89,8 @@ window.onload = function(){
     new Button("vigenereEncrypt","vigenereCipher",["vigenereEncryptInput", "vigenereEncryptGo"]),
     new Button("vigenereEncryptInput", "vigenereEncrypt", []),
     new Button("vigenereEncryptGo", "vigenereEncrypt", [], openVigenereEncrypt),
+    new Button("transpositionCipher", null, ["transpositionDecrypt"]),
+    new Button("transpositionDecrypt", "transpositionCipher", [], decryptTranspositionCipher),
     new Button("determineCipher", null, [], generalDecrypt)];
 }
 
@@ -351,22 +353,82 @@ function decryptTranspositionCipher(){
     let key = [];
     for (let i = 2; i < 13; i++){
         let s = decryptTransposition(i);
-        if (s.length != 0){
-            if (s[0] < b){
-                b = s[0];
-                key = s.slice(1);
-            }
-        }
+        // if (s.length != 0){
+        //     if (s[0] < b){
+        //         b = s[0];
+        //         key = s.slice(1);
+        //     }
+        // }
     }
     // key is decryption key for some function 
 }
 
 // run the full bigram decrypt cycle for a single keylength
-function decryptTranspostion(length){
-    // break into columns
-    // start at column 1, do all comparisons of bigrams
-    // to find next column
-    // do for all columns to create pairings
+function decryptTransposition(length){
+    text = globalText.join("");
+    columns = returnEveryNth(text, length); //split into columns
+    following = []; // will store 2d array of column and then column that follows it
+    var endVal = -1; //stores the index of the last column
+    for (let i =0; i < columns.length; i++){ //loop through each column
+        let scores = [];
+        for (let x =0; x<columns.length;x++){ //checking each column against current collumn
+            let bigramCount = [];//stores bigram count for this pass
+            for (let y = 0; y < 676; y++){
+                bigramCount.push(0);
+            }
+            if (!(x == i)){ //asserts we are not checking column against the same column
+                for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
+                    if (!(j >= columns[x].length)){
+                        let bigram = columns[i][j] + columns[x][j];
+                        bigramCount[alphaDict[bigram[0]] * 26 + alphaDict[bigram[1]]] ++;
+                    }
+                }
+                scores.push(bigramTestFromCount(bigramCount));//add bigram score to scores
+            }else{
+                scores.push(100000);//add placeholder number
+            }
+            
+        }
+        
+        if (Math.min.apply(Math, scores) > 60){ //if the column that scored the lowest (best) bigram score is bigger than a given threshold
+            if (endVal == -1){                  // then this column is the last column
+                var endVal = i;
+                following.push([i, null]);
+            }else{                              // if more than one check concludes that there is no matching column, this keylength is not correct
+                return;
+            }
+        }else{
+            following.push([i,scores.indexOf(Math.min.apply(Math, scores))]); //if a matching column is found, append the index of the column
+        }
+    }
+    
+    //generates key
+    var key = [];
+    var currentKey = endVal;
+    for(let i = 0; key.length< length; i++){
+        key.push(currentKey);
+        for (let x =0; x < length; x++){
+            if(following[x][1] == currentKey){
+                currentKey = x;
+                break;
+            }
+        }
+    }
+    key = key.reverse();
+    //applys key to cipher to decrypt
+    let newString = "";
+    for (let i = 0 ; i < columns[0].length;i++){
+        for(let x = 0; x < length; x++){
+            try{
+                newString += columns[key[x]][i];
+            }catch{
+                return;
+            }
+        }
+    }
+    if (isEnglish(newString)){
+        output(newString);
+    }
     // some method of combining pairings into single key
     // create output text from key
     // check final text isEnglish
@@ -415,7 +477,7 @@ function determineCipher(){
     if (c < 120){
         console.log(c);
         console.log("transposition");
-        //return decryptTranspositionCipher;
+        return decryptTranspositionCipher;
     }
     let i = indexOfCoincidence(text);
     if (i >= 0.06){
@@ -548,6 +610,15 @@ function expectedBigramCount(t){
 function bigramTest(text){
     let o = observedBigramCount(text);
     let e = expectedBigramCount(text.length);
+    let sum = 0;
+    for (let i = 0; i < 676; i++){
+        sum += chiHelper(o[i],e[i]);
+    }
+    return Math.sqrt(sum);
+}
+
+function bigramTestFromCount(o){
+    let e = expectedBigramCount(o.reduce((a, b) => a + b, 0));
     let sum = 0;
     for (let i = 0; i < 676; i++){
         sum += chiHelper(o[i],e[i]);

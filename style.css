@@ -52,6 +52,11 @@
     position:absolute;
     left:586px;
   }
+
+  .transpositionOptions{
+    position:absolute;
+    left:500px;
+  }
 }
 
 /*portrait (mobile)*/
