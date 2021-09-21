@@ -345,6 +345,35 @@ function textKeyToNum(text){
     return key;
 }
 
+// maybe faster to add only checking factors of text length
+function decryptTranspositionCipher(){
+    let b = 10000000;
+    let key = [];
+    for (let i = 2; i < 13; i++){
+        let s = decryptTransposition(i);
+        if (s.length != 0){
+            if (s[0] < b){
+                b = s[0];
+                key = s.slice(1);
+            }
+        }
+    }
+    // key is decryption key for some function 
+}
+
+// run the full bigram decrypt cycle for a single keylength
+function decryptTranspostion(length){
+    // break into columns
+    // start at column 1, do all comparisons of bigrams
+    // to find next column
+    // do for all columns to create pairings
+    // some method of combining pairings into single key
+    // create output text from key
+    // check final text isEnglish
+    // if yes return bigram score and key [b,k1,k2...]
+    // if no return empty array
+}
+
 
 //old no longer used vigenere code, may be useful for other things later
 //
@@ -386,7 +415,7 @@ function determineCipher(){
     if (c < 120){
         console.log(c);
         console.log("transposition");
-        //return decryptCaesarCipher;
+        //return decryptTranspositionCipher;
     }
     let i = indexOfCoincidence(text);
     if (i >= 0.06){

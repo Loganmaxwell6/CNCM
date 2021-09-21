@@ -56,5 +56,57 @@
 
 /*portrait (mobile)*/
 @media only screen and (orientation: portrait){
+  #notHeader{
+    padding: 10px;
+  }
+  
+  input{
+    display: block;
+    margin: auto;
+  }
+  
+  textarea{
+      resize:none;
+      width:70em;
+      height:20em;
+      margin: 5px 1px;
+  }
 
+  button{
+    margin: 9px 0px;
+  }
+
+  .header {
+    width: 100%;
+    padding:40px 0px;
+    text-align: center;
+    background: #e0d6c0;
+    color: white;
+    margin-bottom: 20px;
+  }
+
+  .optionButton {
+    visibility: hidden;
+    font-size: 14px;
+    /*background-color: #e8e8e8 - changing background colour removes style from w3 sheet*/;
+    margin: 3px 0px;
+  }
+  
+  .optionsButtons{
+    position:relative;
+  }
+  
+  .caesarOptions{
+    position:absolute;
+  }
+  
+  .affineOptions{
+    position:absolute;
+    left:127px;
+  }
+
+  .vigenereOptions{
+    position:absolute;
+    left:586px;
+  }
 }
