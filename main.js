@@ -351,8 +351,11 @@ function textKeyToNum(text){
 function decryptTranspositionCipher(){
     let b = 10000000;
     let key = [];
+    let text = globalText.join("");
     for (let i = 2; i < 13; i++){
-        let s = decryptTransposition(i);
+        if (text.length % i == 0){
+           let s = decryptTransposition(text,i); 
+        }
         // if (s.length != 0){
         //     if (s[0] < b){
         //         b = s[0];
@@ -364,18 +367,14 @@ function decryptTranspositionCipher(){
 }
 
 // run the full bigram decrypt cycle for a single keylength
-function decryptTransposition(length){
-    text = globalText.join("");
+function decryptTransposition(text ,length){
     columns = returnEveryNth(text, length); //split into columns
     following = []; // will store 2d array of column and then column that follows it
-    var endVal = -1; //stores the index of the last column
+    var endVal = [-1,0]; //stores the index of the last column
     for (let i =0; i < columns.length; i++){ //loop through each column
         let scores = [];
         for (let x =0; x<columns.length;x++){ //checking each column against current collumn
-            let bigramCount = [];//stores bigram count for this pass
-            for (let y = 0; y < 676; y++){
-                bigramCount.push(0);
-            }
+            let bigramCount = new Array(676).fill(0);
             if (!(x == i)){ //asserts we are not checking column against the same column
                 for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
                     if (!(j >= columns[x].length)){
@@ -387,25 +386,16 @@ function decryptTransposition(length){
             }else{
                 scores.push(100000);//add placeholder number
             }
-            
         }
-        
-        if (Math.min.apply(Math, scores) > 60){ //if the column that scored the lowest (best) bigram score is bigger than a given threshold
-            if (endVal == -1){                  // then this column is the last column
-                var endVal = i;
-                following.push([i, null]);
-            }else{                              // if more than one check concludes that there is no matching column, this keylength is not correct
-                return;
-            }
-        }else{
-            following.push([i,scores.indexOf(Math.min.apply(Math, scores))]); //if a matching column is found, append the index of the column
+        following.push([i,scores.indexOf(Math.min.apply(Math, scores))]);
+        if (Math.min.apply(Math, scores) > endVal[1]){
+            endVal = [i, Math.min.apply(Math, scores)];
         }
     }
-    
     //generates key
     var key = [];
-    var currentKey = endVal;
-    for(let i = 0; key.length< length; i++){
+    var currentKey = endVal[0];
+    for(let i = 0; i< length; i++){
         key.push(currentKey);
         for (let x =0; x < length; x++){
             if(following[x][1] == currentKey){
@@ -415,7 +405,7 @@ function decryptTransposition(length){
         }
     }
     key = key.reverse();
-    //applys key to cipher to decrypt
+    //applies key to cipher to decrypt
     let newString = "";
     for (let i = 0 ; i < columns[0].length;i++){
         for(let x = 0; x < length; x++){
@@ -429,11 +419,6 @@ function decryptTransposition(length){
     if (isEnglish(newString)){
         output(newString);
     }
-    // some method of combining pairings into single key
-    // create output text from key
-    // check final text isEnglish
-    // if yes return bigram score and key [b,k1,k2...]
-    // if no return empty array
 }
 
 
