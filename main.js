@@ -92,6 +92,33 @@ window.onload = function(){
     new Button("transpositionCipher", null, ["transpositionDecrypt"]),
     new Button("transpositionDecrypt", "transpositionCipher", [], decryptTranspositionCipher),
     new Button("determineCipher", null, [], generalDecrypt)];
+
+    initiateFrequencyTable();
+}
+
+function initiateFrequencyTable(){
+    let table = document.getElementById("frequencyTable");
+    for (let i = 0; i < 13; i++){
+        table.insertRow(i+1).outerHTML = "<tr><td>"+ALPHA[i]+"</td><td id='"+ALPHA[i] +"'>0</td><td>"+ALPHA[i+13]+"</td><td id='"+ALPHA[i+13] +"'>0</td></tr>";
+    }
+}
+
+function updateFrequencyTable(){
+    let freq = observedCount(globalText.join(""));
+    for (let i = 0;i < 26; i ++){
+        document.getElementById(ALPHA[i]).innerHTML = freq[i];
+    }
+}
+
+function updateDataValues(){
+    if (globalText.length > 1){
+        document.getElementById("IoC").innerHTML = indexOfCoincidence(globalText.join(""));
+        document.getElementById("Chi").innerHTML = chiTest(globalText.join(""));
+    }else{
+        document.getElementById("IoC").innerHTML = 0;
+        document.getElementById("Chi").innerHTML = 0;
+    }
+    
 }
 
 currentButton = "";
@@ -111,6 +138,9 @@ function updateText(){
     clean = cleanText(document.getElementById("textIn").value)
     globalText = clean[0];
     globalGrammar = clean[1];
+
+    updateFrequencyTable();
+    updateDataValues();
 }
 
 function input(f){

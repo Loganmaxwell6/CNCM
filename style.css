@@ -57,6 +57,12 @@
     position:absolute;
     left:413px;
   }
+  
+  .dataPanel{
+    position:absolute;
+    top:220px;
+    left:1100px;
+  }
 }
 
 /*portrait (mobile)*/
