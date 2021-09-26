@@ -235,18 +235,7 @@ function decryptCaesarCipher(){
     }
 }
 
-function caesarShift(text, shift){
-    let newString = "";
-    
-    for (i in text) {   
-        if (text[i] in alphaDict) {
-            newString += ALPHA[(alphaDict[text[i]] + shift)%26];
-        }else{
-            newString += text[i];
-        }      
-    } 
-    return newString;
-}
+const caesarShift = (text, shift) => text.map((char) => char in alphaDict ? ALPHA[(alphaDict[char] + shift)%26] : char).join("");
 
 function openCaesarEncrypt(){
     button = document.getElementById("caesarEncryptInput");
@@ -276,15 +265,7 @@ function decryptAffineCipher(){
 
 function affineShift(text,num,num2){
     let multis ={0:'1',1:'9',2:'21',3:'15',4:'3',5:'19',6:'7',7:'23',8:'11',9:'5',10:'17',11:'25'};
-    let newString = "";
-    for (i in text){
-        
-        if (ALPHA.includes(text[i])){
-            index = alphaDict[text[i]]+1;
-            newString += ALPHA[(multis[num-1]*mod(index-num2,26))%26];
-        }
-    }
-    return newString;
+    return text.map(function(char){ return char in alphaDict ? ALPHA[(multis[num-1]*mod(alphaDict[char]+1-num2,26))%26] : char}).join("");
 }
 
 function openAffineEncrypt(){
@@ -310,17 +291,8 @@ function openAffineEncrypt(){
     }
 }
 
-function affineShiftEncrypt(text, num1, num2){
-    newString = ""
-    for (let i = 0; i < text.length; i ++){
-        if (text[i] in alphaDict){
-            newString += ALPHA[((alphaDict[text[i]] * num1) + num2) % 26];
-        }else{
-            newString += text[i];
-        }
-    }
-    return newString;
-}
+const affineShiftEncrypt = (text, num1, num2) => text.map((char)=>char in alphaDict ? ALPHA[((alphaDict[char]*num1)+num2)%26]:char).join("");
+
 
 //full brute force decrypt
 function decryptVigenereCipher(){
