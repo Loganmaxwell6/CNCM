@@ -137,6 +137,26 @@ function updateDataValues(){
 
 currentButton = "";
 
+/*
+//Fef sidebar code
+window.onscroll = function() {updateStick()};
+var sidebar = document.getElementById("sidebar");
+var panel = document.getElementById("panel");
+console.log(sidebar.offsetTop)
+var stickFactor = sidebar.offsetTop;
+
+function updateStick(){
+    if (window.pageYOffsett > stickFactor){
+        sidebar.classList.add("sticky");
+        panel.classList.add("sticky");
+    } else {
+        sidebar.classList.remove("sticky");
+        panel.classList.remove("sticky");
+    }
+}
+*/
+
+
 numthing = 0;
 
 function mod(n, m) {

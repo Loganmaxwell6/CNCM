@@ -26,7 +26,7 @@
         <button id="copyText" onclick=copyText()>Copy to Clipboard</button>
         <button id="sem" onclick=play() style=visibility:hidden>Shush</button>
       </div>
-      <div class="cipherButtons">
+      <div class="cipherButtons clearfix">
         <div class="buttonsDiv">
           <button id="caesarCipher">Caesar Cipher</button>
           <div class="caesarOptions optionsButtons">
@@ -86,44 +86,46 @@
         <div class="buttonsDiv">
           <button id="keywordCipher">Keyword cipher</button>
         </div>
-        <button id="determineCipher">Determine Cipher</button>
       </div>
+      <button id="determineCipher">Determine Cipher</button>
     </div>
-    <div class="panel panel-default dataPanel">
-      <div class="panel-heading">Data</div>
-      <div class="panel-body" id="dataPanelBody">
-        <table class="table table-bordered" id="frequencyTable">
-          <tr>
-            <th>Letter</th>
-            <th>Frequency</th>
-            <th>Letter</th>
-            <th>Frequency</th>
-          </tr>
-        </table>
-        <div>
-          <table>
+    <div id="sidebar">
+      <div id="panel" class="panel panel-default dataPanel">
+        <div class="panel-heading">Data</div>
+        <div class="panel-body" id="dataPanelBody">
+          <table class="table table-bordered" id="frequencyTable">
             <tr>
-              <td>Text Length:</td>
-              <td id="fullLen" class="dataValues">0</td>
-            </tr>
-            <tr>
-              <td>Text Length (No Grammar):</td>
-              <td id="Len" class="dataValues">0</td>
-            </tr>
-            <tr>
-              <td>Most Likely Cipher:</td>
-              <td id="likely" class="dataValues">Unknown</td>
-            </tr>
-            <tr>
-              <td>IoC:</td>
-              <td id="IoC" class="dataValues">0</td>
-            </tr>
-            <tr>
-              <td>Chi: </td>
-              <td id = "Chi" class="dataValues">0</td>
+              <th>Letter</th>
+              <th>Frequency</th>
+              <th>Letter</th>
+              <th>Frequency</th>
             </tr>
           </table>
-          
+          <div>
+            <table>
+              <tr>
+                <td>Text Length:</td>
+                <td id="fullLen" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Text Length (No Grammar):</td>
+                <td id="Len" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Most Likely Cipher:</td>
+                <td id="likely" class="dataValues">Unknown</td>
+              </tr>
+              <tr>
+                <td>IoC:</td>
+                <td id="IoC" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Chi: </td>
+                <td id = "Chi" class="dataValues">0</td>
+              </tr>
+            </table>
+            
+          </div>
         </div>
       </div>
     </div>

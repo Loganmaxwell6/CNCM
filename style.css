@@ -1,12 +1,41 @@
+/*applies to both*/
+
+  
+input{
+  display: block;
+  margin: auto;
+}
+
+button{
+  margin: 9px 0px;
+}
+
+.optionButton {
+  visibility: hidden;
+  font-size: 14px;
+  margin: 3px 0px;
+}
+
+.buttonsDiv{
+  padding:3px;
+  position:relative;
+  float:left;
+  height:230px;
+}
+
+.clearfix{
+  clear:both;
+}
+
+.stubbyInput{
+  width:110px;
+}
+
 /*landscape (desktop)*/
 @media only screen and (orientation: landscape){
+
   #mainBit{
     padding: 40px 40px 40px 450px;
-  }
-  
-  input{
-    display: block;
-    margin: auto;
   }
   
   textarea{
@@ -15,11 +44,17 @@
       height:20em;
       margin: 5px 1px;
   }
-  
-  button{
-    margin: 9px 0px;
+  /*
+  .header {
+    position:absolute;
+    z-index:1;
+    width: 100%;
+    padding:40px 0px;
+    text-align: center;
+    background: #e0d6c0;
+    color: white;
   }
-
+  */
   .header {
     width: 100%;
     padding:40px 0px;
@@ -27,29 +62,27 @@
     background: #e0d6c0;
     color: white;
   }
-
-  .optionButton {
-    visibility: hidden;
-    font-size: 14px;
-    margin: 3px 0px;
+  /*
+  #sidebar {
+    height: 150%;
+    width: 430px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 30px 5px 5px 5px;
+    background-color: lightblue;
+  }
+  */
+  .sticky{
+    position:fixed;
   }
 
-  .buttonsDiv{
-    padding:3px;
-    position:relative;
-    float:left;
-    height:230px;
-  }
-  
   .dataPanel{
-    position:absolute;
+    /*margin:200px 0px 0px 0px;*/
     padding:15px;
+    position:absolute;
     top:220px;
     left:20px;
-  }
-
-  .stubbyInput{
-    width:110px;
   }
 }
 
@@ -59,20 +92,11 @@
     padding: 10px;
   }
   
-  input{
-    display: block;
-    margin: auto;
-  }
-  
   textarea{
       resize:none;
       width:70em;
       height:20em;
       margin: 5px 1px;
-  }
-
-  button{
-    margin: 9px 0px;
   }
 
   .header {
@@ -83,23 +107,7 @@
     color: white;
     margin-bottom: 20px;
   }
-
-  .optionButton {
-    visibility: hidden;
-    font-size: 14px;
-    margin: 3px 0px;
-  }
   
-  .buttonsDiv{
-    padding:3px;
-    position:relative;
-    float:left;
-    height:230px;
-  }
-
-  .stubbyInput{
-    width:110px;
-  }
   
   /*
   .dataValues{
