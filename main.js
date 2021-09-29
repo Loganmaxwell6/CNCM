@@ -11,8 +11,8 @@ class Button {
 
     idToName(id){
         let name = id.split(/(?=[A-Z])/);
-        console.log(typeof name[0]);
-        //name[0].replaceAt(0,name[0][0].toUpperCase());
+        name = name.join(" ");
+        name = name[0].toUpperCase() + name.substring(1,name.length);
         
         return name;
     }
@@ -100,7 +100,8 @@ window.onload = function(){
     new Button("vigenereEncryptGo", "vigenereEncrypt", [], openVigenereEncrypt),
     new Button("transpositionCipher", null, ["transpositionDecrypt"]),
     new Button("transpositionDecrypt", "transpositionCipher", [], decryptTranspositionCipher),
-    new Button("determineCipher", null, [], generalDecrypt)];
+    new Button("determineCipher", null, [], generalDecrypt),
+    new Button("substitutionCipher", null, [],substitutionCipher)];
 
     initiateFrequencyTable();
 }
@@ -130,16 +131,8 @@ function updateDataValues(){
     document.getElementById("fullLen").innerHTML = document.getElementById("textIn").value.length;
     document.getElementById("Len").innerHTML = globalText.length;
 
-    // let mostLikely = determineCipher();
-    // var path = null;
-    // for (i of buttons){
-    //     console.log(i.click)
-    //     if (i.click == mostLikely){
-    //         var path = i.findPath();
-    //     }
-    // }
-    // path == null ? "": document.getElementById("mostLikely").value = path[path.length - 1].name;
-    
+    let mostLikely = determineCipher();
+    typeof mostLikely == 'string' ? document.getElementById("likely").innerHTML = getButton(mostLikely).name : "";
 }
 
 currentButton = "";
@@ -445,30 +438,61 @@ function decryptTransposition(text ,length){
 }
 
 function substitutionCipher(){
-    let freq = findMostLikely(globalText, ALPHA.length);
+    let freq = findMostLikely(globalText.slice(0), ALPHA.length);
     let key = new Array(ALPHA.length).fill(0);
     for (i in key){
-        key[parseInt(freq[i][0])] = mostLikely[i]; 
-        console.log(parseInt(freq[i][0]))
+        key[parseInt(freq[i][0])] = mostLikely[i];
     }
-    return freq;
+    for (let i =0; i < 30; i++){
+        key = fullSwapTest(key);
+    }
+    output(applySubstitutionKey(globalText, key).join(""));
+}
+
+function fullSwapTest(key){
+    let currentKey = [-1, 100000000000];
+    for (let i = 0; i < key.length; i++){
+        for (let x = i; x < key.length; x++){
+            let testKey = key.slice(0);
+            if (!(i == x)){
+                let firstLetter = testKey[i];
+                testKey[i] = testKey[x];
+                testKey[x] = firstLetter;
+                let text = applySubstitutionKey(globalText.slice(0), testKey);
+                let score = bigramTest(text.join(""));
+                if (score < currentKey[1]){
+                    currentKey[0] = testKey;
+                    currentKey[1] = score;
+                }
+            }
+        }
+    }
+    return currentKey[0];
+}
+
+function applySubstitutionKey(text, key){
+    for (i in text){
+        text[i] = key[alphaDict[text[i]]];
+    }
+    return text;
 }
 
 function findMostLikely(text, accuracy){
-        count = observedCount(text);
-        a= [];
-        for(const [key, value] of Object.entries(count)){
-            a.push([key,value])
-        }
-        a = a.sort(function(a,b) {
-            return b[1]-a[1]
-        });
-        return a.slice(0,accuracy);
+    count = observedCount(text);
+    a= [];
+    for(const [key, value] of Object.entries(count)){
+        a.push([key,value])
     }
+    a = a.sort(function(a,b) {
+        return b[1]-a[1]
+    });
+    return a.slice(0,accuracy);
+}
 
 function generalDecrypt(){
     f  = determineCipher();
-    if(typeof f == 'function'){
+    if(typeof f == 'string'){
+        f  = getButton(determineCipher()).click;
         f();
     }
 }
@@ -477,21 +501,15 @@ function determineCipher(){
     text = globalText.join("");
     let c = chiTest(text);
     if (c < 120){
-        console.log(c);
-        console.log("transposition");
-        return decryptTranspositionCipher;
+        return "transpositionCipher";
     }
     let i = indexOfCoincidence(text);
     if (i >= 0.06){
-        console.log(i);
-        console.log("substitution");
-        return decryptCaesarCipher; //placeholder until we narrow down substitution ciphers
+        return "substitutionCipher"; //placeholder until we narrow down substitution ciphers
     }
     let k = getKeyLength(text)
     if (k != 0){
-        console.log(k);
-        console.log("vigenere");
-        return decryptVigenereCipher;
+        return "vigenereCipher";
     }
     return;
 }
