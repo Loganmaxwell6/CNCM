@@ -31,16 +31,14 @@
   .optionButton {
     visibility: hidden;
     font-size: 14px;
-    /*background-color: #e8e8e8 - changing background colour removes style from w3 sheet*/;
     margin: 3px 0px;
   }
 
   .buttonsDiv{
-    padding:10px;
+    padding:3px;
     position:relative;
     float:left;
-    height:190px;
-    /*width:175px;*/
+    height:230px;
   }
   
   .dataPanel{
@@ -51,7 +49,7 @@
   }
 
   .stubbyInput{
-    width:120px;
+    width:110px;
   }
 }
 
@@ -87,34 +85,20 @@
   }
 
   .optionButton {
-    position:absolute;
-    /*visibility: hidden;*/
+    visibility: hidden;
     font-size: 14px;
-    /*background-color: #e8e8e8 - changing background colour removes style from w3 sheet*/;
     margin: 3px 0px;
   }
   
-  #caesarButtons{
+  .buttonsDiv{
+    padding:3px;
     position:relative;
-  }
-  #affineButtons{
-    position:relative;
-  }
-
-  #vigenereButtons{
-    position:relative;
+    float:left;
+    height:230px;
   }
 
-  #transpositionButtons{
-    position:relative;
-  }
-
-  #substitutionButtons{
-    position:relative;
-  }
-
-  #keywordButtons{
-    position:relative;
+  .stubbyInput{
+    width:110px;
   }
   
   /*
