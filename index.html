@@ -26,57 +26,67 @@
         <button id="copyText" onclick=copyText()>Copy to Clipboard</button>
         <button id="sem" onclick=play() style=visibility:hidden>Shush</button>
       </div>
-      <div id="cipherButtons">
-        <button id="caesarCipher">Caesar Cipher</button>
-        <button id="affineCipher">Affine Cipher</button>
-        <button id="substitutionCipher">Substitution Cipher</button>
-        <button id="transpositionCipher">Transposition Cipher</button>
-        <button id="vigenereCipher">Vigenère cipher</button>
-        <button id="keywordCipher">Keyword cipher</button>
+      <div class="cipherButtons">
+        <div class="buttonsDiv">
+          <button id="caesarCipher">Caesar Cipher</button>
+          <div class="caesarOptions optionsButtons">
+            <div class ="caesarDecrypt">
+              <button id="caesarDecrypt" class="optionButton">decrypt</button> 
+            </div>
+            <div class ="caesarEncrypt">
+              <button id="caesarEncrypt" class="optionButton">encrypt</button> 
+              <input type="number" id="caesarEncryptInput" class="optionButton stubbyInput">
+              <button id="caesarEncryptGo" class="optionButton">Go</button> 
+            </div>
+          </div>
+        </div>
+        <div class="buttonsDiv">
+          <button id="affineCipher">Affine Cipher</button>
+          <div class="affineOptions optionsButtons">
+            <div class = "affineDecrypt">
+              <button id="affineDecrypt" class="optionButton">decrypt</button> 
+            </div>
+            <div class = "affineEncrypt">
+              <button id="affineEncrypt" class="optionButton">encrypt</button>
+              <input type="number" id="affineEncryptInputMultiply" class="optionButton stubbyInput">
+              <input type="number" id="affineEncryptInputAdd" class="optionButton stubbyInput">
+              <button id="affineEncryptGo" class="optionButton">Go</button> 
+            </div>
+          </div>
+        </div>
+        <div class="buttonsDiv">
+          <button id="substitutionCipher">Substitution Cipher</button>
+        </div>
+        <div class="buttonsDiv">
+          <button id="transpositionCipher">Transposition Cipher</button>
+          <div class="transpositionOptions optionsButtons">
+            <div class = "transpositionDecrypt">
+              <button id="transpositionDecrypt" class="optionButton">decrypt</button> 
+            </div>
+            <div class = "transpositionEncrypt">
+              <button id="transpositionEncrypt" class="optionButton" >encrypt</button>
+              <input type="textArea" id="transpositionEncryptInput" class="optionButton stubbyInput">
+              <button id="transpositionEncryptGo" class="optionButton">Go</button> 
+            </div>
+          </div>
+        </div>
+        <div class="buttonsDiv">
+          <button id="vigenereCipher">Vigenère cipher</button>
+          <div class="vigenereOptions optionsButtons">
+            <div class = "vigenereDecrypt">
+              <button id="vigenereDecrypt" class="optionButton">decrypt</button> 
+            </div>
+            <div class = "vigenereEncrypt">
+              <button id="vigenereEncrypt" class="optionButton" >encrypt</button>
+              <input type="textArea" id="vigenereEncryptInput" class="optionButton stubbyInput">
+              <button id="vigenereEncryptGo" class="optionButton">Go</button> 
+            </div>
+          </div>
+        </div>
+        <div class="buttonsDiv">
+          <button id="keywordCipher">Keyword cipher</button>
+        </div>
         <button id="determineCipher">Determine Cipher</button>
-      </div>
-      <div class="optionsButtons">
-        <div class="caesarOptions">
-          <div class ="caesarDecrypt">
-            <button id="caesarDecrypt" class="optionButton">decrypt</button> 
-          </div>
-          <div class ="caesarEncrypt">
-            <button id="caesarEncrypt" class="optionButton">encrypt</button> 
-            <input type="number" id="caesarEncryptInput" class="optionButton">
-            <button id="caesarEncryptGo" class="optionButton">Go</button> 
-          </div>
-        </div>
-        <div class="affineOptions">
-          <div class = "affineDecrypt">
-            <button id="affineDecrypt" class="optionButton">decrypt</button> 
-          </div>
-          <div class = "affineEncrypt">
-            <button id="affineEncrypt" class="optionButton">encrypt</button>
-            <input type="number" id="affineEncryptInputMultiply" class="optionButton">
-            <input type="number" id="affineEncryptInputAdd" class="optionButton">
-            <button id="affineEncryptGo" class="optionButton">Go</button> 
-          </div>
-        </div>
-        <div class="vigenereOptions">
-          <div class = "vigenereDecrypt">
-            <button id="vigenereDecrypt" class="optionButton">decrypt</button> 
-          </div>
-          <div class = "vigenereEncrypt">
-            <button id="vigenereEncrypt" class="optionButton" >encrypt</button>
-            <input type="textArea" id="vigenereEncryptInput" class="optionButton">
-            <button id="vigenereEncryptGo" class="optionButton">Go</button> 
-          </div>
-        </div>
-        <div class="transpositionOptions">
-          <div class = "transpositionDecrypt">
-            <button id="transpositionDecrypt" class="optionButton">decrypt</button> 
-          </div>
-          <div class = "transpositionEncrypt">
-            <button id="transpositionEncrypt" class="optionButton" >encrypt</button>
-            <input type="textArea" id="transpositionEncryptInput" class="optionButton">
-            <button id="transpositionEncryptGo" class="optionButton">Go</button> 
-          </div>
-        </div>
       </div>
     </div>
     <div class="panel panel-default dataPanel">

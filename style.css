@@ -34,28 +34,13 @@
     /*background-color: #e8e8e8 - changing background colour removes style from w3 sheet*/;
     margin: 3px 0px;
   }
-  
-  .optionsButtons{
+
+  .buttonsDiv{
+    padding:10px;
     position:relative;
-  }
-  
-  .caesarOptions{
-    position:absolute;
-  }
-  
-  .affineOptions{
-    position:absolute;
-    left:127px;
-  }
-
-  .vigenereOptions{
-    position:absolute;
-    left:586px;
-  }
-
-  .transpositionOptions{
-    position:absolute;
-    left:413px;
+    float:left;
+    height:190px;
+    /*width:175px;*/
   }
   
   .dataPanel{
@@ -63,6 +48,10 @@
     padding:15px;
     top:220px;
     left:20px;
+  }
+
+  .stubbyInput{
+    width:120px;
   }
 }
 
@@ -98,29 +87,36 @@
   }
 
   .optionButton {
-    visibility: hidden;
+    position:absolute;
+    /*visibility: hidden;*/
     font-size: 14px;
     /*background-color: #e8e8e8 - changing background colour removes style from w3 sheet*/;
     margin: 3px 0px;
   }
   
-  .optionsButtons{
+  #caesarButtons{
+    position:relative;
+  }
+  #affineButtons{
+    position:relative;
+  }
+
+  #vigenereButtons{
+    position:relative;
+  }
+
+  #transpositionButtons{
+    position:relative;
+  }
+
+  #substitutionButtons{
+    position:relative;
+  }
+
+  #keywordButtons{
     position:relative;
   }
   
-  .caesarOptions{
-    position:absolute;
-  }
-  
-  .affineOptions{
-    position:absolute;
-    left:127px;
-  }
-
-  .vigenereOptions{
-    position:absolute;
-    left:586px;
-  }
   /*
   .dataValues{
     margin:50px;
