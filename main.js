@@ -1,11 +1,20 @@
 class Button {
-    constructor(name, parent, children, click=null){
-        this.name = name;
+    constructor(id, parent, children, click=null){
+        this.name = this.idToName(id);
+        this.id = id;
         this.parent = parent;
         this.children = children;
         this.click = click;
         
         this.initButton();
+    }
+
+    idToName(id){
+        let name = id.split(/(?=[A-Z])/);
+        console.log(typeof name[0]);
+        name[0].replaceAt(0,name[0][0].toUpperCase());
+        
+        return name;
     }
 
     initButton(){
@@ -14,16 +23,16 @@ class Button {
         }else{
             this.click = input.bind(this, this.click)
         }
-        document.getElementById(this.name).onclick = this.click;
-        document.getElementById(this.name).addEventListener("click",this.swapBranch.bind(this));
+        document.getElementById(this.id).onclick = this.click;
+        document.getElementById(this.id).addEventListener("click",this.swapBranch.bind(this));
     }
 
     openButton(){
-        document.getElementById(this.name).style.visibility = "visible";
+        document.getElementById(this.id).style.visibility = "visible";
     }
 
     closeButton(){
-        document.getElementById(this.name).style.visibility = "hidden";
+        document.getElementById(this.id).style.visibility = "hidden";
     }
 
     swapBranch(){
@@ -31,7 +40,7 @@ class Button {
             currentButton.closeBelow();
             let a = this.findPath();
             for (i in a){
-                getButton(a[i].name).openChildren();
+                getButton(a[i].id).openChildren();
             }
         }
         if (this.parent == null){
@@ -56,11 +65,11 @@ class Button {
         }
     }
 
-    closeBelow(top=this.name){
+    closeBelow(top=this.id){
         for (let i = 0; i < this.children.length; i++) {
             getButton(this.children[i]).closeBelow(top);
         }
-        if (!(this.name == top)){
+        if (!(this.id == top)){
             this.closeButton();
         }
         
@@ -112,12 +121,24 @@ function updateFrequencyTable(){
 
 function updateDataValues(){
     if (globalText.length > 1){
-        document.getElementById("IoC").innerHTML = indexOfCoincidence(globalText.join(""));
-        document.getElementById("Chi").innerHTML = chiTest(globalText.join(""));
+        document.getElementById("IoC").innerHTML = Number(Math.round(indexOfCoincidence(globalText.join(""))+'e4')+'e-4');
+        document.getElementById("Chi").innerHTML = Number(Math.round(chiTest(globalText.join(""))+'e2')+'e-2');
     }else{
         document.getElementById("IoC").innerHTML = 0;
         document.getElementById("Chi").innerHTML = 0;
     }
+    document.getElementById("fullLen").innerHTML = document.getElementById("textIn").value.length;
+    document.getElementById("Len").innerHTML = globalText.length;
+
+    let mostLikely = determineCipher();
+    var path = null;
+    for (i of buttons){
+        console.log(i.click)
+        if (i.click == mostLikely){
+            var path = i.findPath();
+        }
+    }
+    path == null ? "": document.getElementById("mostLikely").value = path[path.length - 1].name;
     
 }
 
