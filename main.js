@@ -12,7 +12,7 @@ class Button {
     idToName(id){
         let name = id.split(/(?=[A-Z])/);
         console.log(typeof name[0]);
-        name[0].replaceAt(0,name[0][0].toUpperCase());
+        //name[0].replaceAt(0,name[0][0].toUpperCase());
         
         return name;
     }
