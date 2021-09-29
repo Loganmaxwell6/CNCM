@@ -5,7 +5,7 @@ class Button {
         this.parent = parent;
         this.children = children;
         this.click = click;
-        
+
         this.initButton();
     }
 
@@ -130,15 +130,15 @@ function updateDataValues(){
     document.getElementById("fullLen").innerHTML = document.getElementById("textIn").value.length;
     document.getElementById("Len").innerHTML = globalText.length;
 
-    let mostLikely = determineCipher();
-    var path = null;
-    for (i of buttons){
-        console.log(i.click)
-        if (i.click == mostLikely){
-            var path = i.findPath();
-        }
-    }
-    path == null ? "": document.getElementById("mostLikely").value = path[path.length - 1].name;
+    // let mostLikely = determineCipher();
+    // var path = null;
+    // for (i of buttons){
+    //     console.log(i.click)
+    //     if (i.click == mostLikely){
+    //         var path = i.findPath();
+    //     }
+    // }
+    // path == null ? "": document.getElementById("mostLikely").value = path[path.length - 1].name;
     
 }
 
@@ -227,9 +227,9 @@ function swapText(){
     updateText();
 }
 
-function getButton(name){
+function getButton(id){
     for ( i in buttons){
-        if (buttons[i].name == name) {
+        if (buttons[i].id == id) {
             return buttons[i];
         }
     }
@@ -444,34 +444,28 @@ function decryptTransposition(text ,length){
     }
 }
 
+function substitutionCipher(){
+    let freq = findMostLikely(globalText, ALPHA.length);
+    let key = new Array(ALPHA.length).fill(0);
+    for (i in key){
+        key[parseInt(freq[i][0])] = mostLikely[i]; 
+        console.log(parseInt(freq[i][0]))
+    }
+    return freq;
+}
 
-//old no longer used vigenere code, may be useful for other things later
-//
-// //returns the most likely values for the text to have been shifted by
-// function findMostLikelyShifts(text){
-//     var accuracy = 3; //the depth of the accuracy
-//     count = observedCount(text);
-//     a= [];
-//     for(const [key, value] of Object.entries(count)){
-//         a.push([key,value])
-//     }
-//     a = a.sort(function(a,b) {
-//         return b[1]-a[1]
-//     });
-//     for(let i =0; i < accuracy; i++){
-//         a[i] = mod(4 - parseInt(a[i][0]), 26);
-//     }
-//     return a.slice(0,accuracy);
-// }
+function findMostLikely(text, accuracy){
+        count = observedCount(text);
+        a= [];
+        for(const [key, value] of Object.entries(count)){
+            a.push([key,value])
+        }
+        a = a.sort(function(a,b) {
+            return b[1]-a[1]
+        });
+        return a.slice(0,accuracy);
+    }
 
-// function combos(list, n = 0, result = [], current = []){
-//     if (n === list.length) result.push(current)
-//     else list[n].forEach(item => combos(list, n+1, result, [...current, item]))
- 
-//     return result
-// }
-
-//-------------------------------------------------------------
 function generalDecrypt(){
     f  = determineCipher();
     if(typeof f == 'function'){
@@ -648,6 +642,8 @@ function time(num, f){
 
 //------------------------------------------------------------
 //ffs stupid javascript why do i gotta do this
+
+var mostLikely = "ETAIONSHRDLCUMWFGYPBVKJXQZ".split("");
 var alphaDict = {
     "A":0,
     "B":1,
