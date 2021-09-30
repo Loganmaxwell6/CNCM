@@ -468,6 +468,7 @@ function substitutionCipher(){
     }
     for (let i =0; i < 30; i++){
         key = fullSwapTest(key);
+        console.log(key);
     }
     output(applySubstitutionKey(globalText, key).join(""));
 }
@@ -494,10 +495,11 @@ function fullSwapTest(key){
 }
 
 function applySubstitutionKey(text, key){
+    let newString = "";
     for (i in text){
-        text[i] = key[alphaDict[text[i]]];
+        newString += key[alphaDict[text[i]]];
     }
-    return text;
+    return newString;
 }
 
 function findMostLikely(text, accuracy){
