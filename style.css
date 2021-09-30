@@ -23,6 +23,10 @@ button{
   height:230px;
 }
 
+#determineCipher{
+  float:left;
+}
+
 .clearfix{
   clear:both;
 }
@@ -88,13 +92,18 @@ button{
 
 /*portrait (mobile)*/
 @media only screen and (orientation: portrait){
+  html, body{
+    width:100%;
+    margin:0px;
+  }
+  
   #mainBit{
     padding: 10px;
   }
   
   textarea{
       resize:none;
-      width:70em;
+      width:65em;
       height:20em;
       margin: 5px 1px;
   }
@@ -105,7 +114,7 @@ button{
     text-align: center;
     background: #e0d6c0;
     color: white;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
   }
   
   
