@@ -101,7 +101,11 @@ window.onload = function(){
     new Button("transpositionCipher", null, ["transpositionDecrypt"]),
     new Button("transpositionDecrypt", "transpositionCipher", [], decryptTranspositionCipher),
     new Button("determineCipher", null, [], generalDecrypt),
-    new Button("substitutionCipher", null, [],substitutionCipher)];
+    new Button("substitutionCipher", null, ["substitutionDecrypt", "substitutionEncrypt"]),
+    new Button("substitutionDecrypt", "substitutionCipher", ["substitutionAutomatic", "substitutionManual"]),
+    new Button("substitutionEncrypt", "substitutionCipher", []),
+    new Button("substitutionManual", "substitutionDecrypt", []),
+    new Button("substitutionAutomatic", "substitutionDecrypt", [],substitutionCipher)];
 
     initiateFrequencyTable();
 }
