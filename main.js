@@ -499,7 +499,7 @@ function applySubstitutionKey(text, key){
     for (i in text){
         newString += key[alphaDict[text[i]]];
     }
-    return newString.join("");
+    return newString.split("");
 }
 
 function findMostLikely(text, accuracy){
