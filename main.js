@@ -180,7 +180,10 @@ function updateText(){
 function input(f){
     document.getElementById("textOut").value = "";
     if(!(document.getElementById("textIn").value) == ''){
+        let s = Date.now();
         f();
+        let e = Date.now();
+        document.getElementById("Time").innerHTML = (e - s) + "ms";
     }else{
         alert("Enter text into input box first")
     }
