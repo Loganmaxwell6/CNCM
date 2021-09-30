@@ -571,9 +571,9 @@ function getKeyLength(text){
     return keyLength;
 }
 //-------------------------------------------------------------
-threshold = 85;
+//threshold = 85;
 
-function isEnglish(text){
+function isEnglish(text, threshold = 85){
     let chiT = 250 - 2 * threshold; 
     if (chiTest(text) < chiT){
         numthing ++;
