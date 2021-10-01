@@ -97,6 +97,7 @@ button{
   }
 
   .header {
+    visibility:hidden;
     width: 100%;
     padding:40px 0px;
     text-align: center;
