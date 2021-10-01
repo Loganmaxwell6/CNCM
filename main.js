@@ -84,16 +84,13 @@ const d = new Date();
 window.onload = function(){
     buttons = [new Button("caesarCipher",null,["caesarDecrypt", "caesarEncrypt"]), 
     new Button("caesarDecrypt","caesarCipher",[],decryptCaesarCipher),
-    new Button("caesarEncrypt","caesarCipher",[],open),
+    new Button("caesarEncrypt","caesarCipher",[],openCaesarEncrypt),
     new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
     new Button("affineDecrypt", "affineCipher",[], decryptAffineCipher),
-    new Button("affineEncrypt", "affineCipher",["affineEncryptGo", "affineEncryptInputMultiply", "affineEncryptInputAdd"]),
-    new Button("affineEncryptGo", "affineEncrypt", [], openAffineEncrypt),
-    new Button("affineEncryptInputMultiply", "affineEncrypt", []),
-    new Button("affineEncryptInputAdd", "affineEncrypt", []),
+    new Button("affineEncrypt", "affineCipher",[], openAffineEncrypt),
     new Button("vigenereCipher", null, ["vigenereDecrypt", "vigenereEncrypt"]),
     new Button("vigenereDecrypt", "vigenereCipher",[],decryptVigenereCipher),
-    new Button("vigenereEncrypt","vigenereCipher",[]),
+    new Button("vigenereEncrypt","vigenereCipher",[], openVigenereEncrypt),
     new Button("transpositionCipher", null, ["transpositionDecrypt"]),
     new Button("transpositionDecrypt", "transpositionCipher", [], decryptTranspositionCipher),
     new Button("determineCipher", null, [], generalDecrypt),
@@ -103,7 +100,7 @@ window.onload = function(){
     new Button("substitutionManual", "substitutionDecrypt", []),
     new Button("substitutionAutomatic", "substitutionDecrypt", [],substitutionCipher),
     new Button("keywordCipher", null, ["keywordEncrypt"]),
-    new Button("keywordEncrypt","keywordCipher",[])];
+    new Button("keywordEncrypt","keywordCipher",[], openKeywordEncrypt)];
 
     initiateFrequencyTable();
 }
@@ -301,15 +298,14 @@ function affineShift(text,num,num2){
 }
 
 function openAffineEncrypt(){
-    let mulitplyButton = document.getElementById("affineEncryptInputMultiply");
-    let addButton = document.getElementById("affineEncryptInputAdd");
-    let num1 = mulitplyButton.value % 26;
-    let num2 = addButton.value;
+    let str = document.getElementById("encryptInputBox").value.split(",");
+    let num1 = parseInt(str[0]);
+    let num2 = parseInt(str[1]);
     var text = globalText;
-    if (!(num1 =='') && !(num2 == '')){
+    if (typeof num1 == 'number' && typeof num2 == 'number'){
         if (num1 >=0 && num2 >=0){
             if (!(num1 % 2 ==0) && !(num1==13)){
-                t = affineShiftEncrypt(text, parseInt(num1 % 26), parseInt(num2 % 26));
+                t = affineShiftEncrypt(text, num1 % 26, num2 % 26);
                 output(t); 
             }else{
                 alert(num1 + " not coprime with 26, pick new value for multiple");
@@ -319,7 +315,7 @@ function openAffineEncrypt(){
             alert("Enter positive numbers")
         } 
     }else{
-        alert("Enter two positive numbers")
+        alert("Enter two positive numbers in the format 1,3")
     }
 }
 
