@@ -131,7 +131,7 @@ function updateDataValues(){
     document.getElementById("fullLen").innerHTML = document.getElementById("textIn").value.length;
     document.getElementById("Len").innerHTML = globalText.length;
 
-    let mostLikely = determineCipher();
+    let mostLikely = determineCipher()[0];
     typeof mostLikely == 'string' ? document.getElementById("likely").innerHTML = getButton(mostLikely).name : "";
 }
 
@@ -391,7 +391,7 @@ function decryptTranspositionCipher(){
     let b = 10000000;
     let key = [];
     let text = globalText.join("");
-    for (let i = 2; i < 13; i++){
+    for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
            let s = decryptTransposition(text,i); 
         }
@@ -477,10 +477,6 @@ function substitutionCipher(){
     output(applySubstitutionKey(globalText, key).join(""));
 }
 
-
-aT = 0;
-b = 0;
-
 function fullSwapTest(key){
 
     function bigramTestForSub(text, cutOff, key){
@@ -534,9 +530,9 @@ function findMostLikely(text, accuracy){
 }
 
 function generalDecrypt(){
-    f  = determineCipher();
+    f  = determineCipher()[1];
     if(typeof f == 'string'){
-        f  = getButton(determineCipher()).click;
+        f  = getButton(f).click;
         f();
     }
 }
@@ -545,17 +541,17 @@ function determineCipher(){
     text = globalText.join("");
     let c = chiTest(text);
     if (c < 120){
-        return "transpositionCipher";
+        return ["transpositionCipher", "decryptTranspositionCipher"];
     }
     let i = indexOfCoincidence(text);
     if (i >= 0.06){
-        return "substitutionCipher"; //placeholder until we narrow down substitution ciphers
+        return ["substitutionCipher", "substitutionCipher"]; //placeholder until we narrow down substitution ciphers
     }
     let k = getKeyLength(text)
     if (k != 0){
-        return "vigenereCipher";
+        return ["vigenereCipher", "decryptVigenereCipher"];
     }
-    return;
+    return [-1, -1];
 }
 
 function indexOfCoincidence(text){
