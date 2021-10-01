@@ -84,20 +84,16 @@ const d = new Date();
 window.onload = function(){
     buttons = [new Button("caesarCipher",null,["caesarDecrypt", "caesarEncrypt"]), 
     new Button("caesarDecrypt","caesarCipher",[],decryptCaesarCipher),
-    new Button("caesarEncrypt","caesarCipher",["caesarEncryptInput", "caesarEncryptGo"]),
-    new Button("caesarEncryptInput","caesarEncrypt",[]),
+    new Button("caesarEncrypt","caesarCipher",[],open),
     new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
     new Button("affineDecrypt", "affineCipher",[], decryptAffineCipher),
-    new Button("caesarEncryptGo","caesarEncrypt",[],openCaesarEncrypt),
     new Button("affineEncrypt", "affineCipher",["affineEncryptGo", "affineEncryptInputMultiply", "affineEncryptInputAdd"]),
     new Button("affineEncryptGo", "affineEncrypt", [], openAffineEncrypt),
     new Button("affineEncryptInputMultiply", "affineEncrypt", []),
     new Button("affineEncryptInputAdd", "affineEncrypt", []),
     new Button("vigenereCipher", null, ["vigenereDecrypt", "vigenereEncrypt"]),
     new Button("vigenereDecrypt", "vigenereCipher",[],decryptVigenereCipher),
-    new Button("vigenereEncrypt","vigenereCipher",["vigenereEncryptInput", "vigenereEncryptGo"]),
-    new Button("vigenereEncryptInput", "vigenereEncrypt", []),
-    new Button("vigenereEncryptGo", "vigenereEncrypt", [], openVigenereEncrypt),
+    new Button("vigenereEncrypt","vigenereCipher",[]),
     new Button("transpositionCipher", null, ["transpositionDecrypt"]),
     new Button("transpositionDecrypt", "transpositionCipher", [], decryptTranspositionCipher),
     new Button("determineCipher", null, [], generalDecrypt),
@@ -107,9 +103,7 @@ window.onload = function(){
     new Button("substitutionManual", "substitutionDecrypt", []),
     new Button("substitutionAutomatic", "substitutionDecrypt", [],substitutionCipher),
     new Button("keywordCipher", null, ["keywordEncrypt"]),
-    new Button("keywordEncrypt","keywordCipher",["keywordEncryptInput", "keywordEncryptGo"]),
-    new Button("keywordEncryptInput", "keywordEncrypt", []),
-    new Button("keywordEncryptGo", "keywordEncrypt", [], openKeywordEncrypt)];
+    new Button("keywordEncrypt","keywordCipher",[])];
 
     initiateFrequencyTable();
 }
@@ -276,7 +270,7 @@ function decryptCaesarCipher(){
 const caesarShift = (text, shift) => text.map((char) => char in alphaDict ? ALPHA[(alphaDict[char] + shift)%26] : char).join("");
 
 function openCaesarEncrypt(){
-    button = document.getElementById("caesarEncryptInput");
+    button = document.getElementById("encryptInputBox");
     num = button.value;
     var text = globalText;
     if (!num ==''){
@@ -364,7 +358,7 @@ function putVigenereTogether(text, shifts){
 }
 
 function openVigenereEncrypt(){
-    let button = document.getElementById("vigenereEncryptInput");
+    let button = document.getElementById("encryptInputBox");
     let key = button.value;
     var text = globalText;
     if (!key ==''){
@@ -522,7 +516,7 @@ function fullSwapTest(key){
 applySubstitutionKey = (text, key) => text.map((char)=> key[alphaDict[char]]);
 
 function openKeywordEncrypt(){
-    let str = document.getElementById("keywordEncryptInput").value.toLocaleUpperCase().split("");
+    let str = document.getElementById("encryptInputBox").value.toLocaleUpperCase().split("");
     if(str.every((element) => ALPHA.includes(element))){
         output(keywordCipherInput(str));
     }else{

@@ -35,6 +35,14 @@ button{
   width:110px;
 }
 
+#encryptInputBox{
+  width:30%;
+  height:2em;
+  margin:9px 0px;
+  padding:1px 6px;
+  top:200px;
+}
+
 /*landscape (desktop)*/
 @media only screen and (orientation: landscape){
 

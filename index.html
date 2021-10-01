@@ -20,12 +20,13 @@
         <textarea id="textOut" rows="10" cols="100" placeholder="Output text here" disabled="disabled"></textarea>
       </div>
       <div id="options">
-        <button id="swapText" onclick="swapText()">↑</button>
-        <button id="clearText" onclick="clearText()">Clear</button>
-        <button id="reverseText" onclick ="reverseText()">Reverse</button>
+        <button id="swapText" onclick=swapText()>↑</button>
+        <button id="clearText" onclick=clearText()>Clear</button>
+        <button id="reverseText" onclick =reverseText()>Reverse</button>
         <button id="copyText" onclick=copyText()>Copy to Clipboard</button>
         <button id="sem" onclick=play() style=visibility:hidden>Shush</button>
       </div>
+      <textArea id="encryptInputBox" placeholder="Input encryption key here"></textArea>
       <div class="cipherButtons clearfix">
         <div class="buttonsDiv">
           <button id="caesarCipher">Caesar Cipher</button>
@@ -34,9 +35,7 @@
               <button id="caesarDecrypt" class="optionButton">decrypt</button> 
             </div>
             <div class ="caesarEncrypt">
-              <button id="caesarEncrypt" class="optionButton">encrypt</button> 
-              <input type="number" id="caesarEncryptInput" class="optionButton stubbyInput">
-              <button id="caesarEncryptGo" class="optionButton">Go</button> 
+              <button id="caesarEncrypt" class="optionButton">encrypt</button>
             </div>
           </div>
         </div>
@@ -48,9 +47,6 @@
             </div>
             <div class = "affineEncrypt">
               <button id="affineEncrypt" class="optionButton">encrypt</button>
-              <input type="number" id="affineEncryptInputMultiply" class="optionButton stubbyInput">
-              <input type="number" id="affineEncryptInputAdd" class="optionButton stubbyInput">
-              <button id="affineEncryptGo" class="optionButton">Go</button> 
             </div>
           </div>
         </div>
@@ -77,8 +73,6 @@
             </div>
             <div class = "transpositionEncrypt">
               <button id="transpositionEncrypt" class="optionButton" >encrypt</button>
-              <input type="textArea" id="transpositionEncryptInput" class="optionButton stubbyInput">
-              <button id="transpositionEncryptGo" class="optionButton">Go</button> 
             </div>
           </div>
         </div>
@@ -90,8 +84,6 @@
             </div>
             <div class = "vigenereEncrypt">
               <button id="vigenereEncrypt" class="optionButton" >encrypt</button>
-              <input type="textArea" id="vigenereEncryptInput" class="optionButton stubbyInput">
-              <button id="vigenereEncryptGo" class="optionButton">Go</button> 
             </div>
           </div>
         </div>
@@ -99,9 +91,7 @@
           <button id="keywordCipher">Keyword Cipher</button>
           <div class="keywordOptions optionsButtons">
             <div class = "keywordEncrypt">
-              <button id="keywordEncrypt" class="optionButton" >encrypt</button>
-              <input type="textArea" id="keywordEncryptInput" class="optionButton stubbyInput">
-              <button id="keywordEncryptGo" class="optionButton">Go</button> 
+              <button id="keywordEncrypt" class="optionButton" >encrypt</button> 
             </div>
           </div>
         </div>
