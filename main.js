@@ -141,25 +141,19 @@ function updateDataValues(){
 
 currentButton = "";
 
-/*
-//Fef sidebar code
-window.onscroll = function() {updateStick()};
-var sidebar = document.getElementById("sidebar");
-var panel = document.getElementById("panel");
-console.log(sidebar.offsetTop)
-var stickFactor = sidebar.offsetTop;
+//fen header code
+window.onscroll = function() {scrollFunction()};
 
-function updateStick(){
-    if (window.pageYOffsett > stickFactor){
-        sidebar.classList.add("sticky");
-        panel.classList.add("sticky");
+function scrollFunction() {
+    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+        console.log("hey");
+        document.getElementById("headerTitle").style.fontSize = "22px";
+        document.getElementById("headerSecondary").style.fontSize = "10px";
     } else {
-        sidebar.classList.remove("sticky");
-        panel.classList.remove("sticky");
+    document.getElementById("headerTitle").style.fontSize = "36px";
+    document.getElementById("headerSecondary").style.fontSize = "16px";
     }
 }
-*/
-
 
 numthing = 0;
 
