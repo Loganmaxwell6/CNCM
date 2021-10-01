@@ -105,7 +105,11 @@ window.onload = function(){
     new Button("substitutionDecrypt", "substitutionCipher", ["substitutionAutomatic", "substitutionManual"]),
     new Button("substitutionEncrypt", "substitutionCipher", []),
     new Button("substitutionManual", "substitutionDecrypt", []),
-    new Button("substitutionAutomatic", "substitutionDecrypt", [],substitutionCipher)];
+    new Button("substitutionAutomatic", "substitutionDecrypt", [],substitutionCipher),
+    new Button("keywordCipher", null, ["keywordEncrypt"]),
+    new Button("keywordEncrypt","keywordCipher",["keywordEncryptInput", "keywordEncryptGo"]),
+    new Button("keywordEncryptInput", "keywordEncrypt", []),
+    new Button("keywordEncryptGo", "keywordEncrypt", [], openKeywordEncrypt)];
 
     initiateFrequencyTable();
 }
@@ -146,7 +150,6 @@ window.onscroll = function() {scrollFunction()};
 
 function scrollFunction() {
     if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-        console.log("hey");
         document.getElementById("headerTitle").style.fontSize = "22px";
         document.getElementById("headerSecondary").style.fontSize = "10px";
     } else {
@@ -341,7 +344,7 @@ function decryptVigenere(num){
    for (let i =0; i < allVals.length; i++){
        scores = []
        for(let x =0; x < 26; x++){
-            chi = chiTest(caesarShift(allVals[i].join(""), x));
+            chi = chiTest(caesarShift(allVals[i], x));
             scores.push([x , chi])
        }
        scores = scores.sort(function(a,b) {return a[1]-b[1]});
@@ -517,6 +520,17 @@ function fullSwapTest(key){
 // }
 
 applySubstitutionKey = (text, key) => text.map((char)=> key[alphaDict[char]]);
+
+function openKeywordEncrypt(){
+    let str = document.getElementById("keywordEncryptInput").value.toLocaleUpperCase().split("");
+    if(str.every((element) => ALPHA.includes(element))){
+        output(keywordCipherInput(str));
+    }else{
+        alert("Key must contain only letters please!")
+    }
+}
+keywordCipherInput = (str) => applySubstitutionKey(globalText, [...str, ...ALPHA].filter((char, index, arr) => !arr.slice(0,index).includes(char))).join("");
+   
 
 function findMostLikely(text, accuracy){
     count = observedCount(text);
