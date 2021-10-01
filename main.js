@@ -467,14 +467,32 @@ function substitutionCipher(){
         key[parseInt(freq[i][0])] = mostLikely[i];
     }
     for (let i =0; i < 30; i++){
-        key = fullSwapTest(key);
-        console.log(key);
+        newKey = fullSwapTest(key);
+        if (newKey == -1){
+            break;
+        }else{
+            key = newKey.slice(0);
+        }
     }
     output(applySubstitutionKey(globalText, key).join(""));
 }
 
+
+aT = 0;
+b = 0;
+
 function fullSwapTest(key){
-    let currentKey = [-1, 100000000000];
+
+    function bigramTestForSub(text, cutOff, key){
+        let sum = 0;
+        for (let i = 0; i < Math.min(text.length-1,cutOff); i++){
+            sum += -Math.log(check[key[alphaDict[text[i]]]+key[alphaDict[text[i+1]]]]);
+        }
+        return sum / text.length - 1;
+    }
+
+    let currentKey = [-1, bigramTestForSub(globalText.slice(0).join(""), 2000, key)];
+
     for (let i = 0; i < key.length; i++){
         for (let x = i; x < key.length; x++){
             let testKey = key.slice(0);
@@ -482,8 +500,7 @@ function fullSwapTest(key){
                 let firstLetter = testKey[i];
                 testKey[i] = testKey[x];
                 testKey[x] = firstLetter;
-                let text = applySubstitutionKey(globalText.slice(0), testKey);
-                let score = bigramTest(text.join(""));
+                let score = bigramTestForSub(globalText.slice(0).join(""),2000, testKey);
                 if (score < currentKey[1]){
                     currentKey[0] = testKey;
                     currentKey[1] = score;
@@ -494,13 +511,15 @@ function fullSwapTest(key){
     return currentKey[0];
 }
 
-function applySubstitutionKey(text, key){
-    let newString = "";
-    for (i in text){
-        newString += key[alphaDict[text[i]]];
-    }
-    return newString.split("");
-}
+// function applySubstitutionKey(text, key){
+//     let newString = "";
+//     for (i in text){
+//         newString += key[alphaDict[text[i]]];
+//     }
+//     return newString.split("");
+// }
+
+applySubstitutionKey = (text, key) => text.map((char)=> key[alphaDict[char]]);
 
 function findMostLikely(text, accuracy){
     count = observedCount(text);
@@ -652,7 +671,8 @@ function expectedBigramCount(t){
     return e;
 }
 
-function bigramTest(text){
+function bigramTest(text, cutOff = 2000){
+    text = text.substring(0,Math.min(text.length, cutOff));
     let o = observedBigramCount(text);
     let e = expectedBigramCount(text.length);
     let sum = 0;
@@ -660,6 +680,15 @@ function bigramTest(text){
         sum += chiHelper(o[i],e[i]);
     }
     return Math.sqrt(sum);
+}
+
+function newBigramTest(text, cutOff =2000){
+    text = text.substring(0,Math.min(text.length, cutOff));
+    let sum = 0;
+    for (let i = 0; i < text.length-1; i++){
+        sum += -Math.log(check[text[i]+text[i+1]]);
+    }
+    return sum / text.length - 1;
 }
 
 function bigramTestFromCount(o){
