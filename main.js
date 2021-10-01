@@ -417,15 +417,15 @@ function decryptTransposition(text ,length){
     for (let i =0; i < columns.length; i++){ //loop through each column
         let scores = [];
         for (let x =0; x<columns.length;x++){ //checking each column against current collumn
-            let bigramCount = new Array(676).fill(0);
             if (!(x == i)){ //asserts we are not checking column against the same column
+                let sum = 0;
                 for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
                     if (!(j >= columns[x].length)){
                         let bigram = columns[i][j] + columns[x][j];
-                        bigramCount[alphaDict[bigram[0]] * 26 + alphaDict[bigram[1]]] ++;
+                        sum += -Math.log(check[bigram]);
                     }
                 }
-                scores.push(bigramTestFromCount(bigramCount));//add bigram score to scores
+                scores.push(sum);//add bigram score to scores
             }else{
                 scores.push(100000);//add placeholder number
             }
@@ -435,9 +435,11 @@ function decryptTransposition(text ,length){
             endVal = [i, Math.min.apply(Math, scores)];
         }
     }
+    
     //generates key
     var key = [];
     var currentKey = endVal[0];
+    following[currentKey][1] = -1;
     for(let i = 0; i< length; i++){
         key.push(currentKey);
         for (let x =0; x < length; x++){
@@ -471,13 +473,14 @@ function substitutionCipher(){
         key[parseInt(freq[i][0])] = mostLikely[i];
     }
     for (let i =0; i < 30; i++){
-        newKey = fullSwapTest(key);
+        let newKey = fullSwapTest(key);
         if (newKey == -1){
             break;
         }else{
             key = newKey.slice(0);
         }
     }
+    
     output(applySubstitutionKey(globalText, key).join(""));
 }
 
@@ -536,6 +539,7 @@ function findMostLikely(text, accuracy){
 function generalDecrypt(){
     f  = determineCipher()[1];
     if(typeof f == 'string'){
+        console.log(f)
         f  = getButton(f).click;
         f();
     }
@@ -545,7 +549,7 @@ function determineCipher(){
     text = globalText.join("");
     let c = chiTest(text);
     if (c < 120){
-        return ["transpositionCipher", "decryptTranspositionCipher"];
+        return ["transpositionCipher", "transpositionDecrypt"];
     }
     let i = indexOfCoincidence(text);
     if (i >= 0.06){
