@@ -39,7 +39,7 @@ button{
 @media only screen and (orientation: landscape){
 
   #mainBit{
-    padding: 40px 40px 40px 450px;
+    padding: 215px 40px 40px 450px;
   }
   
   textarea{
@@ -48,41 +48,29 @@ button{
       height:20em;
       margin: 5px 1px;
   }
-  /*
-  .header {
-    position:absolute;
-    z-index:1;
-    width: 100%;
-    padding:40px 0px;
-    text-align: center;
-    background: #e0d6c0;
-    color: white;
-  }
-  */
+  
   .header {
     width: 100%;
     padding:40px 0px;
     text-align: center;
     background: #e0d6c0;
     color: white;
-  }
-  /*
-  #sidebar {
-    height: 150%;
-    width: 430px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 30px 5px 5px 5px;
-    background-color: lightblue;
-  }
-  */
-  .sticky{
     position:fixed;
+    transition-duration:0.2s;
+    z-index:1;
+  }
+  
+  #headerTitle {
+    font-size: 36px;
+    transition-duration:0.2s;
+  }
+
+  #headerSecondary {
+    font-size: 16px;
+    transition-duration:0.2s;
   }
 
   .dataPanel{
-    /*margin:200px 0px 0px 0px;*/
     padding:15px;
     position:absolute;
     top:220px;
@@ -114,14 +102,7 @@ button{
     text-align: center;
     background: #e0d6c0;
     color: white;
-    /*margin-bottom: 20px;*/
+    position:fixed;
   }
-  
-  
-  /*
-  .dataValues{
-    margin:50px;
-  }
-  */
 }
 
