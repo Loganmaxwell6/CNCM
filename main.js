@@ -478,14 +478,15 @@ function decryptTransposition(length, columns){ //split into columns
     }
 }
 
-function substitutionCipher(){
-    let freq = findMostLikely(globalText.slice(0), ALPHA.length);
+function substitutionCipher(text=globalText){
+    console.log(text)
+    let freq = findMostLikely(text.slice(0), ALPHA.length);
     let key = new Array(ALPHA.length).fill(0);
     for (i in key){
         key[parseInt(freq[i][0])] = mostLikely[i];
     }
     for (let i =0; i < 30; i++){
-        let newKey = fullSwapTest(key);
+        let newKey = fullSwapTest(key,text);
         if (newKey == -1){
             break;
         }else{
@@ -493,10 +494,10 @@ function substitutionCipher(){
         }
     }
     
-    output(applySubstitutionKey(globalText, key).join(""));
+    output(applySubstitutionKey(text, key).join(""));
 }
 
-function fullSwapTest(key){
+function fullSwapTest(key, text){
 
     function bigramTestForSub(text, cutOff, key){
         let sum = 0;
@@ -506,7 +507,7 @@ function fullSwapTest(key){
         return sum / text.length - 1;
     }
 
-    let currentKey = [-1, bigramTestForSub(globalText.slice(0).join(""), 2000, key)];
+    let currentKey = [-1, bigramTestForSub(text.slice(0).join(""), 2000, key)];
 
     for (let i = 0; i < key.length; i++){
         for (let x = i; x < key.length; x++){
@@ -515,7 +516,7 @@ function fullSwapTest(key){
                 let firstLetter = testKey[i];
                 testKey[i] = testKey[x];
                 testKey[x] = firstLetter;
-                let score = bigramTestForSub(globalText.slice(0).join(""),2000, testKey);
+                let score = bigramTestForSub(text.slice(0).join(""),2000, testKey);
                 if (score < currentKey[1]){
                     currentKey[0] = testKey;
                     currentKey[1] = score;
@@ -545,7 +546,16 @@ function openKeywordEncrypt(){
     }
 }
 keywordCipherInput = (str) => applySubstitutionKey(globalText, [...str, ...ALPHA].filter((char, index, arr) => !arr.slice(0,index).includes(char))).join("");
-   
+
+function decryptPolybiusCipher(){
+    let text = document.getElementById("textIn").value;
+    let newText = [];
+    let encryptors = ["1","2","3","4","5"];
+    for (let i = 0; i < text.length -1; i+=2){
+        newText.push(ALPHA[(encryptors.indexOf(text[i]) * encryptors.length) + encryptors.indexOf(text[i+1])]);
+    }
+    substitutionCipher(newText);
+}
 
 function findMostLikely(text, accuracy){
     count = observedCount(text);
