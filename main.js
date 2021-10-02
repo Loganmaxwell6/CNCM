@@ -384,7 +384,7 @@ function decryptTranspositionCipher(){
     let text = globalText.join("");
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
-           let s = decryptTransposition(text,i); 
+           let s = decryptTransposition(i, returnEveryNth(text, i)); 
         }
         // if (s.length != 0){
         //     if (s[0] < b){
@@ -396,9 +396,32 @@ function decryptTranspositionCipher(){
     // key is decryption key for some function 
 }
 
+function decryptColumnarTransposition(){
+    let text = globalText.join("");
+    for (let i =2; i < 15; i++){
+        if (text.length % i ==0){
+            decryptTransposition(i, columnsToTransposition(text, i));
+        }
+    }
+}
+
+//function for putting columnar transposition text into form of normal transposition cipher
+function columnsToTransposition(text, length){
+    let num = text.length / length;
+    let columns = [];
+    for (let i = 0; i < length; i++){
+        let column = [];
+        for (let x = 0; x < num; x++){
+            column.push(text[(i * num) +x]);
+        }
+        columns.push(column)
+    }
+    return columns
+}
+
 // run the full bigram decrypt cycle for a single keylength
-function decryptTransposition(text ,length){
-    columns = returnEveryNth(text, length); //split into columns
+function decryptTransposition(length, columns){ //split into columns
+    console.log(columns)
     following = []; // will store 2d array of column and then column that follows it
     var endVal = [-1,0]; //stores the index of the last column
     for (let i =0; i < columns.length; i++){ //loop through each column
@@ -406,13 +429,14 @@ function decryptTransposition(text ,length){
         for (let x =0; x<columns.length;x++){ //checking each column against current collumn
             if (!(x == i)){ //asserts we are not checking column against the same column
                 let sum = 0;
+                let bigrams = Array(676).fill(0);
                 for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
                     if (!(j >= columns[x].length)){
                         let bigram = columns[i][j] + columns[x][j];
-                        sum += -Math.log(check[bigram]);
+                        bigrams[(alphaDict[bigram[0]] * 26) + alphaDict[bigram[1]]] ++
                     }
                 }
-                scores.push(sum);//add bigram score to scores
+                scores.push(bigramTestFromCount(bigrams));//add bigram score to scores
             }else{
                 scores.push(100000);//add placeholder number
             }
@@ -421,8 +445,9 @@ function decryptTransposition(text ,length){
         if (Math.min.apply(Math, scores) > endVal[1]){
             endVal = [i, Math.min.apply(Math, scores)];
         }
+        console.log(scores)
     }
-    
+    console.log(following)
     //generates key
     var key = [];
     var currentKey = endVal[0];
