@@ -545,16 +545,47 @@ function openKeywordEncrypt(){
         alert("Key must contain only letters please!")
     }
 }
-keywordCipherInput = (str) => applySubstitutionKey(globalText, [...str, ...ALPHA].filter((char, index, arr) => !arr.slice(0,index).includes(char))).join("");
+keywordCipherInput = (str) => applySubstitutionKey(globalText, generateFullKey(str)).join("");
+generateFullKey = (str) => [...str, ...ALPHA].filter((char, index, arr) => !arr.slice(0,index).includes(char));
 
 function decryptPolybiusCipher(){
     let text = document.getElementById("textIn").value;
     let newText = [];
-    let encryptors = ["1","2","3","4","5"];
+    let encryptors = getPolybiusEncryptors(text);
     for (let i = 0; i < text.length -1; i+=2){
         newText.push(ALPHA[(encryptors.indexOf(text[i]) * encryptors.length) + encryptors.indexOf(text[i+1])]);
     }
     substitutionCipher(newText);
+}
+
+function getPolybiusEncryptors(text){
+    enc = [];
+    for (i of text){
+        if (!(enc.includes(i))){
+            enc.push(i);
+        }
+    }
+    return enc;
+}
+
+function applyPlayfairKey(text, key){
+    key = generateFullKey(key.toLocaleUpperCase());
+    for (let i = 0; i < text.length -1; i+=2) {
+        bigram = text[i] + text[i+1];
+        point1 = key.indexOf(bigram[0]);
+        point2 = key.indexOf(bigram[1]);
+        if (point1 %5 == point2%5){
+            text[i] = ALPHA[(point1 + 5) % 25];
+            text[i+1] = ALPHA[(point2 + 5) % 25];
+        }else if(Math.floor(point1 / 5) == Math.floor(point2 / 5)){
+            text[i] = ALPHA[(Math.floor(point1 / 5)*5) + ((point1 +1)%5)];
+            text[i+1] = ALPHA[(Math.floor(point2 / 5)*5) + ((point2 +1)%5)];
+        }else{
+            text[i] = ALPHA[point2%5 + (Math.floor(point1 / 5) *5)];
+            text[i+1] = ALPHA[point1%5 + (Math.floor(point2 / 5) *5)];
+        }
+    }
+    return text;
 }
 
 function findMostLikely(text, accuracy){
