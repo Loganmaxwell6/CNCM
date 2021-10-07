@@ -1,111 +1,48 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
   <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cipher solving tool for the cipher challenge">
+    <meta name="author" content="Logan Maxwell, Jamie Holloway, Fenwick Thompson">
+
+    <title>CNCM · Cipher Solver</title>
+
+    <!-- Extras -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools28.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="main.js"></script>
-    <title>Crooked Nazgul Code Men</title>
+
+    <!-- Main program file -->
+    <script src="main.js"></script>
   </head>
-  <body>
-    <div class = "header">
+
+  <body class="bg-light">
+
+    <!-- Header -->
+    <div class="header">
       <div id="headerTitle">Crooked Nazgul Code Men Official Website</div>
       <div id="headerSecondary">SEMATARY GRAVE MAN FROM THE HAUNTED MOUND REAL NAZGUL SKINCARVER DEER GOD KEEPER OF THE TREES TRUE RELIGION FIEND HAUNTED MOUND LORD</div>
     </div>
-    <div id = "mainBit">
-      <div id="inputPart">
-        <textarea id="textIn" rows="10" cols="100" placeholder="Input text here..." oninput="updateText()"></textarea>
-      </div>
-      <div id="outputPart">
-        <textarea id="textOut" rows="10" cols="100" placeholder="Output text here" disabled="disabled"></textarea>
-      </div>
-      <div id="options">
-        <button id="swapText" onclick=swapText()>↑</button>
-        <button id="clearText" onclick=clearText()>Clear</button>
-        <button id="reverseText" onclick =reverseText()>Reverse</button>
-        <button id="copyText" onclick=copyText()>Copy to Clipboard</button>
-        <button id="sem" onclick=play() style=visibility:hidden>Shush</button>
-      </div>
-      <textArea id="encryptInputBox" placeholder="Input encryption key here"></textArea>
-      <div class="cipherButtons clearfix">
-        <div class="buttonsDiv">
-          <button id="caesarCipher">Caesar Cipher</button>
-          <div class="caesarOptions optionsButtons">
-            <div class ="caesarDecrypt">
-              <button id="caesarDecrypt" class="optionButton">decrypt</button> 
-            </div>
-            <div class ="caesarEncrypt">
-              <button id="caesarEncrypt" class="optionButton">encrypt</button>
-            </div>
-          </div>
-        </div>
-        <div class="buttonsDiv">
-          <button id="affineCipher">Affine Cipher</button>
-          <div class="affineOptions optionsButtons">
-            <div class = "affineDecrypt">
-              <button id="affineDecrypt" class="optionButton">decrypt</button> 
-            </div>
-            <div class = "affineEncrypt">
-              <button id="affineEncrypt" class="optionButton">encrypt</button>
-            </div>
-          </div>
-        </div>
-        <div class="buttonsDiv">
-          <button id="substitutionCipher">SubstitutionCipher</button>
-          <div class="substitutionOptions optionsButtons">
-            <div class="substitutionDecrypt">
-              <button id="substitutionDecrypt" class="optionButton">decrypt</button>
-              <div class="substitutionDecryptOptions">
-                <button id="substitutionManual" class="optionButton">manual</button>
-                <button id="substitutionAutomatic" class="optionButton">automatic</button>
-              </div>
-            </div>
-            <div class="substitutionEncrypt">
-              <button id="substitutionEncrypt" class="optionButton">encrypt</button>
-              
-            </div>
-          </div>
-        </div>
-        <div class="buttonsDiv">
-          <button id="transpositionCipher">Transposition Cipher</button>
-          <div class="transpositionOptions optionsButtons">
-            <div class = "transpositionDecrypt">
-              <button id="transpositionDecrypt" class="optionButton">decrypt</button> 
-            </div>
-            <div class = "transpositionEncrypt">
-              <button id="transpositionEncrypt" class="optionButton" >encrypt</button>
-            </div>
-          </div>
-        </div>
-        <div class="buttonsDiv">
-          <button id="vigenereCipher">Vigenère cipher</button>
-          <div class="vigenereOptions optionsButtons">
-            <div class = "vigenereDecrypt">
-              <button id="vigenereDecrypt" class="optionButton">decrypt</button> 
-            </div>
-            <div class = "vigenereEncrypt">
-              <button id="vigenereEncrypt" class="optionButton" >encrypt</button>
-            </div>
-          </div>
-        </div>
-        <div class="buttonsDiv">
-          <button id="keywordCipher">Keyword Cipher</button>
-          <div class="keywordOptions optionsButtons">
-            <div class = "keywordEncrypt">
-              <button id="keywordEncrypt" class="optionButton" >encrypt</button> 
-            </div>
-          </div>
-        </div>
-        <div class="buttonsDiv">
-          <button id="determineCipher">Determine Cipher</button>
-        </div>
-      </div>
-    </div>
-    <div id="sidebar">
-      <div id="panel" class="panel panel-default dataPanel">
+
+    <div class="body-divider"></div>
+
+    <!-- Data -->
+    <div id="data">
+
+      <!-- Panel -->
+      <div class="panel panel-default" id="dataPanel">
         <div class="panel-heading">Data</div>
         <div class="panel-body" id="dataPanelBody">
-          <table class="table table-bordered" id="frequencyTable">
+
+          <!-- Frequency table -->
+          <table class="table table-sm table-bordered" id="frequencyTable">
             <tr>
               <th>Letter</th>
               <th>Frequency</th>
@@ -113,37 +50,126 @@
               <th>Frequency</th>
             </tr>
           </table>
-          <div>
-            <table>
-              <tr>
-                <td>Text Length:</td>
-                <td id="fullLen" class="dataValues">0</td>
-              </tr>
-              <tr>
-                <td>Text Length (No Grammar):</td>
-                <td id="Len" class="dataValues">0</td>
-              </tr>
-              <tr>
-                <td>Most Likely Cipher:</td>
-                <td id="likely" class="dataValues">Unknown</td>
-              </tr>
-              <tr>
-                <td>IoC:</td>
-                <td id="IoC" class="dataValues">0</td>
-              </tr>
-              <tr>
-                <td>Chi: </td>
-                <td id = "Chi" class="dataValues">0</td>
-              </tr>
-              <tr>
-                <td>Time taken: </td>
-                <td id = "Time" class="dataValues">0</td>
-              </tr>
-            </table>
-            
-          </div>
+
+          <!-- Other table -->
+          <table>
+            <tr>
+              <td>Text Length:</td>
+              <td id="fullLen" class="dataValues">0</td>
+            </tr>
+            <tr>
+              <td>Text Length (No Grammar):</td>
+              <td id="Len" class="dataValues">0</td>
+            </tr>
+            <tr>
+              <td>Most Likely Cipher:</td>
+              <td id="likely" class="dataValues">Unknown</td>
+            </tr>
+            <tr>
+              <td>IoC:</td>
+              <td id="IoC" class="dataValues">0</td>
+            </tr>
+            <tr>
+              <td>Chi: </td>
+              <td id = "Chi" class="dataValues">0</td>
+            </tr>
+            <tr>
+              <td>Time taken: </td>
+              <td id = "Time" class="dataValues">0</td>
+            </tr>
+          </table>
+
         </div>
       </div>
+
     </div>
-  </body>
+
+    <!-- Input -->
+    <div id="inputArea">
+      <textarea class="form-control" id="textIn" placeholder="Input text here..." ></textarea>
+    </div>
+
+    <!-- Output -->
+    <div id="outputArea">
+      <textarea class="form-control" id="textOut" placeholder="Output text here..." disabled="disabled"></textarea>
+    </div>
+
+    <!-- Settings -->
+    <div id="settings">
+      
+      <!-- Settings Panel -->
+      <div class="panel panel-default" id="settingsPanel">
+        <div class="panel-heading">Settings</div>
+        <div class="panel-body" id="settingsPanelBody">
+
+          <!-- Cipher Select Dropdown -->
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Cipher <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a id="caesar">Caesar</a></li>
+              <li><a id="affine">Affine</a></li>
+              <li><a id="substitutionA">Substitution (automatic)</a></li>
+              <li><a id="substitutionM">Substitution (manual)</a></li>
+              <li><a id="transpositionS">Transposition (simple)</a></li>
+              <li><a id="transpositionC">Transposition (columnar)</a></li>
+              <li><a id="vigenere">Vigenère</a></li>
+              <li><a id="keyword">Keyword</a></li>
+              <li class="divider"></li>
+              <li><a id="determine">Determine cipher</a></li>
+            </ul>
+          </div>
+
+          <!-- Other settings -->
+          <div id="options">
+            <button class="btn btn-primary" id="swapText">↑</button>
+            <button class="btn btn-primary" id="clearText">Clear</button>
+            <button class="btn btn-primary" id="reverseText">Reverse</button><br>
+            <button class="btn btn-primary" id="copyText">Copy to Clipboard</button>
+          </div>
+          <textarea class = "form-control" id="encryptInputBox" placeholder="Input key..."></textarea><br>
+          <button class="btn btn-primary" id="encrypt">Encrypt</button>
+          <button class="btn btn-primary" id="decrypt">Decrypt</button>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="body-divider"></div>
+
+    <!-- Footer -->
+    <div class="container">
+      <footer class="py-3 my-4">
+        <ul class="nav border-bottom pb-3 mb-3">
+          <li class="nav-item"><a href="https://github.com/Loganmaxwell6/CNCM" class="nav-link px-2 text-muted">Github repo</a></li>
+          <li class="nav-item"><a href="https://cipherchallenge.org" class="nav-link px-2 text-muted">Cipher challenge</a></li>
+          <li class="nav-item"><a href="https://open.spotify.com/artist/1GLnyPuL45vOsZPs5iANcC" class="nav-link px-2 text-muted">Ciphertools</a></li>
+        </ul>
+        <p class="text-center text-muted">&copy; Crooked Nazgul Code Men 2021</p>
+      </footer>
+    </div>
+
+    <!-- Input Binding -->
+    <script>
+      $( document ).ready(function() {
+        $('.dropdown').each(function (key, dropdown) {
+          var $dropdown = $(dropdown);
+          $dropdown.find('.dropdown-menu a').on('click', function () {
+              $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
+              setCipher(($(this).attr('id')));
+              changeKeyInput();
+          });
+        });
+        $('#textIn').on('input', function(){updateText();});
+        $('#swapText').on('click', function(){swapText();});
+        $('#clearText').on('click', function(){clearText();});
+        $('#reverseText').on('click', function(){reverseText();});
+        $('#copyText').on('click', function(){copyText();});
+        $('#encrypt').on('click', function(){encrypt();});
+        $('#decrypt').on('click', function(){decrypt();});
+        $('#encryptInputBox').on('input', function(){setKey();});
+      });
+      init();
+    </script>
+  </body>  
 </html>

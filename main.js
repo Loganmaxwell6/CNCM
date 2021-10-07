@@ -1,3 +1,619 @@
+// Crooked Nazgul Code Men 2021
+
+//--------------------------------------------------
+
+// global variables
+var selectedCipher, key;
+const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const d = new Date();
+
+currentButton = "";
+numthing = 0;
+
+//--------------------------------------------------
+
+// site startup stuff
+function init(){
+    initiateFrequencyTable();
+    frequencyTable = document.getElementById("frequencyTable");
+    IoC = document.getElementById("IoC");
+    Chi = document.getElementById("Chi");
+    fullLen = document.getElementById("fullLen");
+    Len = document.getElementById("Len");
+    likely = document.getElementById("likely");
+    Time = document.getElementById("Time");
+    textIn = document.getElementById("textIn");
+    textOut = document.getElementById("textOut");
+    encryptInputBox = document.getElementById("encryptInputBox");
+}
+
+function initiateFrequencyTable(){
+    for (let i = 0; i < 13; i++){
+        frequencyTable.insertRow(i+1).outerHTML = "<tr><td>"+ALPHA[i]+"</td><td id='"+ALPHA[i] +"'>0</td><td>"+ALPHA[i+13]+"</td><td id='"+ALPHA[i+13] +"'>0</td></tr>";
+    }
+}
+
+function updateFrequencyTable(){
+    let freq = observedCount(globalText.join(""));
+    for (let i = 0;i < 26; i ++){
+        document.getElementById(ALPHA[i]).innerHTML = freq[i];
+    }
+}
+
+function updateDataValues(){
+    if (globalText.length > 1){
+        IoC.innerHTML = Number(Math.round(indexOfCoincidence(globalText.join(""))+'e4')+'e-4');
+        Chi.innerHTML = Number(Math.round(chiTest(globalText.join(""))+'e2')+'e-2');
+    }else{
+        IoC.innerHTML = 0;
+        Chi.innerHTML = 0;
+    }
+    fullLen.innerHTML = textIn.value.length;
+    Len.innerHTML = globalText.length;
+    likely.innerHTML = determineCipher();
+}
+
+function mod(n, m) {
+    return ((n % m) + m) % m;
+}
+
+function rand(s, e){
+    if (s == 0){
+        return (Math.floor(Math.random() * e+1));
+    }
+    else{
+        return (Math.floor(Math.random() * e) + s);
+    }
+}
+
+function updateText(){
+    clean = cleanText(textIn.value)
+    globalText = clean[0];
+    globalGrammar = clean[1];
+
+    updateFrequencyTable();
+    updateDataValues();
+}
+
+function input(f){
+    textOut.value = "";
+    if(!(textIn.value) == ''){
+        let s = Date.now();
+        let out = f();
+        let e = Date.now();
+        Time.innerHTML = (e - s) + "ms";
+        return out;
+    }else{
+        alert("Enter text into input box first")
+    }
+}
+
+function output(text){
+    text = addGrammar(text);
+    text = "Key : " + key + "\n\n" + text;
+    if(!(textOut.value == text)){
+        textOut.value += text + "\n";
+    }
+    key = null;
+}
+
+function addGrammar(text){
+    text = text.split("");
+    for (let [key, value] of Object.entries(globalGrammar)){
+        text.splice(key, 0, value)
+    }
+    return text.join("")
+}
+
+function cleanText(text){
+    a = []
+    b= {}
+    for (let i = 0; i < text.length; i++){
+        char = text[i].toUpperCase();
+        if (char in alphaDict) {
+            a.push(char);
+        }else{
+            b[i] = char;
+        }
+    }
+    return [a,b]
+}
+
+//--------------------------------------------------
+
+// clear input and output
+function clearText(){
+    textOut.value = ""
+    textIn.value = ""
+    updateText();
+}
+
+// make input text backwards
+function reverseText() {
+    textIn.value = textIn.value.split("").reverse().join("");
+    updateText();
+}
+
+function copyText() {
+    var copyText = textOut;
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    alert("Copied the text");
+}
+
+function swapText(){
+    if (!(textOut.value == "")){
+        textIn.value = textOut.value
+        textOut.value = ""
+    }else{
+        alert("No output text to swap")
+    }
+    updateText();
+}
+
+//--------------------------------------------------
+
+// store the selected cipher for global access
+function setCipher(cipher){
+    selectedCipher = cipher;
+}
+
+function setKey(){
+    key = encryptInputBox.value;
+}
+
+function changeKeyInput(){
+    switch(selectedCipher){
+        case "caesar":
+            encryptInputBox.placeholder = "Shift of n = ...";
+            break;
+        case "affine":
+            encryptInputBox.placeholder = "Shift of ax + b (a,b = ...)";
+            break;
+        case "substitutionA":
+            encryptInputBox.placeholder = "No key needed (encrypt generates random key)...";
+            break;
+        case "substitutionM":
+            encryptInputBox.placeholder = "Map chars a:b,c:d etc.";
+            break;    
+        case "transpositionS":
+            encryptInputBox.placeholder = "Cols order 1,2,3 etc. (for encrypt)"
+            break;
+        case "transpositionC":
+            encryptInputBox.placeholder = "No key needed...";
+            break;
+        case "vigenere":
+            encryptInputBox.placeholder = "Keyword = ...";
+            break;
+        case "keyword":
+            encryptInputBox.placeholder = "Keyword = ...";
+            break;
+        case "determine":
+            encryptInputBox.placeholder = "No key needed...";
+            break;
+        default:
+            alert("Something gone big wrong :(");
+    }
+
+}
+
+// encrypt
+function encrypt(){
+    if (selectedCipher == "determine"){
+        eval(selectedCipher + "Cipher")();
+    }
+    else{
+        var f = eval(selectedCipher + "Encrypt");
+        output(input(f));
+    }
+}
+
+// decrypt
+function decrypt(){
+    if (selectedCipher == "determine"){
+        eval(selectedCipher + "Cipher")();
+    }
+    else{
+        var f = eval(selectedCipher + "Decrypt");
+        output(input(f));
+    }
+}
+
+//--------------------------------------------------
+
+const caesarShift = (text, shift) => text.map((char) => char in alphaDict ? ALPHA[(alphaDict[char] + shift)%26] : char).join("");
+
+function affineShift(text,num,num2){
+    let multis ={0:'1',1:'9',2:'21',3:'15',4:'3',5:'19',6:'7',7:'23',8:'11',9:'5',10:'17',11:'25'};
+    return text.map(function(char){ return char in alphaDict ? ALPHA[(multis[num-1]*mod(alphaDict[char]-num2,26))%26] : char}).join("");
+}
+
+const affineShiftEncrypt = (text, num1, num2) => text.map((char)=>char in alphaDict ? ALPHA[((alphaDict[char]*num1)+num2)%26]:char).join("");
+
+//code for substitution
+function substitutionCipher(){
+    let freq = findMostLikely(globalText.slice(0), ALPHA.length);
+    let key = new Array(ALPHA.length).fill(0);
+    for (i in key){
+        key[parseInt(freq[i][0])] = mostLikely[i];
+    }
+    for (let i =0; i < 30; i++){
+        let newKey = fullSwapTest(key);
+        if (newKey == -1){
+            break;
+        }else{
+            key = newKey.slice(0);
+        }
+    }
+    
+    return applySubstitutionKey(globalText, key).join("");
+}
+
+function fullSwapTest(key){
+
+    function bigramTestForSub(text, cutOff, key){
+        let sum = 0;
+        for (let i = 0; i < Math.min(text.length-1,cutOff); i++){
+            sum += -Math.log(check[key[alphaDict[text[i]]]+key[alphaDict[text[i+1]]]]);
+        }
+        return sum / text.length - 1;
+    }
+
+    let currentKey = [-1, bigramTestForSub(globalText.slice(0).join(""), 2000, key)];
+
+    for (let i = 0; i < key.length; i++){
+        for (let x = i; x < key.length; x++){
+            let testKey = key.slice(0);
+            if (!(i == x)){
+                let firstLetter = testKey[i];
+                testKey[i] = testKey[x];
+                testKey[x] = firstLetter;
+                let score = bigramTestForSub(globalText.slice(0).join(""),2000, testKey);
+                if (score < currentKey[1]){
+                    currentKey[0] = testKey;
+                    currentKey[1] = score;
+                }
+            }
+        }
+    }
+    return currentKey[0];
+}
+
+applySubstitutionKey = (text, key) => text.map((char)=> key[alphaDict[char]]);
+
+function findMostLikely(text, accuracy){
+    count = observedCount(text);
+    a= [];
+    for(const [key, value] of Object.entries(count)){
+        a.push([key,value])
+    }
+    a = a.sort(function(a,b) {
+        return b[1]-a[1]
+    });
+    return a.slice(0,accuracy);
+}
+
+function decryptTranspositionCipher(){
+    let b = 10000000;
+    let key = [];
+    let text = globalText.join("");
+    for (let i = 2; i < 15; i++){
+        if (text.length % i == 0){
+            if(isEnglish(decryptTransposition(text,i))){
+               return s;
+            }
+        }
+    }
+}
+
+// run the full bigram decrypt cycle for a single keylength
+function decryptTransposition(text ,length){
+    let columns = returnEveryNth(text, length); //split into columns
+    let following = []; // will store 2d array of column and then column that follows it
+    var endVal = [-1,0]; //stores the index of the last column
+    for (let i =0; i < columns.length; i++){ //loop through each column
+        let scores = [];
+        for (let x =0; x<columns.length;x++){ //checking each column against current collumn
+            if (!(x == i)){ //asserts we are not checking column against the same column
+                let sum = 0;
+                for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
+                    if (!(j >= columns[x].length)){
+                        let bigram = columns[i][j] + columns[x][j];
+                        sum += -Math.log(check[bigram]);
+                    }
+                }
+                scores.push(sum);//add bigram score to scores
+            }else{
+                scores.push(100000);//add placeholder number
+            }
+        }
+        following.push([i,scores.indexOf(Math.min.apply(Math, scores))]);
+        if (Math.min.apply(Math, scores) > endVal[1]){
+            endVal = [i, Math.min.apply(Math, scores)];
+        }
+    }
+    
+    //generates key
+    let key = [];
+    var currentKey = endVal[0];
+    following[currentKey][1] = -1;
+    for(let i = 0; i< length; i++){
+        key.push(currentKey);
+        for (let x =0; x < length; x++){
+            if(following[x][1] == currentKey){
+                currentKey = x;
+                break;
+            }
+        }
+    }
+    key = key.reverse();
+    //applies key to cipher to decrypt
+    return applyTranspositionKey(columns, key);
+}
+
+function applyTranspositionKey(columns, key){
+    let newString = "";
+    for (let i = 0 ; i < columns[0].length;i++){
+        for(let x = 0; x < columns.length; x++){
+            try{
+                newString += columns[key[x]][i];
+            }catch{
+                return;
+            }
+        }
+    }
+    return newString;
+}
+
+//--------------------------------------------------
+
+function caesarEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+        let key = parseInt(key);
+        if (key >= 0){
+            key = n;
+            return caesarShift(text, parseInt(key));
+        }
+        else{
+            alert("Incorrect key input, using automatic...");
+        }
+    }
+
+    // keyless
+    let n = rand(0,26);
+    key = n;
+    return caesarShift(text, n);
+        
+}
+
+function caesarDecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+        let n = parseInt(key);
+        if (n > 0){
+            key = n;
+            return caesarShift(text, (26 - mod(n,26)));
+        }
+        else{
+            alert("Incorrect key input, using automatic...");
+        }
+    }
+
+    // keyless
+    for (let i = 0; i < 26; i ++) {
+        let t = caesarShift(text, i);
+        if (isEnglish(t)){
+            key = 26 - i;
+            return t;
+        }
+    }
+}
+
+function affineEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    //with key
+    if (!key == ""){
+        let k = key.split("");
+        let s = k.indexOf(",");
+        k = k.join("");
+        let n1 = parseInt(k.substring(0,s));
+        let n2 = parseInt(k.substring(s+1));
+        if (n1 >= 0 && n2 >= 0){
+            key = n1 + "n+" + n2;
+            return affineShiftEncrypt(text, n1, n2);
+        }
+        else{
+            alert("Incorrect key input, using automatic...");
+        }
+    }
+
+    // keyless
+    let n1 = rand(0,26);
+    let n2 = rand(0,26);
+    key = n1 + "n+" + n2;
+    return affineShiftEncrypt(text, n1, n2);
+}
+
+function affineDecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+        let k = key.split("");
+        let s = k.indexOf(",");
+        k = k.join("");
+        let n1 = parseInt(k.substring(0,s));
+        let n2 = parseInt(k.substring(s+1));
+        if (n1 >= 0 && n2 >= 0){
+            key = n1 + "n+" + n2;
+            return affineShiftEncrypt(text, n1, n2);
+        }
+        else{
+            alert("Incorrect key input, using automatic...");
+        }
+    }
+    
+    // keyless
+    for (let i = 1; i < 13; i ++) {
+        for (let x = 0; x <26; x++){
+            let t = affineShift(text, i, x);
+            if (isEnglish(t)){
+                key = i + "n+" + x;
+                return t;
+            }
+        } 
+    }
+}
+
+function substitutionAEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    // 
+    if (!key == ""){
+        if (!key.length > 26){
+            return applySubstitutionKey(text, key);
+        }else{
+            alert("Incorrect key input, using random key...");
+        }
+    }
+
+    //keyless
+    return applySubstituionKey(text, ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value)); //generates random key using ALPHA
+}
+
+function substitutionADecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    //with key
+    if (!key == ""){
+        return applySubstitutionKey(text, key);
+    }
+    //keyless
+    return substitutionCipher();
+}
+
+function substitutionMEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+
+    }
+
+    //keyless
+
+}
+
+function substitutionMDecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+
+    }
+
+    //keyless
+
+}
+
+function transpositionSEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+        applyTranspositionKey(text, key.split(""))
+    }
+
+    //keyless
+    return applyTranspositionKey(text, key); //need to add random generating transpo key
+}
+
+function transpositionSDecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+        return applyTranspositionKey(text, key.split(""));
+    }
+
+    //keyless
+    return decryptTranspositionCipher();
+}
+
+function transpositionCEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    //keyless
+
+}
+
+function transpositionCDecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    //keyless
+
+}
+
+function vigenereEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+
+    }
+
+    //keyless
+
+}
+
+function vigenereDecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+
+    }
+
+    //keyless
+
+}
+
+function keywordEncrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+
+    }
+
+    //keyless
+
+}
+
+function keywordDecrypt(){
+    var text = globalText.slice(0,globalText.length);
+    // with key
+    if (!key == ""){
+
+    }
+
+    //keyless
+
+}
+
+function determineCipher(){
+    let text = globalText.join("");
+    let c = chiTest(text);
+    if (c < 120){
+        return "Transposition";
+    }
+    let i = indexOfCoincidence(text);
+    if (i >= 0.06){
+        return "Substitution"; //placeholder until we narrow down substitution ciphers
+    }
+    let k = getKeyLength(text)
+    if (k != 0){
+        return "Vigenere"
+    }
+    return "Bruh";
+}
+
+
+
+
 class Button {
     constructor(id, parent, children, click=null){
         this.name = this.idToName(id);
@@ -76,236 +692,21 @@ class Button {
     }
 }
 
-const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const d = new Date();
+
 
 // Button (name which corresponds to the html id, parent button - null if n/a, 
-// list of the buttons it opens on being clicked, onclick function if applicable)
-window.onload = function(){
-    buttons = [new Button("caesarCipher",null,["caesarDecrypt", "caesarEncrypt"]), 
-    new Button("caesarDecrypt","caesarCipher",[],decryptCaesarCipher),
-    new Button("caesarEncrypt","caesarCipher",[],openCaesarEncrypt),
-    new Button("affineCipher", null, ["affineDecrypt", "affineEncrypt"]),
-    new Button("affineDecrypt", "affineCipher",[], decryptAffineCipher),
-    new Button("affineEncrypt", "affineCipher",[], openAffineEncrypt),
-    new Button("vigenereCipher", null, ["vigenereDecrypt", "vigenereEncrypt"]),
-    new Button("vigenereDecrypt", "vigenereCipher",[],decryptVigenereCipher),
-    new Button("vigenereEncrypt","vigenereCipher",[], openVigenereEncrypt),
-    new Button("transpositionCipher", null, ["transpositionDecrypt"]),
-    new Button("transpositionDecrypt", "transpositionCipher", [], decryptTranspositionCipher),
-    new Button("determineCipher", null, [], generalDecrypt),
-    new Button("substitutionCipher", null, ["substitutionDecrypt", "substitutionEncrypt"]),
-    new Button("substitutionDecrypt", "substitutionCipher", ["substitutionAutomatic", "substitutionManual"]),
-    new Button("substitutionEncrypt", "substitutionCipher", []),
-    new Button("substitutionManual", "substitutionDecrypt", []),
-    new Button("substitutionAutomatic", "substitutionDecrypt", [],substitutionCipher),
-    new Button("keywordCipher", null, ["keywordEncrypt"]),
-    new Button("keywordEncrypt","keywordCipher",[], openKeywordEncrypt)];
-
-    initiateFrequencyTable();
-}
-
-function initiateFrequencyTable(){
-    let table = document.getElementById("frequencyTable");
-    for (let i = 0; i < 13; i++){
-        table.insertRow(i+1).outerHTML = "<tr><td>"+ALPHA[i]+"</td><td id='"+ALPHA[i] +"'>0</td><td>"+ALPHA[i+13]+"</td><td id='"+ALPHA[i+13] +"'>0</td></tr>";
-    }
-}
-
-function updateFrequencyTable(){
-    let freq = observedCount(globalText.join(""));
-    for (let i = 0;i < 26; i ++){
-        document.getElementById(ALPHA[i]).innerHTML = freq[i];
-    }
-}
-
-function updateDataValues(){
-    if (globalText.length > 1){
-        document.getElementById("IoC").innerHTML = Number(Math.round(indexOfCoincidence(globalText.join(""))+'e4')+'e-4');
-        document.getElementById("Chi").innerHTML = Number(Math.round(chiTest(globalText.join(""))+'e2')+'e-2');
-    }else{
-        document.getElementById("IoC").innerHTML = 0;
-        document.getElementById("Chi").innerHTML = 0;
-    }
-    document.getElementById("fullLen").innerHTML = document.getElementById("textIn").value.length;
-    document.getElementById("Len").innerHTML = globalText.length;
-
-    let mostLikely = determineCipher()[0];
-    typeof mostLikely == 'string' ? document.getElementById("likely").innerHTML = getButton(mostLikely).name : "";
-}
-
-currentButton = "";
-
-//fen header code
-window.onscroll = function() {scrollFunction()};
-
-function scrollFunction() {
-    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-        document.getElementById("headerTitle").style.fontSize = "22px";
-        document.getElementById("headerSecondary").style.fontSize = "10px";
-    } else {
-    document.getElementById("headerTitle").style.fontSize = "36px";
-    document.getElementById("headerSecondary").style.fontSize = "16px";
-    }
-}
-
-numthing = 0;
-
-function mod(n, m) {
-    return ((n % m) + m) % m;
-}
-
-function updateText(){
-    if (document.getElementById("textIn").value == "SEMATARY" ){
-        document.getElementById("sem").style.visibility = 'visible';
-    }else{
-        document.getElementById("sem").style.visibility = 'hidden';
-    }
-    clean = cleanText(document.getElementById("textIn").value)
-    globalText = clean[0];
-    globalGrammar = clean[1];
-
-    updateFrequencyTable();
-    updateDataValues();
-}
-
-function input(f){
-    document.getElementById("textOut").value = "";
-    if(!(document.getElementById("textIn").value) == ''){
-        let s = Date.now();
-        f();
-        let e = Date.now();
-        document.getElementById("Time").innerHTML = (e - s) + "ms";
-    }else{
-        alert("Enter text into input box first")
-    }
-}
-
-function output(text){
-    text = addGrammar(text);
-    if(!(document.getElementById("textOut").value == text)){
-        document.getElementById("textOut").value += text + "\n";
-    }
-    
-}
-
-function addGrammar(text){
-    text = text.split("");
-    for (let [key, value] of Object.entries(globalGrammar)){
-        text.splice(key, 0, value)
-    }
-    return text.join("")
-}
-
-function cleanText(text){
-    a = []
-    b= {}
-    for (let i = 0; i < text.length; i++){
-        char = text[i].toUpperCase();
-        if (char in alphaDict) {
-            a.push(char);
-        }else{
-            b[i] = char;
-        }
-    }
-    return [a,b]
-}
-
-function copyText() {
-    var copyText = document.getElementById("textOut");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(copyText.value);
-    alert("Copied the text");
-}
-
-function play(){
-    song = new Audio("sem.mp3");
-    song.play();
-    alert("argghghghghgh ayyyy!");
-}
-
-function swapText(){
-    if (!(document.getElementById("textOut").value == "")){
-        document.getElementById("textIn").value = document.getElementById("textOut").value
-        document.getElementById("textOut").value = ""
-    }else{
-        alert("No output text to swap")
-    }
-    updateText();
-}
-
-function getButton(id){
-    for ( i in buttons){
-        if (buttons[i].id == id) {
-            return buttons[i];
-        }
-    }
-}
-
-function clearText(){
-    document.getElementById("textOut").value = ""
-    document.getElementById("textIn").value = ""
-    updateText();
-}
-
-function reverseText() {
-    document.getElementById("textIn").value = document.getElementById("textIn").value.split("").reverse().join("");
-    updateText();
-}
-
-function decryptCaesarCipher(){
-    for (let i = 0; i < 26; i ++) {
-        var text = globalText.slice(0,globalText.length);
-        let t = caesarShift(text, i);
-        if (isEnglish(t)){
-            output(t);
-        }
-    }
-}
-
-const caesarShift = (text, shift) => text.map((char) => char in alphaDict ? ALPHA[(alphaDict[char] + shift)%26] : char).join("");
-
-function openCaesarEncrypt(){
-    button = document.getElementById("encryptInputBox");
-    num = button.value;
-    var text = globalText;
-    if (!num ==''){
-        if (num >=0){
-            t = caesarShift(text, parseInt(num));
-            output(t); 
-        }else{
-            alert("Enter positive number"+"\n"+"Hint, a shift of "+num+ " equals a shift of "+(mod(parseInt(num),26)) )
-        } 
-    }
-}
-
-function decryptAffineCipher(){
-    for (let i = 1; i < 13; i ++) {
-        for (let x = 0; x <26; x++){
-            var text = globalText.slice(0,globalText.length);
-            let t = affineShift(text, i, x);
-            if (isEnglish(t)){
-                output(t);
-            }
-        } 
-    }
-}
-
-function affineShift(text,num,num2){
-    let multis ={0:'1',1:'9',2:'21',3:'15',4:'3',5:'19',6:'7',7:'23',8:'11',9:'5',10:'17',11:'25'};
-    return text.map(function(char){ return char in alphaDict ? ALPHA[(multis[num-1]*mod(alphaDict[char]+1-num2,26))%26] : char}).join("");
-}
+// list of the buttons it opens on being clicked, onclick function if applicable
 
 function openAffineEncrypt(){
-    let str = document.getElementById("encryptInputBox").value.split(",");
-    let num1 = parseInt(str[0]);
-    let num2 = parseInt(str[1]);
+    let mulitplyButton = document.getElementById("affineEncryptInputMultiply");
+    let addButton = document.getElementById("affineEncryptInputAdd");
+    let num1 = mulitplyButton.value % 26;
+    let num2 = addButton.value;
     var text = globalText;
-    if (typeof num1 == 'number' && typeof num2 == 'number'){
+    if (!(num1 =='') && !(num2 == '')){
         if (num1 >=0 && num2 >=0){
             if (!(num1 % 2 ==0) && !(num1==13)){
-                t = affineShiftEncrypt(text, num1 % 26, num2 % 26);
+                t = affineShiftEncrypt(text, parseInt(num1 % 26), parseInt(num2 % 26));
                 output(t); 
             }else{
                 alert(num1 + " not coprime with 26, pick new value for multiple");
@@ -315,11 +716,10 @@ function openAffineEncrypt(){
             alert("Enter positive numbers")
         } 
     }else{
-        alert("Enter two positive numbers in the format 1,3")
+        alert("Enter two positive numbers")
     }
 }
 
-const affineShiftEncrypt = (text, num1, num2) => text.map((char)=>char in alphaDict ? ALPHA[((alphaDict[char]*num1)+num2)%26]:char).join("");
 
 
 //full brute force decrypt
@@ -334,7 +734,7 @@ function decryptVigenere(num){
    for (let i =0; i < allVals.length; i++){
        scores = []
        for(let x =0; x < 26; x++){
-            chi = chiTest(caesarShift(allVals[i], x));
+            chi = chiTest(caesarShift(allVals[i].join(""), x));
             scores.push([x , chi])
        }
        scores = scores.sort(function(a,b) {return a[1]-b[1]});
@@ -354,7 +754,7 @@ function putVigenereTogether(text, shifts){
 }
 
 function openVigenereEncrypt(){
-    let button = document.getElementById("encryptInputBox");
+    let button = document.getElementById("vigenereEncryptInput");
     let key = button.value;
     var text = globalText;
     if (!key ==''){
@@ -377,6 +777,7 @@ function textKeyToNum(text){
     return key;
 }
 
+<<<<<<< Updated upstream
 // maybe faster to add only checking factors of text length
 function decryptTranspositionCipher(){
     let b = 10000000;
@@ -642,6 +1043,8 @@ function findMostLikely(text, accuracy){
     return a.slice(0,accuracy);
 }
 
+=======
+>>>>>>> Stashed changes
 function generalDecrypt(){
     f  = determineCipher()[1];
     if(typeof f == 'string'){
@@ -651,22 +1054,6 @@ function generalDecrypt(){
     }
 }
 
-function determineCipher(){
-    text = globalText.join("");
-    let c = chiTest(text);
-    if (c < 120){
-        return ["transpositionCipher", "transpositionDecrypt"];
-    }
-    let i = indexOfCoincidence(text);
-    if (i >= 0.06){
-        return ["substitutionCipher", "substitutionCipher"]; //placeholder until we narrow down substitution ciphers
-    }
-    let k = getKeyLength(text)
-    if (k != 0){
-        return ["vigenereCipher", "decryptVigenereCipher"];
-    }
-    return [-1, -1];
-}
 
 function indexOfCoincidence(text){
     let o = observedCount(text);
@@ -1559,6 +1946,3 @@ var check = {
     "ZY": "0.0000244838",
     "ZZ": "0.0000511722"
 };
-
-
-
