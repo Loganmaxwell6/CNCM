@@ -33,98 +33,106 @@
 
     <div class="body-divider"></div>
 
-    <!-- Data -->
-    <div id="data">
+    <!--Content  (Data, Input/Output, Settings) -->
+    <div class="content">
+      <!-- Data -->
+      <div id="data">
 
-      <!-- Panel -->
-      <div class="panel panel-default" id="dataPanel">
-        <div class="panel-heading">Data</div>
-        <div class="panel-body" id="dataPanelBody">
+        <!-- Panel -->
+        <div class="panel panel-default" id="dataPanel">
+          <div class="panel-heading">Data</div>
+          <div class="panel-body" id="dataPanelBody">
 
-          <!-- Frequency table -->
-          <table class="table table-sm table-bordered" id="frequencyTable">
-            <tr>
-              <th>Letter</th>
-              <th>Frequency</th>
-              <th>Letter</th>
-              <th>Frequency</th>
-            </tr>
-          </table>
+            <!-- Frequency table -->
+            <table class="table table-sm table-bordered" id="frequencyTable">
+              <tr>
+                <th>Letter</th>
+                <th>Frequency</th>
+                <th>Letter</th>
+                <th>Frequency</th>
+              </tr>
+            </table>
 
-          <!-- Other table -->
-          <table>
-            <tr>
-              <td>Text Length:</td>
-              <td id="fullLen" class="dataValues">0</td>
-            </tr>
-            <tr>
-              <td>Text Length (No Grammar):</td>
-              <td id="Len" class="dataValues">0</td>
-            </tr>
-            <tr>
-              <td>Most Likely Cipher:</td>
-              <td id="likely" class="dataValues">Unknown</td>
-            </tr>
-            <tr>
-              <td>IoC:</td>
-              <td id="IoC" class="dataValues">0</td>
-            </tr>
-            <tr>
-              <td>Chi: </td>
-              <td id = "Chi" class="dataValues">0</td>
-            </tr>
-            <tr>
-              <td>Time taken: </td>
-              <td id = "Time" class="dataValues">0</td>
-            </tr>
-          </table>
+            <!-- Other table -->
+            <table>
+              <tr>
+                <td>Text Length:</td>
+                <td id="fullLen" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Text Length (No Grammar):</td>
+                <td id="Len" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Most Likely Cipher:</td>
+                <td id="likely" class="dataValues">Unknown</td>
+              </tr>
+              <tr>
+                <td>IoC:</td>
+                <td id="IoC" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Chi: </td>
+                <td id = "Chi" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Time taken: </td>
+                <td id = "Time" class="dataValues">0</td>
+              </tr>
+            </table>
 
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Input -->
-    <div id="inputArea">
-      <textarea class="form-control" id="textIn" placeholder="Input text here..." ></textarea>
-    </div>
-
-    <!-- Output -->
-    <div id="outputArea">
-      <textarea class="form-control" id="textOut" placeholder="Output text here..." disabled="disabled"></textarea>
-    </div>
-
-    <!-- Settings -->
-    <div id="settings">
-      
-      <!-- Settings Panel -->
-      <div class="panel panel-default" id="settingsPanel">
-        <div class="panel-heading">Settings</div>
-        <div class="panel-body" id="settingsPanelBody">
-
-          <!-- Cipher Select Dropdown -->
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Cipher <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a id="caesar">Caesar</a></li>
-              <li><a id="affine">Affine</a></li>
-              <li><a id="substitutionA">Substitution (automatic)</a></li>
-              <li><a id="substitutionM">Substitution (manual)</a></li>
-              <li><a id="transpositionS">Transposition (simple)</a></li>
-              <li><a id="transpositionC">Transposition (columnar)</a></li>
-              <li><a id="vigenere">Vigenère</a></li>
-              <li><a id="keyword">Keyword</a></li>
-              <li class="divider"></li>
-              <li><a id="determine">Determine cipher</a></li>
-            </ul>
           </div>
+        </div>
 
-          <!-- Other settings -->
-          <div id="options">
-            <button class="btn btn-primary" id="swapText">↑</button>
-            <button class="btn btn-primary" id="clearText">Clear</button>
-            <button class="btn btn-primary" id="reverseText">Reverse</button><br>
-            <button class="btn btn-primary" id="copyText">Copy to Clipboard</button>
+      </div>
+      <div class="ioStuff">
+        <!-- Input -->
+        <div id="inputAreaDiv" class="ioTextArea">
+          <textarea class="ioTextArea" id="textIn" placeholder="Input text here..." ></textarea>
+        </div>
+
+        <!-- Output -->
+        <div id="outputAreaDiv" class="ioTextArea">
+          <textarea class="ioTextArea" id="textOut" placeholder="Output text here..." disabled="disabled"></textarea>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings">
+          
+          <!-- Settings Panel -->
+          <div class="panel panel-default" id="settingsPanel">
+            <div class="panel-heading">Settings</div>
+            <div class="panel-body" id="settingsPanelBody">
+
+              <!-- Cipher Select Dropdown -->
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Cipher <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a id="caesar">Caesar</a></li>
+                  <li><a id="affine">Affine</a></li>
+                  <li><a id="substitutionA">Substitution (automatic)</a></li>
+                  <li><a id="substitutionM">Substitution (manual)</a></li>
+                  <li><a id="transpositionS">Transposition (simple)</a></li>
+                  <li><a id="transpositionC">Transposition (columnar)</a></li>
+                  <li><a id="vigenere">Vigenère</a></li>
+                  <li><a id="keyword">Keyword</a></li>
+                  <li class="divider"></li>
+                  <li><a id="determine">Determine cipher</a></li>
+                </ul>
+              </div>
+
+              <!-- Other settings -->
+              <div id="options">
+                <button class="btn btn-primary" id="swapText">↑</button>
+                <button class="btn btn-primary" id="clearText">Clear</button>
+                <button class="btn btn-primary" id="reverseText">Reverse</button><br>
+                <button class="btn btn-primary" id="copyText">Copy to Clipboard</button>
+              </div>
+              <textarea id="encryptInputBox" placeholder="Input key..."></textarea><br>
+              <button class="btn btn-primary" id="encrypt">Encrypt</button>
+              <button class="btn btn-primary" id="decrypt">Decrypt</button>
+
+            </div>
           </div>
           <textarea class = "form-control" id="encryptInputBox" placeholder="Input key..."></textarea><br>
           <button class="btn btn-primary" id="encrypt">Encrypt</button>
@@ -132,7 +140,6 @@
 
         </div>
       </div>
-
     </div>
 
     <div class="body-divider"></div>
