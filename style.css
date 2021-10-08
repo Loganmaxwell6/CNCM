@@ -41,7 +41,7 @@ body {
 #data { grid-area: dataArea;}
 #inputAreaDiv { grid-area: inputArea;}
 #outputAreaDiv { grid-area: outputArea;}
-#settings { grid-area: settingsArea;}
+#settings { grid-area: settingsArea; min-width: 200px;}
 
 .content {
   display: grid;
