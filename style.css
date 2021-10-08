@@ -39,116 +39,17 @@ body {
 }
 
 #data { grid-area: dataArea;}
-#input { grid-area: inputArea;}
-#output { grid-area: outputArea;}
+#inputAreaDiv { grid-area: inputArea;}
+#outputAreaDiv { grid-area: outputArea;}
 #settings { grid-area: settingsArea;}
 
 .content {
   display: grid;
   grid: 
-   'dataArea inputArea settingsArea'
-   'dataArea outputArea .';
-  grid-auto-columns: auto auto;
-  grid-auto-rows: max-content auto;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
-
-.ioTextAreaDiv {
-  height: 100%;
-  width: 100%;
-}
-
-.ioTextArea {
-  padding:10px;
-  height:100%;
-  width: 100%;
-}
-
-.btn{
-  margin-top: .15rem;
-  margin-bottom: .15rem;
-}
-
-#data{
-  position: relative;
-  width: 20%;
-  margin-top: .15rem;
-}
-
-#inputArea{
-  margin-top: .5rem;
-  width: 60%;
-}
-
-#outputArea{
-  margin-top: .5rem;
-  margin-bottom: .5rem;
-  width: 60%;
-}
-
-#settings{
-  position: relative;
-  width: 20%;
-  margin-top: .15rem;
-}
-
-#encryptInputBox{
-  height: 2rem;
-}.header {
-  width: 100%;
-  padding:40px 0px;
-  text-align: center;
-  background: #e0d6c0;
-  color: white;
-}
-
-#headerTitle {
-  font-size: 36px;
-}
-
-#headerSecondary {
-  font-size: 16px;
-}
-
-.body-divider {
-  height: 3rem;
-  background-color: rgba(0, 0, 0, .1);
-  border: solid rgba(0, 0, 0, .15);
-  border-width: 1px 0;
-  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-}
-
-.bi {
-  vertical-align: -.125em;
-  fill: currentColor;
-}
-
-textarea{
-  resize: none;
-  width: auto;
-}
-
-body {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto;
-}
-
-#data { grid-area: dataArea;}
-#input { grid-area: inputArea;}
-#output { grid-area: outputArea;}
-#settings { grid-area: settingsArea;}
-
-.content {
-  display: grid;
-  grid: 
-   'dataArea inputArea settingsArea'
-   'dataArea outputArea .';
-  grid-auto-columns: auto auto;
-  grid-auto-rows: max-content auto;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  'dataArea inputArea settingsArea'
+  'dataArea outputArea outputArea';
+  grid-auto-columns: min-content auto min-content;
+  grid-auto-rows: min-content auto;
 }
 
 .ioTextAreaDiv {

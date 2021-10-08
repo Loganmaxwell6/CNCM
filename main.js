@@ -356,6 +356,136 @@ function applyTranspositionKey(text, key){
     return newString.split("");
 }
 
+function putVigenereTogether(text, shifts){
+    text = text.split("");
+    for (let i = 0; i < text.length; i++){
+        text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
+    }
+    return text.join("");
+}
+
+function indexOfCoincidence(text){
+    let o = observedCount(text);
+    let n = 0;
+    let sum = 0;
+    for (let i = 0; i < 26; i++){
+        sum += o[i] * (o[i] - 1);
+        n += o[i];
+    }
+    let N = (n * (n - 1))/26;
+    return (sum / N) / 26;
+}
+
+// it worky now :)
+function getKeyLength(text){
+    let limit = 13;
+    let keyLength = 0; 
+    let ioc = 0;
+    for (let step = 2; step < limit; step++){
+        let sum = 0;
+        let allVals = returnEveryNth(text, step);     
+        for (i of allVals){
+            s = i.join("");
+            sum += indexOfCoincidence(s);
+        }
+        let avg = sum/step;
+        if (avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength){
+            keyLength = step;
+        }
+    }
+    return keyLength;
+}
+
+function isEnglish(text, threshold = 85){
+    let chiT = 250 - 2 * threshold; 
+    if (chiTest(text) < chiT){
+        numthing ++;
+        return bigramTest(text) < 100;
+    }
+    return false;
+}
+
+//mapping of alpha to f as a index 0 in both etc.
+function observedCount(text){
+    let o = {};
+    for (let i = 0; i < 26; i++){
+        o[i] = 0;
+    }
+    for (let i = 0; i <text.length; i++){
+        o[alphaDict[text[i]]] ++;
+    }
+    return o;
+}
+
+function expectedCount(t){
+    let e = [];
+    for(a in ALPHA){
+        e.push(check[ALPHA[a]] * t);
+    }
+    return e;
+}
+
+function returnEveryNth(text, step){
+    let allVals = [];
+    for (let x = 0; x < step; x++){
+        allVals.push([])
+    }
+    for (let i =0; i < text.length; i++){
+        allVals[i %step].push(text[i])
+    }
+    return allVals;
+}
+
+//observed - expected ^ 2 / expected
+function chiHelper(o,e){
+    return (o - e)**2/e;
+}
+
+//<150 should be english
+function chiTest(text){
+    let o = observedCount(text);
+    let e = expectedCount(text.length);
+    let sum = 0;
+    for(let i = 0; i < 26; i++){
+        sum += chiHelper(o[i],e[i]);
+    }
+    return Math.sqrt(sum);
+}
+
+function observedBigramCount(text){
+    let o = [];
+    for (let i = 0; i < 676; i++){
+        o.push(0);
+    }
+    for (let i = 0; i < text.length-1; i++){
+        let p = text.substring(i,i+2);
+        o[((alphaDict[p[0]] * 26) + (alphaDict[p[1]]))]++;
+    }
+    return o;
+}
+
+function expectedBigramCount(t){
+    let e = [];
+    for (a in ALPHA){
+        for (b in ALPHA){
+            let p = ALPHA[a] + ALPHA[b];
+            e.push(check[p] * t);
+        }
+    }
+    return e;
+}
+
+function bigramTest(text, cutOff = 2000){
+    text = text.substring(0,Math.min(text.length, cutOff));
+    let o = observedBigramCount(text);
+    let e = expectedBigramCount(text.length);
+    let sum = 0;
+    for (let i = 0; i < 676; i++){
+        sum += chiHelper(o[i],e[i]);
+    }
+    return Math.sqrt(sum);
+}
+
 //--------------------------------------------------
 
 function caesarEncrypt(){
@@ -580,10 +710,28 @@ function vigenereDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     if (!key == ""){
+         
 
     }
 
     //keyless
+    let keyLength = getKeyLength(text);
+    let allVals = returnEveryNth(text, keyLength);
+    let shifts = [];
+    for (let i =0; i < allVals.length; i++){
+        scores = []
+        for(let x =0; x < 26; x++){
+                chi = chiTest(caesarShift(allVals[i].join(""), x));
+                scores.push([x , chi])
+        }
+        scores = scores.sort(function(a,b) {return a[1]-b[1]});
+        shifts.push(scores[0][0]);
+    }
+    t = putVigenereTogether(str, shifts);
+    console.log(t);
+    if (isEnglish(t)){
+        return t;
+    }
 
 }
 
@@ -628,6 +776,7 @@ function determineCipher(){
 
 //--------------------------------------------
 
+
 function openAffineEncrypt(){
     let mulitplyButton = document.getElementById("affineEncryptInputMultiply");
     let addButton = document.getElementById("affineEncryptInputAdd");
@@ -651,38 +800,6 @@ function openAffineEncrypt(){
     }
 }
 
-
-
-//full brute force decrypt
-function decryptVigenereCipher(){
-    decryptVigenere(getKeyLength(globalText.join("")));
-}
-//decrypt for one keylength
-function decryptVigenere(num){
-   let str = globalText.join("");
-   let allVals = returnEveryNth(str, num);
-   let shifts = [];
-   for (let i =0; i < allVals.length; i++){
-       scores = []
-       for(let x =0; x < 26; x++){
-            chi = chiTest(caesarShift(allVals[i].join(""), x));
-            scores.push([x , chi])
-       }
-       scores = scores.sort(function(a,b) {return a[1]-b[1]});
-       shifts.push(scores[0][0]);
-   }
-   t = putVigenereTogether(str, shifts);
-   if (isEnglish(t)){
-        output(t);
-   }  
-}
-function putVigenereTogether(text, shifts){
-    text = text.split("");
-    for (let i = 0; i < text.length; i++){
-        text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
-    }
-    return text.join("");
-}
 
 function openVigenereEncrypt(){
     let button = document.getElementById("vigenereEncryptInput");
@@ -834,129 +951,7 @@ function generalDecrypt(){
 }
 
 
-function indexOfCoincidence(text){
-    let o = observedCount(text);
-    let n = 0;
-    let sum = 0;
-    for (let i = 0; i < 26; i++){
-        sum += o[i] * (o[i] - 1);
-        n += o[i];
-    }
-    let N = (n * (n - 1))/26;
-    return (sum / N) / 26;
-}
 
-// it worky now :)
-function getKeyLength(text){
-    let limit = 13;
-    let keyLength = 0; 
-    let ioc = 0;
-    for (let step = 2; step < limit; step++){
-        let sum = 0;
-        let allVals = returnEveryNth(text, step);     
-        for (i of allVals){
-            s = i.join("");
-            sum += indexOfCoincidence(s);
-        }
-        let avg = sum/step;
-        if (avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength){
-            keyLength = step;
-        }
-    }
-    return keyLength;
-}
-//-------------------------------------------------------------
-//threshold = 85;
-
-function isEnglish(text, threshold = 85){
-    let chiT = 250 - 2 * threshold; 
-    if (chiTest(text) < chiT){
-        numthing ++;
-        return bigramTest(text) < 100;
-    }
-    return false;
-}
-
-//mapping of alpha to f as a index 0 in both etc.
-function observedCount(text){
-    let o = {};
-    for (let i = 0; i < 26; i++){
-        o[i] = 0;
-    }
-    for (let i = 0; i <text.length; i++){
-        o[alphaDict[text[i]]] ++;
-    }
-    return o;
-}
-
-function expectedCount(t){
-    let e = [];
-    for(a in ALPHA){
-        e.push(check[ALPHA[a]] * t);
-    }
-    return e;
-}
-
-function returnEveryNth(text, step){
-    let allVals = [];
-    for (let x = 0; x < step; x++){
-        allVals.push([])
-    }
-    for (let i =0; i < text.length; i++){
-        allVals[i %step].push(text[i])
-    }
-    return allVals;
-}
-
-//observed - expected ^ 2 / expected
-function chiHelper(o,e){
-    return (o - e)**2/e;
-}
-
-//<150 should be english
-function chiTest(text){
-    let o = observedCount(text);
-    let e = expectedCount(text.length);
-    let sum = 0;
-    for(let i = 0; i < 26; i++){
-        sum += chiHelper(o[i],e[i]);
-    }
-    return Math.sqrt(sum);
-}
-
-function observedBigramCount(text){
-    let o = [];
-    for (let i = 0; i < 676; i++){
-        o.push(0);
-    }
-    for (let i = 0; i < text.length-1; i++){
-        let p = text.substring(i,i+2);
-        o[((alphaDict[p[0]] * 26) + (alphaDict[p[1]]))]++;
-    }
-    return o;
-}
-
-function expectedBigramCount(t){
-    let e = [];
-    for (a in ALPHA){
-        for (b in ALPHA){
-            let p = ALPHA[a] + ALPHA[b];
-            e.push(check[p] * t);
-        }
-    }
-    return e;
-}
-
-function bigramTest(text, cutOff = 2000){
-    text = text.substring(0,Math.min(text.length, cutOff));
-    let o = observedBigramCount(text);
-    let e = expectedBigramCount(text.length);
-    let sum = 0;
-    for (let i = 0; i < 676; i++){
-        sum += chiHelper(o[i],e[i]);
-    }
-    return Math.sqrt(sum);
-}
 
 function newBigramTest(text, cutOff =2000){
     text = text.substring(0,Math.min(text.length, cutOff));
