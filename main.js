@@ -294,19 +294,6 @@ function findMostLikely(text, accuracy){
     return a.slice(0,accuracy);
 }
 
-function decryptTranspositionCipher(){
-    let b = 10000000;
-    let key = [];
-    let text = globalText.join("");
-    for (let i = 2; i < 15; i++){
-        if (text.length % i == 0){
-            if(isEnglish(decryptTransposition(text,i))){
-               return s;
-            }
-        }
-    }
-}
-
 // run the full bigram decrypt cycle for a single keylength
 function decryptTransposition(text ,length){
     let columns = returnEveryNth(text, length); //split into columns
@@ -349,21 +336,24 @@ function decryptTransposition(text ,length){
     }
     key = key.reverse();
     //applies key to cipher to decrypt
-    return applyTranspositionKey(columns, key);
+    return applyTranspositionKey(text, key);
 }
 
-function applyTranspositionKey(columns, key){
+function applyTranspositionKey(text, key){
     let newString = "";
+    let columns = returnEveryNth(text, key.length);
+    console.log(columns);
     for (let i = 0 ; i < columns[0].length;i++){
-        for(let x = 0; x < columns.length; x++){
+        for (let x = 0; x < columns.length; x++){
             try{
+                console.log(newString);
                 newString += columns[key[x]][i];
             }catch{
                 return;
             }
         }
     }
-    return newString;
+    return newString.split("");
 }
 
 function putVigenereTogether(text, shifts){
@@ -650,22 +640,47 @@ function transpositionSEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     if (!key == ""){
-        applyTranspositionKey(text, key.split(""))
+        let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
+        applyTranspositionKey(returnEveryNth(text, thisKey.length), thisKey);
     }
 
     //keyless
-    return applyTranspositionKey(text, key); //need to add random generating transpo key
+    return applyTranspositionKey(text, [1,2,3]); //need to add random generating transpo key
 }
 
 function transpositionSDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     if (!key == ""){
-        return applyTranspositionKey(text, key.split(""));
+        if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
+            let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
+            if (text.length % thisKey.length ==0){
+                return applyTranspositionKey(text, thisKey);
+            }else{
+                alert("Key length must be a factor of text length, using automatic decrypt...")
+            }  
+        }else if (key.split(",").every((char) => parseInt(char) >= 0)){
+            let thisKey = key.split(",").map((char)=>parseInt(char));
+            if (text.length % thisKey.length ==0){
+                console.log(thisKey)
+                return applyTranspositionKey(text, thisKey);
+            }else{
+                alert("Key length must be a factor of text length, using automatic decrypt...")
+            }  
+        }else{
+            alert("Incorrect key input, using random key...")
+        }
     }
 
     //keyless
-    return decryptTranspositionCipher();
+    for (let i = 2; i < 15; i++){
+        if (text.length % i == 0){
+            let s = decryptTransposition(text,i);
+            if(isEnglish(s.join(""))){
+               return s.join("");
+            }
+        }
+    }
 }
 
 function transpositionCEncrypt(){
@@ -701,7 +716,7 @@ function vigenereDecrypt(){
 
     //keyless
     let keyLength = getKeyLength(text);
-    let allVals = returnEveryNth(str, keyLength);
+    let allVals = returnEveryNth(text, keyLength);
     let shifts = [];
     for (let i =0; i < allVals.length; i++){
         scores = []
