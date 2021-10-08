@@ -701,7 +701,7 @@ function vigenereDecrypt(){
 
     //keyless
     let keyLength = getKeyLength(text);
-    let allVals = returnEveryNth(str, keyLength);
+    let allVals = returnEveryNth(text, keyLength);
     let shifts = [];
     for (let i =0; i < allVals.length; i++){
         scores = []
