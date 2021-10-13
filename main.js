@@ -248,12 +248,10 @@ function substitutionCipher(){
             key = newKey.slice(0);
         }
     }
-    
     return applySubstitutionKey(globalText, key.map((char) => ALPHA[char])).join("");
 }
 
 function fullSwapTest(freq, key, length){
-
     function bigramTestForSub(freq, key, length){
         let sum = 0;
         for (i in freq){
@@ -261,25 +259,25 @@ function fullSwapTest(freq, key, length){
         }
         return sum;
     }
-
-    let currentKey = [-1, bigramTestForSub(freq, key, length)];
+    let currentScore =bigramTestForSub(freq, key, length);
 
     for (let i = 0; i < key.length; i++){
         for (let x = i; x < key.length; x++){
             let testKey = key.slice(0);
             if (!(i == x)){
-                let firstLetter = testKey[i];
-                testKey[i] = testKey[x];
-                testKey[x] = firstLetter;
+                let a = mostLikelyNum[i];
+                let b = mostLikelyNum[x];
+                let firstLetter = testKey[a];
+                testKey[a] = testKey[b];
+                testKey[b] = firstLetter;
                 let score = bigramTestForSub(freq, testKey, length);
-                if (score < currentKey[1]){
-                    currentKey[0] = testKey;
-                    currentKey[1] = score;
+                if (score < currentScore){
+                    return testKey;
                 }
             }
         }
     }
-    return currentKey[0];
+    return -1;
 }
 
 applySubstitutionKey = (text, key) => text.map((char)=> key[alphaDict[char]]);
@@ -1591,7 +1589,6 @@ bigrams = [
     "0.0000511722"
 ]
 
-var mostLikely = "ETAIONSHRDLCUMWFGYPBVKJXQZ".split("");
 var alphaDict = {
     "A":0,
     "B":1,
@@ -1620,6 +1617,9 @@ var alphaDict = {
     "Y":24,
     "Z":25
 }
+
+var mostLikely = "ETAIONSHRDLCUMWFGYPBVKJXQZ".split("");
+var mostLikelyNum = mostLikely.map((char)=>alphaDict[char]);
 
 var check = {
     "A":0.0817,
