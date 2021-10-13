@@ -240,39 +240,50 @@ function substitutionCipher(){
         key[parseInt(freq[i][0])] = alphaDict[mostLikely[i]];
     }
     let bigramFreq = observedBigramCount(text.join(""));
-    for (let i =0; i < 30; i++){
-        let newKey = fullSwapTest(bigramFreq, key, text.length);
+    let score = bigramTestForSub(bigramFreq, key, text.length);
+    for (let i =0; i < 100; i++){
+        let newKey = fullSwapTest(bigramFreq, key, text.length, score);
         if (newKey == -1){
             break;
         }else{
-            key = newKey.slice(0);
+            key = newKey[0].slice(0);
+            score = newKey[1];
         }
     }
     return applySubstitutionKey(globalText, key.map((char) => ALPHA[char])).join("");
 }
 
-function fullSwapTest(freq, key, length){
-    function bigramTestForSub(freq, key, length){
-        let sum = 0;
-        for (i in freq){
-            sum += (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2; 
-        }
-        return sum;
+function bigramTestForSub(freq, key, length){
+    let sum = 0;
+    for (i in freq){
+        sum += (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2; 
     }
-    let currentScore =bigramTestForSub(freq, key, length);
-
+    return sum;
+}
+aT = 0
+function fullSwapTest(freq, key, length, keyScore){
+    function s(score, freq, key, length, a, b){
+        let testKey = key.slice(0);
+        let firstLetter = testKey[a];
+        testKey[a] = testKey[b];
+        testKey[b] = firstLetter;
+        for (let k = 0; k < key.length; k ++) {
+            var changes = [k * 26 + a, k * 26 + b, a * 26 + k, b * 26 + k];
+            for (i of changes){
+                score -= (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2;
+                score += (freq[i] - (bigrams[testKey[Math.floor(i / 26)] * 26 + testKey[i % 26]]*length)) ** 2;
+            }
+        }
+        return [testKey,score];
+    }
     for (let i = 0; i < key.length; i++){
         for (let x = i; x < key.length; x++){
-            let testKey = key.slice(0);
             if (!(i == x)){
-                let a = mostLikelyNum[i];
-                let b = mostLikelyNum[x];
-                let firstLetter = testKey[a];
-                testKey[a] = testKey[b];
-                testKey[b] = firstLetter;
-                let score = bigramTestForSub(freq, testKey, length);
-                if (score < currentScore){
-                    return testKey;
+                let test = s(keyScore, freq, key, length, mostLikelyNum[i], mostLikelyNum[x]);
+                let score = test[1];
+                if (score < keyScore){
+                    testKey = test[0];
+                    return [testKey,score];
                 }
             }
         }
