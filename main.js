@@ -237,20 +237,19 @@ function substitutionCipher(){
     let freq = findMostLikely(text, ALPHA.length);
     let key = new Array(ALPHA.length).fill(0);
     for (i in key){
-        key[parseInt(freq[i][0])] = mostLikely[i];
+        key[parseInt(freq[i][0])] = alphaDict[mostLikely[i]];
     }
     let bigramFreq = observedBigramCount(text.join(""));
     for (let i =0; i < 30; i++){
         let newKey = fullSwapTest(bigramFreq, key, text.length);
         if (newKey == -1){
-            console.log(i)
             break;
         }else{
             key = newKey.slice(0);
         }
     }
     
-    return applySubstitutionKey(globalText, key).join("");
+    return applySubstitutionKey(globalText, key.map((char) => ALPHA[char])).join("");
 }
 
 function fullSwapTest(freq, key, length){
@@ -258,9 +257,7 @@ function fullSwapTest(freq, key, length){
     function bigramTestForSub(freq, key, length){
         let sum = 0;
         for (i in freq){
-            let char1 = Math.floor(i / 26);
-            let char2 = i % 26;
-            sum += (freq[i] - (bigrams[alphaDict[key[char1]] * 26 + alphaDict[key[char2]]]*length)) ** 2; 
+            sum += (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2; 
         }
         return sum;
     }
@@ -728,9 +725,12 @@ function vigenereEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     if (!key == ""){
-
+        if (/^[a-zA-Z()]+$/.test(key)){
+            t = putVigenereTogether(text.join(""), textKeyToNum(key));
+        }else{
+            alert("Enter key with only letters and no spaces e.g. ABCD" );
+        } 
     }
-
     //keyless
 
 }
@@ -739,8 +739,7 @@ function vigenereDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     if (!key == ""){
-         
-
+         putVigenereTogether(text, key)
     }
 
     //keyless
@@ -805,47 +804,6 @@ function determineCipher(){
 
 //--------------------------------------------
 
-
-function openAffineEncrypt(){
-    let mulitplyButton = document.getElementById("affineEncryptInputMultiply");
-    let addButton = document.getElementById("affineEncryptInputAdd");
-    let num1 = mulitplyButton.value % 26;
-    let num2 = addButton.value;
-    var text = globalText;
-    if (!(num1 =='') && !(num2 == '')){
-        if (num1 >=0 && num2 >=0){
-            if (!(num1 % 2 ==0) && !(num1==13)){
-                t = affineShiftEncrypt(text, parseInt(num1 % 26), parseInt(num2 % 26));
-                output(t); 
-            }else{
-                alert(num1 + " not coprime with 26, pick new value for multiple");
-            }
-            
-        }else{
-            alert("Enter positive numbers")
-        } 
-    }else{
-        alert("Enter two positive numbers")
-    }
-}
-
-
-function openVigenereEncrypt(){
-    let button = document.getElementById("vigenereEncryptInput");
-    let key = button.value;
-    var text = globalText;
-    if (!key ==''){
-        if (/^[a-zA-Z()]+$/.test(key)){
-            t = putVigenereTogether(text.join(""), textKeyToNum(key));
-            output(t); 
-        }else{
-            alert("Enter key with only letters and no spaces e.g. ABCD" );
-        } 
-    }else{
-        alert("Enter key")
-    }
-}
-
 function textKeyToNum(text){
     key = [];
     for (i of text){
@@ -854,14 +812,6 @@ function textKeyToNum(text){
     return key;
 }
 
-function openKeywordEncrypt(){
-    let str = document.getElementById("encryptInputBox").value.toLocaleUpperCase().split("");
-    if(str.every((element) => ALPHA.includes(element))){
-        output(keywordCipherInput(str));
-    }else{
-        alert("Key must contain only letters please!")
-    }
-}
 keywordCipherInput = (str) => applySubstitutionKey(globalText, generateFullKey(str)).join("");
 generateFullKey = (str) => [...str, ...ALPHA].filter((char, index, arr) => !arr.slice(0,index).includes(char));
 
@@ -945,36 +895,6 @@ function applyPlayfairKey(text, key){
         }
     }
     return text;
-}
-
-function generalDecrypt(){
-    f  = determineCipher()[1];
-    if(typeof f == 'string'){
-        console.log(f)
-        f  = getButton(f).click;
-        f();
-    }
-}
-
-
-
-
-function newBigramTest(text, cutOff =2000){
-    text = text.substring(0,Math.min(text.length, cutOff));
-    let sum = 0;
-    for (let i = 0; i < text.length-1; i++){
-        sum += -Math.log(check[text[i]+text[i+1]]);
-    }
-    return sum / text.length - 1;
-}
-
-function bigramTestFromCount(o){
-    let e = expectedBigramCount(o.reduce((a, b) => a + b, 0));
-    let sum = 0;
-    for (let i = 0; i < 676; i++){
-        sum += chiHelper(o[i],e[i]);
-    }
-    return Math.sqrt(sum);
 }
 
 function time(num, f){
