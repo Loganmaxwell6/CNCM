@@ -356,6 +356,22 @@ function applyTranspositionKey(text, key){
     return newString.split("");
 }
 
+
+
+//function for putting columnar transposition text into form of normal transposition cipher
+function columnsToTransposition(text, length){
+    let num = text.length / length;
+    let columns = [];
+    for (let i = 0; i < length; i++){
+        let column = [];
+        for (let x = 0; x < num; x++){
+            column.push(text[(i * num) +x]);
+        }
+        columns.push(column)
+    }
+    return columns
+}
+
 function putVigenereTogether(text, shifts){
     text = text.split("");
     for (let i = 0; i < text.length; i++){
@@ -686,13 +702,21 @@ function transpositionSDecrypt(){
 function transpositionCEncrypt(){
     var text = globalText.slice(0,globalText.length);
     //keyless
-
+    return col
 }
 
 function transpositionCDecrypt(){
     var text = globalText.slice(0,globalText.length);
     //keyless
-
+    for (let i =2; i < 15; i++){
+        if (text.length % i ==0){
+            let s = decryptTransposition(i, columnsToTransposition(text, i));
+            if (isEnglish(s)) {
+                return s;
+            }
+        }
+    }
+     
 }
 
 function vigenereEncrypt(){
@@ -754,7 +778,7 @@ function keywordDecrypt(){
     }
 
     //keyless
-
+    substitutionCipher()
 }
 
 function determineCipher(){
@@ -823,29 +847,6 @@ function textKeyToNum(text){
         key.push(alphaDict[i.toUpperCase()]);
     }
     return key;
-}
-
-function decryptColumnarTransposition(){
-    let text = globalText.join("");
-    for (let i =2; i < 15; i++){
-        if (text.length % i ==0){
-            decryptTransposition(i, columnsToTransposition(text, i));
-        }
-    }
-}
-
-//function for putting columnar transposition text into form of normal transposition cipher
-function columnsToTransposition(text, length){
-    let num = text.length / length;
-    let columns = [];
-    for (let i = 0; i < length; i++){
-        let column = [];
-        for (let x = 0; x < num; x++){
-            column.push(text[(i * num) +x]);
-        }
-        columns.push(column)
-    }
-    return columns
 }
 
 function openKeywordEncrypt(){
