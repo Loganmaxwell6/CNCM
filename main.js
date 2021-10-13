@@ -771,7 +771,7 @@ function determineCipher(){
     if (k != 0){
         return "Vigenere"
     }
-    return "Bruh";
+    return "idk lol";
 }
 
 //--------------------------------------------
