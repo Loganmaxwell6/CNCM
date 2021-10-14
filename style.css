@@ -35,18 +35,16 @@ body {
 #data { grid-area: dataArea;}
 #inputAreaDiv { grid-area: inputArea;}
 #outputAreaDiv { grid-area: outputArea;}
-#settings { grid-area: settingsArea;}
-#cipherOptions { grid-area: cipherOptionsArea}
+#optionsPanels {grid-area: optionsPanelsArea;}
 
 .content {
   margin: 0.5rem;
   display: grid;
   grid: 
-  'dataArea inputArea settingsArea'
-  'dataArea inputArea cipherOptionsArea'
-  'dataArea outputArea outputArea';
+  'dataArea inputArea optionsPanelsArea'
+  'dataArea outputArea optionsPanelsArea';
   grid-auto-columns: max-content 3fr 1fr;
-  grid-auto-rows: 1fr 10fr 2fr;
+  grid-auto-rows: 1fr 1fr;
 }
 
 .ioTextArea {
@@ -61,8 +59,12 @@ body {
 }
 
 #data{
-  padding-top: 0.625rem;
-  font-size: 0.875rem;
+  padding: 0.625rem 0px 0px 0px;
+  /*font-size: 0.875rem;*/
+}
+
+#dataPanel{
+  margin-bottom:0.625rem;
 }
 
 #settings{
