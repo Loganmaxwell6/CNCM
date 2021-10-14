@@ -54,21 +54,15 @@ body {
 }
 
 .btn{
-  margin-top: .15rem;
-  margin-bottom: .15rem;
+  margin: .15rem 0rem;
 }
 
 #data{
-  padding: 0.625rem 0px 0px 0px;
-  /*font-size: 0.875rem;*/
+  padding-top: 0.625rem;
 }
 
 #dataPanel{
   margin-bottom:0.625rem;
-}
-
-#settings{
-  padding-top:0.625rem;
 }
 
 #encryptInputBox{
