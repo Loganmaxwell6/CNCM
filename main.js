@@ -260,7 +260,7 @@ function bigramTestForSub(freq, key, length){
     }
     return sum;
 }
-aT = 0
+
 function fullSwapTest(freq, key, length, keyScore){
     function s(score, freq, key, length, a, b){
         let testKey = key.slice(0);
@@ -279,7 +279,7 @@ function fullSwapTest(freq, key, length, keyScore){
     for (let i = 0; i < key.length; i++){
         for (let x = i; x < key.length; x++){
             if (!(i == x)){
-                let test = s(keyScore, freq, key, length, mostLikelyNum[i], mostLikelyNum[x]);
+                let test = s(keyScore, freq, key, length, i, x);
                 let score = test[1];
                 if (score < keyScore){
                     testKey = test[0];
