@@ -7,64 +7,83 @@
 }
 
 #headerTitle {
-  font-size: 36px;
+    font-size: 36px;
+  }
+
+  #headerSecondary {
+    font-size: 16px;
+  }
+
+  .body-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  textarea{
+    resize: none;
+  }
+
+  body {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+  }
+
+  .ioTextArea {
+    padding: 0.625rem;
+    height:100%;
+    width: 100%;
+  }
+
+  .btn{
+    margin: .15rem 0rem;
+  }
+
+  #data{
+    padding-top: 0.625rem;
+  }
+
+  #dataPanel{
+    margin-bottom:0.625rem;
+  }
+
+  #encryptInputBox{
+    height: 2rem;
+  }
+@media only screen and (orientation: landscape){
+  #data { grid-area: dataArea;}
+  #inputAreaDiv { grid-area: inputArea;}
+  #outputAreaDiv { grid-area: outputArea;}
+  #optionsPanels {grid-area: optionsPanelsArea;}
+
+  .content {
+    margin: 0.5rem;
+    display: grid;
+    grid: 
+    'dataArea inputArea optionsPanelsArea'
+    'dataArea outputArea optionsPanelsArea';
+    grid-auto-columns: max-content 3fr 1fr;
+    grid-auto-rows: 1fr 1fr;
+  }
 }
 
-#headerSecondary {
-  font-size: 16px;
-}
+@media only screen and (orientation: portrait){
+  #data { grid-area: dataArea;}
+  #inputAreaDiv { grid-area: inputArea;}
+  #outputAreaDiv { grid-area: outputArea;}
+  #optionsPanels {grid-area: optionsPanelsArea;}
 
-.body-divider {
-  height: 3rem;
-  background-color: rgba(0, 0, 0, .1);
-  border: solid rgba(0, 0, 0, .15);
-  border-width: 1px 0;
-  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-}
-
-textarea{
-  resize: none;
-}
-
-body {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto;
-}
-
-#data { grid-area: dataArea;}
-#inputAreaDiv { grid-area: inputArea;}
-#outputAreaDiv { grid-area: outputArea;}
-#optionsPanels {grid-area: optionsPanelsArea;}
-
-.content {
-  margin: 0.5rem;
-  display: grid;
-  grid: 
-  'dataArea inputArea optionsPanelsArea'
-  'dataArea outputArea optionsPanelsArea';
-  grid-auto-columns: max-content 3fr 1fr;
-  grid-auto-rows: 1fr 1fr;
-}
-
-.ioTextArea {
-  padding: 0.625rem;
-  height:100%;
-  width: 100%;
-}
-
-.btn{
-  margin: .15rem 0rem;
-}
-
-#data{
-  padding-top: 0.625rem;
-}
-
-#dataPanel{
-  margin-bottom:0.625rem;
-}
-
-#encryptInputBox{
-  height: 2rem;
+  .content {
+    margin: 0.5rem;
+    display: grid;
+    grid: 
+    'inputArea optionsPanelsArea'
+    'outputArea optionsPanelsArea'
+    'dataArea dataArea';
+    grid-auto-columns: 3fr 1fr;
+    grid-auto-rows: 1fr 1fr 1fr;
+  }
 }
