@@ -3,7 +3,8 @@
 //--------------------------------------------------
 
 // global variables
-var selectedCipher, key;
+var selectedCipher
+var key = null;
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
 
@@ -518,7 +519,7 @@ function bigramTest(text, cutOff = 2000){
 function caesarEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
         let key = parseInt(key);
         if (key >= 0){
             key = n;
@@ -539,7 +540,7 @@ function caesarEncrypt(){
 function caesarDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
         let n = parseInt(key);
         if (n > 0){
             key = n;
@@ -550,7 +551,7 @@ function caesarDecrypt(){
         }
     }
 
-    // keyless
+    // keyless - 0.0003s
     for (let i = 0; i < 26; i ++) {
         let t = caesarShift(text, i);
         if (isEnglish(t)){
@@ -563,7 +564,7 @@ function caesarDecrypt(){
 function affineEncrypt(){
     var text = globalText.slice(0,globalText.length);
     //with key
-    if (!key == ""){
+    if (!key == null){
         let k = key.split("");
         let s = k.indexOf(",");
         k = k.join("");
@@ -588,7 +589,7 @@ function affineEncrypt(){
 function affineDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
         let k = key.split("");
         let s = k.indexOf(",");
         k = k.join("");
@@ -603,7 +604,7 @@ function affineDecrypt(){
         }
     }
     
-    // keyless
+    // keyless - 0.0478s
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
             let t = affineShift(text, i, x);
@@ -619,7 +620,7 @@ function substitutionAEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     // 
-    if (!key == ""){
+    if (!key == null){
         if (!key.length > 26){
             return applySubstitutionKey(text, key);
         }else{
@@ -634,17 +635,17 @@ function substitutionAEncrypt(){
 function substitutionADecrypt(){
     var text = globalText.slice(0,globalText.length);
     //with key
-    if (!key == ""){
+    if (!key == null){
         return applySubstitutionKey(text, key);
     }
-    //keyless
+    //keyless - 0.133s
     return substitutionCipher();
 }
 
 function substitutionMEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
 
     }
 
@@ -655,7 +656,7 @@ function substitutionMEncrypt(){
 function substitutionMDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
 
     }
 
@@ -666,7 +667,7 @@ function substitutionMDecrypt(){
 function transpositionSEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
         let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
         applyTranspositionKey(returnEveryNth(text, thisKey.length), thisKey);
     }
@@ -678,7 +679,7 @@ function transpositionSEncrypt(){
 function transpositionSDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
         if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
             let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
             if (text.length % thisKey.length ==0){
@@ -699,7 +700,7 @@ function transpositionSDecrypt(){
         }
     }
 
-    //keyless
+    //keyless - 0.48786s
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
             let s = decryptTransposition(text,i);
@@ -733,7 +734,7 @@ function transpositionCDecrypt(){
 function vigenereEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
         if (/^[a-zA-Z()]+$/.test(key)){
             t = putVigenereTogether(text.join(""), textKeyToNum(key));
         }else{
@@ -747,8 +748,8 @@ function vigenereEncrypt(){
 function vigenereDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
-         putVigenereTogether(text, key)
+    if (!key == null){
+        putVigenereTogether(text, key)
     }
 
     //keyless
@@ -775,7 +776,7 @@ function vigenereDecrypt(){
 function keywordEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
 
     }
 
@@ -786,7 +787,7 @@ function keywordEncrypt(){
 function keywordDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == ""){
+    if (!key == null){
 
     }
 
