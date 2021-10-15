@@ -2,6 +2,13 @@
 
 //--------------------------------------------------
 
+// times
+// caesar decrypt - 0.0003s
+// affine decrypt - 0.0478s
+// transposition simple decrypt - 0.48786s
+// substitution automatic decrypt - 0.133s
+//--------------------------------------------------
+
 // global variables
 var selectedCipher
 var key = null;
@@ -549,7 +556,7 @@ function caesarDecrypt(){
         }
     }
 
-    // keyless - 0.0003s
+    // keyless
     for (let i = 0; i < 26; i ++) {
         let t = caesarShift(text, i);
         if (isEnglish(t)){
@@ -602,7 +609,7 @@ function affineDecrypt(){
         }
     }
     
-    // keyless - 0.0478s
+    // keyless 
     for (let i = 1; i < 13; i ++) {
         for (let x = 0; x <26; x++){
             let t = affineShift(text, i, x);
@@ -715,7 +722,7 @@ function transpositionSDecrypt(){
         }
     }
 
-    //keyless - 0.48786s
+    //keyless 
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
             let s = decryptTransposition(text,i);
