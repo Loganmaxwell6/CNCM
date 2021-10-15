@@ -95,7 +95,7 @@ function output(text){
     if(!(textOut.value == text)){
         textOut.value += text + "\n";
     }
-    key = null;
+    setKey();
 }
 
 function addGrammar(text){
@@ -354,11 +354,9 @@ function decryptTransposition(text ,length){
 function applyTranspositionKey(text, key){
     let newString = "";
     let columns = returnEveryNth(text, key.length);
-    console.log(columns);
     for (let i = 0 ; i < columns[0].length;i++){
         for (let x = 0; x < columns.length; x++){
             try{
-                console.log(newString);
                 newString += columns[key[x]][i];
             }catch{
                 return;
@@ -619,24 +617,25 @@ function affineDecrypt(){
 function substitutionAEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    // 
+    //
     if (!key == null){
-        if (!key.length > 26){
-            return applySubstitutionKey(text, key);
+        if (key.length <= 26){
+            return applySubstitutionKey(text, generateFullKey(key)).join("");
         }else{
             alert("Incorrect key input, using random key...");
         }
     }
 
     //keyless
-    return applySubstituionKey(text, ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value)); //generates random key using ALPHA
+    key = ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value)
+    return applySubstitutionKey(text, key).join(""); //generates random key using ALPHA
 }
 
 function substitutionADecrypt(){
     var text = globalText.slice(0,globalText.length);
     //with key
     if (!key == null){
-        return applySubstitutionKey(text, key);
+        return applySubstitutionKey(text, generateFullKey(key)).join("");
     }
     //keyless - 0.133s
     return substitutionCipher();
@@ -668,12 +667,28 @@ function transpositionSEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     if (!key == null){
-        let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
-        applyTranspositionKey(returnEveryNth(text, thisKey.length), thisKey);
+        if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
+            let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
+            if (text.length % thisKey.length ==0){
+                return applyTranspositionKey(text, thisKey).join("");
+            }else{
+                alert("Key length must be a factor of text length, using random key...")
+            }  
+        }else if (key.split(",").every((char) => parseInt(char) >= 0)){
+            let thisKey = key.split(",").map((char)=>parseInt(char));
+            if (text.length % thisKey.length ==0){
+                console.log(thisKey)
+                return applyTranspositionKey(text, thisKey).join("");
+            }else{
+                alert("Key length must be a factor of text length, using random key...")
+            }  
+        }else{
+            alert("Incorrect key input, using random key...")
+        }
     }
 
     //keyless
-    return applyTranspositionKey(text, [1,2,3]); //need to add random generating transpo key
+    return applyTranspositionKey(text, [1,2,3]).join(""); //need to add random generating transpo key
 }
 
 function transpositionSDecrypt(){
@@ -696,7 +711,7 @@ function transpositionSDecrypt(){
                 alert("Key length must be a factor of text length, using automatic decrypt...")
             }  
         }else{
-            alert("Incorrect key input, using random key...")
+            alert("Incorrect key input, using automatic decrypt...")
         }
     }
 
