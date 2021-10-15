@@ -339,7 +339,6 @@ function decryptTransposition(text ,length){
             endVal = [i, Math.min.apply(Math, scores)];
         }
     }
-    
     //generates key
     let key = [];
     var currentKey = endVal[0];
@@ -524,7 +523,7 @@ function bigramTest(text, cutOff = 2000){
 function caesarEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
+    if (!key == ''){
         let key = parseInt(key);
         if (key >= 0){
             key = n;
@@ -545,7 +544,7 @@ function caesarEncrypt(){
 function caesarDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
+    if (!key == ''){
         let n = parseInt(key);
         if (n > 0){
             key = n;
@@ -569,7 +568,7 @@ function caesarDecrypt(){
 function affineEncrypt(){
     var text = globalText.slice(0,globalText.length);
     //with key
-    if (!key == null){
+    if (!key == ''){
         let k = key.split("");
         let s = k.indexOf(",");
         k = k.join("");
@@ -594,7 +593,7 @@ function affineEncrypt(){
 function affineDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
+    if (!key == ''){
         let k = key.split("");
         let s = k.indexOf(",");
         k = k.join("");
@@ -625,7 +624,7 @@ function substitutionAEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
     //
-    if (!key == null){
+    if (!key == ''){
         if (key.length <= 26){
             return applySubstitutionKey(text, generateFullKey(key)).join("");
         }else{
@@ -641,7 +640,7 @@ function substitutionAEncrypt(){
 function substitutionADecrypt(){
     var text = globalText.slice(0,globalText.length);
     //with key
-    if (!key == null){
+    if (!key == ''){
         return applySubstitutionKey(text, generateFullKey(key)).join("");
     }
     //keyless - 0.133s
@@ -651,29 +650,27 @@ function substitutionADecrypt(){
 function substitutionMEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
-
+    if (!key == ''){
+        let subKey = ALPHA.slice(0);
+        let thisKey = key.split(",").map((char)=>char.split(":"));
+        if(thisKey.every((swap) => swap.length == 2 && swap.every((char)=> char.toUpperCase() in alphaDict))){
+            for (pair of thisKey){
+                subKey[alphaDict[pair[0].toUpperCase()]] = ALPHA[alphaDict[pair[1].toUpperCase()]];
+            }
+            return applySubstitutionKey(text, subKey).join("");
+        };
     }
-
-    //keyless
-
+    return text;
 }
 
 function substitutionMDecrypt(){
-    var text = globalText.slice(0,globalText.length);
-    // with key
-    if (!key == null){
-
-    }
-
-    //keyless
-
+    substitutionMDecrypt();
 }
 
 function transpositionSEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
+    if (!key == ''){
         if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
             let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
             if (text.length % thisKey.length ==0){
@@ -684,7 +681,6 @@ function transpositionSEncrypt(){
         }else if (key.split(",").every((char) => parseInt(char) >= 0)){
             let thisKey = key.split(",").map((char)=>parseInt(char));
             if (text.length % thisKey.length ==0){
-                console.log(thisKey)
                 return applyTranspositionKey(text, thisKey).join("");
             }else{
                 alert("Key length must be a factor of text length, using random key...")
@@ -695,13 +691,16 @@ function transpositionSEncrypt(){
     }
 
     //keyless
-    return applyTranspositionKey(text, [1,2,3]).join(""); //need to add random generating transpo key
+    randNum = rand(5,15);
+    key = Array.from(Array(10).keys()).map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
+    text = [...text, ...Array(randNum - (text.length % randNum)).fill("X")]
+    return applyTranspositionKey(text, key).join(""); //need to add random generating transpo key
 }
 
 function transpositionSDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
+    if (!key == ''){
         if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
             let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
             if (text.length % thisKey.length ==0){
@@ -712,7 +711,6 @@ function transpositionSDecrypt(){
         }else if (key.split(",").every((char) => parseInt(char) >= 0)){
             let thisKey = key.split(",").map((char)=>parseInt(char));
             if (text.length % thisKey.length ==0){
-                console.log(thisKey)
                 return applyTranspositionKey(text, thisKey);
             }else{
                 alert("Key length must be a factor of text length, using automatic decrypt...")
@@ -744,7 +742,7 @@ function transpositionCDecrypt(){
     //keyless
     for (let i =2; i < 15; i++){
         if (text.length % i ==0){
-            let s = decryptTransposition(i, columnsToTransposition(text, i));
+            let s = decryptTransposition(columnsToTransposition(text, i), i);
             if (isEnglish(s)) {
                 return s;
             }
@@ -756,22 +754,32 @@ function transpositionCDecrypt(){
 function vigenereEncrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
-        if (/^[a-zA-Z()]+$/.test(key)){
-            t = putVigenereTogether(text.join(""), textKeyToNum(key));
+    if (!key == ''){
+        if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
+            return putVigenereTogether(text.join(""), key.split("").map((char) => alphaDict[char.toUpperCase()]));
+        }else if(key.split(",").every((char) => parseInt(char) >= 0)){
+            return putVigenereTogether(text.join(""), key.split(",").map((char)=>parseInt(char)))
         }else{
             alert("Enter key with only letters and no spaces e.g. ABCD" );
         } 
     }
     //keyless
-
+    key = Array(rand(5,15)).fill(0)
+    key.map((char, index) => key[index] = rand(0,25));
+    return putVigenereTogether(text.join(""), key);
 }
 
 function vigenereDecrypt(){
     var text = globalText.slice(0,globalText.length);
     // with key
-    if (!key == null){
-        putVigenereTogether(text, key)
+    if (!key == ''){
+        if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
+            return putVigenereTogether(text.join(""), key.split("").map((char) => 26 - mod(alphaDict[char.toUpperCase()],26)));
+        }else if(key.split(",").every((char) => parseInt(char) >= 0)){
+            return putVigenereTogether(text.join(""), key.split(",").map((char)=>26 - mod(parseInt(char),26)))
+        }else{
+            alert("Enter key with only letters and no spaces e.g. ABCD" );
+        } 
     }
 
     //keyless
@@ -788,33 +796,15 @@ function vigenereDecrypt(){
         shifts.push(scores[0][0]);
     }
     t = putVigenereTogether(text.join(""), shifts);
-    console.log(t);
-    if (isEnglish(t)){
-        return t;
-    }
-
+    return t;
 }
 
 function keywordEncrypt(){
-    var text = globalText.slice(0,globalText.length);
-    // with key
-    if (!key == null){
-
-    }
-
-    //keyless
-
+    substitutionADecrypt()
 }
 
 function keywordDecrypt(){
-    var text = globalText.slice(0,globalText.length);
-    // with key
-    if (!key == null){
-
-    }
-
-    //keyless
-    substitutionCipher()
+    substitutionAEncrypt()
 }
 
 function determineCipher(){
@@ -836,15 +826,6 @@ function determineCipher(){
 
 //--------------------------------------------
 
-function textKeyToNum(text){
-    key = [];
-    for (i of text){
-        key.push(alphaDict[i.toUpperCase()]);
-    }
-    return key;
-}
-
-keywordCipherInput = (str) => applySubstitutionKey(globalText, generateFullKey(str)).join("");
 generateFullKey = (str) => [...str, ...ALPHA].filter((char, index, arr) => !arr.slice(0,index).includes(char));
 
 function decryptPolybiusCipher(){
