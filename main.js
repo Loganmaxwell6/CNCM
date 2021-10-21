@@ -70,7 +70,7 @@ function rand(s, e){
         return (Math.floor(Math.random() * e+1));
     }
     else{
-        return (Math.floor(Math.random() * e) + s);
+        return (Math.floor(Math.random() * (e-s)) + s);
     }
 }
 
@@ -417,7 +417,6 @@ function applyTranspositionKey(text, key){
             try{
                 newString.push(columns[key[x]][i]);
             }catch{
-                console.log(x, i, key)
                 return;
             }
         }
@@ -470,7 +469,7 @@ function indexOfCoincidence(text){
 
 // it worky now :)
 function getKeyLength(text){
-    let limit = 13;
+    let limit = 16;
     let keyLength = 0; 
     let ioc = 0;
     for (let step = 2; step < limit; step++){
@@ -638,8 +637,11 @@ function affineEncrypt(text = globalText.slice(0,globalText.length)){
     }
 
     // keyless
-    let n1 = rand(0,26);
+    let n1 = rand(0,12) * 2 + 1;
     let n2 = rand(0,26);
+    while(n1 == 13){
+        n1 = rand(0,12) * 2 + 1;
+    }
     key = n1 + "n+" + n2;
     return affineShiftEncrypt(text, n1, n2);
 }
@@ -671,6 +673,7 @@ function affineDecrypt(text = globalText.slice(0,globalText.length)){
             }
         } 
     }
+    return text;
 }
 
 function substitutionAEncrypt(text = globalText.slice(0,globalText.length)){
@@ -694,7 +697,7 @@ function substitutionADecrypt(text = globalText.slice(0,globalText.length)){
         return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
     }
     //keyless - 0.133s
-    return substitutionCipher();
+    return substitutionCipher(text);
 }
 
 function substitutionMEncrypt(text = globalText.slice(0,globalText.length)){
@@ -808,7 +811,7 @@ function vigenereEncrypt(text = globalText.slice(0,globalText.length)){
         } 
     }
     //keyless
-    key = Array(rand(5,15)).fill(0)
+    key = Array(rand(10,15)).fill(0)
     key.map((char, index) => key[index] = rand(0,25));
     return putVigenereTogether(text, key);
 }
@@ -838,7 +841,6 @@ function vigenereDecrypt(text = globalText.slice(0,globalText.length)){
         shifts.push(scores[0][0]);
     }
     t = putVigenereTogether(text, shifts);
-    console.log(text)
     return t;
 }
 
@@ -853,7 +855,6 @@ function keywordDecrypt(text = globalText.slice(0,globalText.length)){
 function polybiusDecrypt(text = globalText.slice(0, globalText.length)){
     let newText = [];
     let encryptors = getPolybiusEncryptors(text).sort();
-    console.log(encryptors)
     for (let i = 0; i < text.length -1; i+=2){
         newText.push((encryptors.indexOf(text[i]) * encryptors.length) + encryptors.indexOf(text[i+1]) % 26);
     }
@@ -956,16 +957,20 @@ function time(num, f){
 
 function testAccuracy(num, cipher){
     let testTexts = [
-            "Considered an invitation do introduced sufficient understood instrument it. Of decisively friendship in as collecting at. No affixed be husband ye females brother garrets proceed. Least child who seven happy yet balls young. Discovery sweetness principle discourse shameless bed one excellent. Sentiments of surrounded friendship dispatched connection is he. Me or produce besides hastily up as pleased. Bore less when had and john shed hope. Demesne far hearted suppose venture excited see had has. Dependent on so extremely delivered by. Yet ﻿no jokes worse her why. Bed one supposing breakfast day fulfilled off depending questions. Whatever boy her exertion his extended. Ecstatic followed handsome drawings entirely mrs one yet outweigh. Of acceptance insipidity remarkably is invitation. Contented get distrusts certainty nay are frankness concealed ham. On unaffected resolution on considered of. No thought me husband or colonel forming effects. End sitting shewing who saw besides son musical adapted. Contrasted interested eat alteration pianoforte sympathize was. He families believed if no elegance interest surprise an. It abode wrong miles an so delay plate. She relation own put outlived may disposed. In by an appetite no humoured returned informed. Possession so comparison inquietude he he conviction no decisively. Marianne jointure attended she hastened surprise but she. Ever lady son yet you very paid form away. He advantage of exquisite resolving if on tolerably. Become sister on in garden it barton waited on. Necessary ye contented newspaper zealously breakfast he prevailed. Melancholy middletons yet understood decisively boy law she. Answer him easily are its barton little. Oh no though mother be things simple itself. Dashwood horrible he strictly on as. Home fine in so am good body this hope. Carriage quitting securing be appetite it declared. High eyes kept so busy feel call in. Would day nor ask walls known. But preserved advantage are but and certainty earnestly enjoyment. Passage weather as up am exposed. And natural related man subject. Eagerness get situation his was delighted. Dispatched entreaties boisterous say why stimulated. Certain forbade picture now prevent carried she get see sitting. Up twenty limits as months. Inhabit so perhaps of in to certain. Sex excuse chatty was seemed warmth. Nay add far few immediate sweetness earnestly dejection.Whether article spirits new her covered hastily sitting her. Money witty books nor son add. Chicken age had evening believe but proceed pretend mrs. At missed advice my it no sister. Miss told ham dull knew see she spot near can. Spirit her entire her called. Is post each that just leaf no. He connection interested so we an sympathize advantages. To said is it shed want do. Occasional middletons everything so to. Have spot part for his quit may. Enable it is square my an regard. Often merit stuff first oh up hills as he. Servants contempt as although addition dashwood is procured. Interest in yourself an do of numerous feelings cheerful confined. She suspicion dejection saw instantly. Well deny may real one told yet saw hard dear. Bed chief house rapid right the. Set noisy one state tears which. No girl oh part must fact high my he. Simplicity in excellence melancholy as remarkably discovered. Own partiality motionless was old excellence she inquietude contrasted. Sister giving so wicket cousin of an he rather marked. Of on game part body rich. Adapted mr savings venture it or comfort affixed friends."
+            "Considered an invitation do introduced sufficient understood instrument it. Of decisively friendship in as collecting at. No affixed be husband ye females brother garrets proceed. Least child who seven happy yet balls young. Discovery sweetness principle discourse shameless bed one excellent. Sentiments of surrounded friendship dispatched connection is he. Me or produce besides hastily up as pleased. Bore less when had and john shed hope. Demesne far hearted suppose venture excited see had has. Dependent on so extremely delivered by. Yet ﻿no jokes worse her why. Bed one supposing breakfast day fulfilled off depending questions. Whatever boy her exertion his extended. Ecstatic followed handsome drawings entirely mrs one yet outweigh. Of acceptance insipidity remarkably is invitation. Contented get distrusts certainty nay are frankness concealed ham. On unaffected resolution on considered of. No thought me husband or colonel forming effects. End sitting shewing who saw besides son musical adapted. Contrasted interested eat alteration pianoforte sympathize was. He families believed if no elegance interest surprise an. It abode wrong miles an so delay plate. She relation own put outlived may disposed. In by an appetite no humoured returned informed. Possession so comparison inquietude he he conviction no decisively. Marianne jointure attended she hastened surprise but she. Ever lady son yet you very paid form away. He advantage of exquisite resolving if on tolerably. Become sister on in garden it barton waited on. Necessary ye contented newspaper zealously breakfast he prevailed. Melancholy middletons yet understood decisively boy law she. Answer him easily are its barton little. Oh no though mother be things simple itself. Dashwood horrible he strictly on as. Home fine in so am good body this hope. Carriage quitting securing be appetite it declared. High eyes kept so busy feel call in. Would day nor ask walls known. But preserved advantage are but and certainty earnestly enjoyment. Passage weather as up am exposed. And natural related man subject. Eagerness get situation his was delighted. Dispatched entreaties boisterous say why stimulated. Certain forbade picture now prevent carried she get see sitting. Up twenty limits as months. Inhabit so perhaps of in to certain. Sex excuse chatty was seemed warmth. Nay add far few immediate sweetness earnestly dejection.Whether article spirits new her covered hastily sitting her. Money witty books nor son add. Chicken age had evening believe but proceed pretend mrs. At missed advice my it no sister. Miss told ham dull knew see she spot near can. Spirit her entire her called. Is post each that just leaf no. He connection interested so we an sympathize advantages. To said is it shed want do. Occasional middletons everything so to. Have spot part for his quit may. Enable it is square my an regard. Often merit stuff first oh up hills as he. Servants contempt as although addition dashwood is procured. Interest in yourself an do of numerous feelings cheerful confined. She suspicion dejection saw instantly. Well deny may real one told yet saw hard dear. Bed chief house rapid right the. Set noisy one state tears which. No girl oh part must fact high my he. Simplicity in excellence melancholy as remarkably discovered. Own partiality motionless was old excellence she inquietude contrasted. Sister giving so wicket cousin of an he rather marked. Of on game part body rich. Adapted mr savings venture it or comfort affixed friends.",
+            "THE OPPORTUNITIES THIS WILL AFFORD ARE MANY: THE DELIVERY OF LARGE CRATES OF EQUIPMENT WILL GO UNNOTICED, CONSIDERED AS PART OF THE NATURAL BUSINESS OF THE PLACE; ITS LOCATION ON A BUSY WHARF WOULD DISGUISE THE NECESSARY COMINGS AND GOINGS OF OUR CO-CONSPIRATORS; THE WATERWAY WILL PROVIDE US WITH READY TRANSPORTATION BOTH INLAND VIA THE CANALS AND TO THE DOCKS AT TILBURY FOR OUR INTERNATIONAL VENTURES. NOT LEAST, THE EXTRAORDINARY POWER NEEDED FOR OUR DEVICES WILL BE MISTAKEN FOR THE ENERGY REQUIRED TO RUN YOUR PUBLIC EXPERIMENTS.I HAVE LITTLE EXPERTISE IN THE DESIGN OR ENGINEERING OF SUCH STRUCTURES, BUT I IMAGINE THAT THEY REQUIRE SUBSTANTIAL FOOTINGS. THE DEVELOPMENT OF THESE WILL PROVIDE THE COVER WE NEED TO CONSTRUCT OUR SECRET HEADQUARTERS UNDER THE MORE PUBLIC FACE OF THE LIGHTHOUSE ITSELF AND ITS ANCILLARY BUILDINGS.IT MAY BE THAT I HAVE MISSED SOMETHING IMPORTANT IN MY CONSIDERATIONS, IN WHICH CASE PLEASE DO POINT THAT OUT, BUT IF WE ARE TO PASS ON OUR DISCOVERIES, AMBITIONS AND PLANS TO THE NEXT GENERATION WE WILL NEED TO GIVE THEM A MORE PERMANENT HOME, SO I HOPE WE CAN AGREE TOGETHER ON THE BEST WAY TO PROCEED.YOURS, CH",
+            "HARRY, THANKS FOR YOUR EMAIL, I FORGOT YOU HAD SPENT TIME HERE IN THE ARCHAEOLOGISTS AND IT WAS GOOD TO BE REMINDED THAT IT CAN LEAD SOMEWHERE. IN THIS CASE I THINK THE BEST WE CAN HOPE FOR IS THAT WE WILL HAVE A NEW BUNCH OF RECRUITS TRAINED AND READY TO TACKLE MORE SERIOUS CHALLENGES, BUT I HAVE TO ADMIT THAT I AM GETTING MORE EXCITED ABOUT THIS CASE, EVEN IF IT IS JUST A TRAINING EXERCISE.THE ATTACHED MEMO FROM ABC REINFORCES WHAT WE LEARNED FROM THE LAST ONE. THE LIGHTHOUSE CONSPIRACY SEEMS TO BE A GROUP OF INFLUENTIAL VICTORIANS WHO ARE AIMING TO USE THEIR NEWFOUND TECHNOLOGICAL PROWESS TO PROFIT FROM WAR, FAMINE, PESTILENCE, AND ANY OTHER DISTURBANCE IN THE FORCE. I DON'T LIKE TO JUMP TO CONCLUSIONS, BUT I CAN'T HELP NOTICING THAT THE INITIALS COINCIDE WITH PEOPLE OF INTEREST TO BOSS. I CHECKED FARADAY'S INTELLIGENCE FILE AND AS YOU SAY, IT WAS EMPTY. IT IS HARD TO BELIEVE THAT A SCIENTIST OF HIS EMINENCE HAD ESCAPED NOTICE, SO IT SEEMS MORE LIKELY THAT THE REAL FILE HAS EITHER BEEN DELETED OR STORED SOMEWHERE MORE SECURE. PERHAPS YOU CAN MAKE ENQUIRIES? B MUST SURELY BE BABBAGE. ALL THE TALK IN THE ATTACHED LETTER IS ABOUT A DEVICE THAT SOUNDS LIKE A COMPUTER, AND THAT WOULD MEAN THAT AL IS ADA LOVELACE, WHO DIED SOME YEARS BEFORE THIS LETTER WAS WRITTEN. I CAN'T BE SURE WHO W OR N ARE, BUT MY GUESS IS THAT THIS N IS THE SAME PERSON AS FN IN THE PREVIOUS LETTER. AS FOR ABC, I HAVE A GUESS, BUT IT ALL SEEMS RATHER FANTASTICAL. AL AND B APPEAR IN SOME OF THE EARLIEST BOSS FILES, AND I ALWAYS ASSUMED THEY WERE ON THE SIDE OF THE ANGELS. COULD THEY HAVE BEEN DOUBLE AGENTS WORKING FOR BOSS INSIDE THE CONSPIRACY? GIVEN THAT IT IS THEIR WORK THAT SEEMS TO BE DRIVING IT ON, IT SEEMS MORE LIKELY THAT THE REVERSE IS TRUE. BUT THAT MEANS BOSS WAS RIDDLED WITH DOMESTIC INSURGENTS FROM THE START. I DON'T THINK THIS HAS THE SAME URGENCY AS YOUR DISCOVERY OF SOVIET AGENTS AT THE HEART OF BRITISH INTELLIGENCE, BUT IT IS STILL RATHER ALARMING.AS IS THE INCREASING SOPHISTICATION OF OUR PROTAGONISTS' COMMUNICATIONS. THEY ARE STILL ONLY RELYING ON SUBSTITUTION CIPHERS, BUT THEIR HEAD OF SECURITY, W, IS CLEARLY SMART ENOUGH TO KNOW THAT THIS IS TOO WEAK FOR SERIOUS USE, AND I SUSPECT THAT FUTURE LETTERS WILL BE PROTECTED BY SOMETHING MORE PROFESSIONAL. I WONDER IF HE WILL PUSH THEM TO THINK ABOUT USING POLYALPHABETIC CIPHERS, OR IF HE WILL JUST INTRODUCE SIMPLE CHANGES LIKE BLOCKING THE CIPHERTEXT.I THINK IT MIGHT PAY FOR ME TO MAKE A TRIP TO LONDON TO CARRY OUT SOME ENQUIRIES, SO I MAY BE OFF GRID FOR A COUPLE OF WEEKS. LET ME KNOW IF YOU HEAR ANYTHING USEFUL.ALL THE BEST,JODIE."
     ]
     let numSuccesful = 0;
     for (let x = 0; x < testTexts.length; x ++){
         for (let i = 0; i < num; i ++){
             let e = eval(cipher + "Encrypt")
-            let d = eval(cipher + "Decrypt")
-            let cText = e(cleanText(testTexts[x])[0]).split("");
             key = '';
-            if (cleanText(testTexts[x])[0] == d(cText)){
+            let d = eval(cipher + "Decrypt")
+            let cText = e(cleanText(testTexts[x])[0]);
+            key = '';
+            let dec = d(cText);
+            if (cleanText(testTexts[x])[0].every((char, index) => char == dec[index])){
                 numSuccesful ++;
             }
         }
