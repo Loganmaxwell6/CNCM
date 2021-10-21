@@ -860,7 +860,7 @@ function polybiusDecrypt(text = globalText.slice(0, globalText.length)){
     return substitutionCipher(newText);
 }
 
-function determineCipher(text = globalText.join("")){
+function determineCipher(text = globalText.slice(0, globalText.length)){
     let c = chiTest(text);
     if (c < 120){
         return "Transposition";
