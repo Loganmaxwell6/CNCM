@@ -42,7 +42,7 @@ function initiateFrequencyTable(){
 }
 
 function updateFrequencyTable(){
-    let freq = observedCount(globalText.join(""));
+    let freq = observedCount(globalText);
     for (let i = 0;i < 26; i ++){
         document.getElementById(ALPHA[i]).innerHTML = freq[i];
     }
@@ -50,8 +50,8 @@ function updateFrequencyTable(){
 
 function updateDataValues(){
     if (globalText.length > 1){
-        IoC.innerHTML = Number(Math.round(indexOfCoincidence(globalText.join(""))+'e4')+'e-4');
-        Chi.innerHTML = Number(Math.round(chiTest(globalText.join(""))+'e2')+'e-2');
+        IoC.innerHTML = Number(Math.round(indexOfCoincidence(globalText)+'e4')+'e-4');
+        Chi.innerHTML = Number(Math.round(chiTest(globalText)+'e2')+'e-2');
     }else{
         IoC.innerHTML = 0;
         Chi.innerHTML = 0;
@@ -97,7 +97,7 @@ function input(f){
 }
 
 function output(text){
-    text = addGrammar(text);
+    text = addGrammar(text).map((char, index) => index in globalGrammar ? globalGrammar[index] : ALPHA[char]).join("");
     text = "Key : " + key + "\n\n" + text;
     if(!(textOut.value == text)){
         textOut.value += text + "\n";
@@ -106,20 +106,19 @@ function output(text){
 }
 
 function addGrammar(text){
-    text = text.split("");
     for (let [key, value] of Object.entries(globalGrammar)){
-        text.splice(key, 0, value)
+        text.splice(key, 0, value);
     }
-    return text.join("")
+    return text;
 }
 
 function cleanText(text){
-    a = []
-    b= {}
+    a = [];
+    b= {};
     for (let i = 0; i < text.length; i++){
         char = text[i].toUpperCase();
         if (char in alphaDict) {
-            a.push(char);
+            a.push(alphaDict[char]);
         }else{
             b[i] = char;
         }
@@ -197,6 +196,9 @@ function changeKeyInput(){
         case "keyword":
             encryptInputBox.placeholder = "Keyword = ...";
             break;
+        case "polybius":
+            encryptInputBox.placeholder = "String of 25 characters...";
+            break;
         case "determine":
             encryptInputBox.placeholder = "No key needed...";
             break;
@@ -212,8 +214,11 @@ function encrypt(){
         eval(selectedCipher + "Cipher")();
     }
     else{
-        var f = eval(selectedCipher + "Encrypt");
-        output(input(f));
+            var f = eval(selectedCipher + "Encrypt");
+            output(input(f));
+        // }catch{
+        //     alert("Please select a cipher from the dropdown")
+        // }
     }
 }
 
@@ -221,36 +226,37 @@ function encrypt(){
 function decrypt(){
     if (selectedCipher == "determine"){
         eval(selectedCipher + "Cipher")();
-    }
-    else{
-        var f = eval(selectedCipher + "Decrypt");
-        output(input(f));
+    }else{
+            var f = eval(selectedCipher + "Decrypt");
+            output(input(f));
+        //}catch{
+        //     alert("Please select a cipher from the dropdown")
+        // }
     }
 }
 
 //--------------------------------------------------
 
-const caesarShift = (text, shift) => text.map((char) => char in alphaDict ? ALPHA[(alphaDict[char] + shift)%26] : char).join("");
+const caesarShift = (text, shift) => text.map((char) => (char + shift) % 26);
 
 function affineShift(text,num,num2){
     let multis ={0:'1',1:'9',2:'21',3:'15',4:'3',5:'19',6:'7',7:'23',8:'11',9:'5',10:'17',11:'25'};
-    return text.map(function(char){ return char in alphaDict ? ALPHA[(multis[num-1]*mod(alphaDict[char]-num2,26))%26] : char}).join("");
+    return text.map((char) => (multis[num-1]*mod(char-num2,26))%26);
 }
 
-const affineShiftEncrypt = (text, num1, num2) => text.map((char)=>char in alphaDict ? ALPHA[((alphaDict[char]*num1)+num2)%26]:char).join("");
+const affineShiftEncrypt = (text, num1, num2) => text.map((char)=> ((char*num1)+num2)%26);
 
 //code for substitution
-function substitutionCipher(){
-    let text = globalText.slice(0)
-    let freq = findMostLikely(text, ALPHA.length);
+function substitutionCipher(text=globalText.slice(0)){
+    let freq = findMostLikely(text, ALPHA.length).map((char)=> parseInt(char[0]));
     let key = new Array(ALPHA.length).fill(0);
     for (i in key){
-        key[parseInt(freq[i][0])] = alphaDict[mostLikely[i]];
+        key[freq[i]] = mostLikelyNum[i];
     }
-    let bigramFreq = observedBigramCount(text.join(""));
+    let bigramFreq = observedBigramCount(text);
     let score = bigramTestForSub(bigramFreq, key, text.length);
     for (let i =0; i < 100; i++){
-        let newKey = fullSwapTest(bigramFreq, key, text.length, score);
+        let newKey = fullSwapTest(bigramFreq, key, text.length, score, freq);
         if (newKey == -1){
             break;
         }else{
@@ -258,7 +264,8 @@ function substitutionCipher(){
             score = newKey[1];
         }
     }
-    return applySubstitutionKey(globalText, key.map((char) => ALPHA[char])).join("");
+    //key = substitutionAnnealing(bigramFreq, key, text.length, score);
+    return applySubstitutionKey(text, key);
 }
 
 function bigramTestForSub(freq, key, length){
@@ -299,7 +306,53 @@ function fullSwapTest(freq, key, length, keyScore){
     return -1;
 }
 
-applySubstitutionKey = (text, key) => text.map((char)=> key[alphaDict[char]]);
+function substitutionAnnealing(freq, key, length, keyScore){
+    function s(score, freq, key, length, a, b){
+        let testKey = key.slice(0);
+        let firstLetter = testKey[a];
+        testKey[a] = testKey[b];
+        testKey[b] = firstLetter;
+        for (let k = 0; k < key.length; k ++) {
+            var changes = [k * 26 + a, k * 26 + b, a * 26 + k, b * 26 + k];
+            for (i of changes){
+                score -= (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2;
+                score += (freq[i] - (bigrams[testKey[Math.floor(i / 26)] * 26 + testKey[i % 26]]*length)) ** 2;
+            }
+        }
+        return [testKey,score];
+    }
+    let best = [-1,100000000]
+    let temp = 50;
+    for (let k = 0; k < 50; k++){
+        let n = 0;
+        for ( j = 0; j < 100 * key.length; j++){
+            let a = rand(0,key.length - 1);
+            let b = rand(0, key.length - 1);
+            while(b == a){
+                b = rand(0, key.length - 1);
+            }
+            let score = s(keyScore, freq, key, length, a, b);
+            if (Math.random() <= Math.exp((score[1] - keyScore) / temp) || score > keyScore){
+                key = score[0];
+                keyScore = score[1];
+                n ++;
+                if (keyScore < best[1]){
+                    best[0] = key;
+                    best[1] = score;
+                }
+                if (n > 10 * key.length){
+                    break;
+                }
+            }
+        }
+        if (n = 0){
+            return key;
+        }
+    }
+    return best[0];
+}
+
+applySubstitutionKey = (text, key) => text.map((char)=> key[char]);
 
 function findMostLikely(text, accuracy){
     count = observedCount(text);
@@ -325,8 +378,7 @@ function decryptTransposition(text ,length){
                 let sum = 0;
                 for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
                     if (!(j >= columns[x].length)){
-                        let bigram = columns[i][j] + columns[x][j];
-                        sum += -Math.log(check[bigram]);
+                        sum += -Math.log(bigrams[(columns[i][j] * 26) + columns[x][j]]);
                     }
                 }
                 scores.push(sum);//add bigram score to scores
@@ -358,21 +410,20 @@ function decryptTransposition(text ,length){
 }
 
 function applyTranspositionKey(text, key){
-    let newString = "";
+    let newString = [];
     let columns = returnEveryNth(text, key.length);
     for (let i = 0 ; i < columns[0].length;i++){
         for (let x = 0; x < columns.length; x++){
             try{
-                newString += columns[key[x]][i];
+                newString.push(columns[key[x]][i]);
             }catch{
+                console.log(x, i, key)
                 return;
             }
         }
     }
-    return newString.split("");
+    return newString;
 }
-
-
 
 //function for putting columnar transposition text into form of normal transposition cipher
 function columnsToTransposition(text, length){
@@ -389,11 +440,20 @@ function columnsToTransposition(text, length){
 }
 
 function putVigenereTogether(text, shifts){
-    text = text.split("");
     for (let i = 0; i < text.length; i++){
-        text[i] = ALPHA[(alphaDict[text[i]] +shifts[i%shifts.length]) % 26];
+        text[i] = (text[i] +shifts[i%shifts.length]) % 26;
     }
-    return text.join("");
+    return text
+}
+
+function getPolybiusEncryptors(text){
+    enc = [];
+    for (i of text){
+        if (!(enc.includes(i))){
+            enc.push(i);
+        }
+    }
+    return enc;
 }
 
 function indexOfCoincidence(text){
@@ -417,8 +477,7 @@ function getKeyLength(text){
         let sum = 0;
         let allVals = returnEveryNth(text, step);     
         for (i of allVals){
-            s = i.join("");
-            sum += indexOfCoincidence(s);
+            sum += indexOfCoincidence(i);
         }
         let avg = sum/step;
         if (avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength){
@@ -444,7 +503,7 @@ function observedCount(text){
         o[i] = 0;
     }
     for (let i = 0; i <text.length; i++){
-        o[alphaDict[text[i]]] ++;
+        o[text[i]] ++;
     }
     return o;
 }
@@ -490,25 +549,24 @@ function observedBigramCount(text){
         o.push(0);
     }
     for (let i = 0; i < text.length-1; i++){
-        let p = text.substring(i,i+2);
-        o[((alphaDict[p[0]] * 26) + (alphaDict[p[1]]))]++;
+        let p = text.slice(i, i+2)
+        o[(p[0] * 26) + (p[1])]++;
     }
     return o;
 }
 
 function expectedBigramCount(t){
     let e = [];
-    for (a in ALPHA){
-        for (b in ALPHA){
-            let p = ALPHA[a] + ALPHA[b];
-            e.push(check[p] * t);
+    for (let a = 0; a < ALPHA.length; a++){
+        for (let b = 0; b < ALPHA.length; b++){
+            e.push(bigrams[(a * 26) + b] * t);
         }
     }
     return e;
 }
 
 function bigramTest(text, cutOff = 2000){
-    text = text.substring(0,Math.min(text.length, cutOff));
+    text = text.slice(0,Math.min(text.length, cutOff));
     let o = observedBigramCount(text);
     let e = expectedBigramCount(text.length);
     let sum = 0;
@@ -520,14 +578,13 @@ function bigramTest(text, cutOff = 2000){
 
 //--------------------------------------------------
 
-function caesarEncrypt(){
-    var text = globalText.slice(0,globalText.length);
+function caesarEncrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
-        let key = parseInt(key);
-        if (key >= 0){
-            key = n;
-            return caesarShift(text, parseInt(key));
+        let thisKey = parseInt(key);
+        if (thisKey >= 0){
+            key = thisKey;
+            return caesarShift(text, parseInt(thisKey));
         }
         else{
             alert("Incorrect key input, using automatic...");
@@ -537,12 +594,10 @@ function caesarEncrypt(){
     // keyless
     let n = rand(0,26);
     key = n;
-    return caesarShift(text, n);
-        
+    return caesarShift(text, n);   
 }
 
-function caesarDecrypt(){
-    var text = globalText.slice(0,globalText.length);
+function caesarDecrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
         let n = parseInt(key);
@@ -565,8 +620,7 @@ function caesarDecrypt(){
     }
 }
 
-function affineEncrypt(){
-    var text = globalText.slice(0,globalText.length);
+function affineEncrypt(text = globalText.slice(0,globalText.length)){
     //with key
     if (!key == ''){
         let k = key.split("");
@@ -590,8 +644,7 @@ function affineEncrypt(){
     return affineShiftEncrypt(text, n1, n2);
 }
 
-function affineDecrypt(){
-    var text = globalText.slice(0,globalText.length);
+function affineDecrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
         let k = key.split("");
@@ -620,68 +673,63 @@ function affineDecrypt(){
     }
 }
 
-function substitutionAEncrypt(){
-    var text = globalText.slice(0,globalText.length);
-    // with key
+function substitutionAEncrypt(text = globalText.slice(0,globalText.length)){
     //
     if (!key == ''){
         if (key.length <= 26){
-            return applySubstitutionKey(text, generateFullKey(key)).join("");
+            return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
         }else{
             alert("Incorrect key input, using random key...");
         }
     }
 
     //keyless
-    key = ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value)
-    return applySubstitutionKey(text, key).join(""); //generates random key using ALPHA
+    key = ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value).map((char) => alphaDict[char]);
+    return applySubstitutionKey(text, key); //generates random key using ALPHA
 }
 
-function substitutionADecrypt(){
-    var text = globalText.slice(0,globalText.length);
+function substitutionADecrypt(text = globalText.slice(0,globalText.length)){
     //with key
     if (!key == ''){
-        return applySubstitutionKey(text, generateFullKey(key)).join("");
+        return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
     }
     //keyless - 0.133s
     return substitutionCipher();
 }
 
-function substitutionMEncrypt(){
-    var text = globalText.slice(0,globalText.length);
+function substitutionMEncrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
-        let subKey = ALPHA.slice(0);
+        let subKey = ALPHA.slice(0).map((char) => alphaDict[char]);
         let thisKey = key.split(",").map((char)=>char.split(":"));
         if(thisKey.every((swap) => swap.length == 2 && swap.every((char)=> char.toUpperCase() in alphaDict))){
             for (pair of thisKey){
-                subKey[alphaDict[pair[0].toUpperCase()]] = ALPHA[alphaDict[pair[1].toUpperCase()]];
+                subKey[alphaDict[pair[0].toUpperCase()]] = alphaDict[pair[1].toUpperCase()];
             }
-            return applySubstitutionKey(text, subKey).join("");
+            return applySubstitutionKey(text, subKey);
         };
     }
     return text;
 }
 
-function substitutionMDecrypt(){
-    substitutionMDecrypt();
+function substitutionMDecrypt(text = globalText.slice(0,globalText.length)){
+    return substitutionADecrypt(text);
 }
 
-function transpositionSEncrypt(){
-    var text = globalText.slice(0,globalText.length);
+function transpositionSEncrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
         if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
             let thisKey = key.split("").map((char)=>alphaDict[char.toUpperCase()]);
             if (text.length % thisKey.length ==0){
-                return applyTranspositionKey(text, thisKey).join("");
+                return applyTranspositionKey(text, thisKey);
             }else{
                 alert("Key length must be a factor of text length, using random key...")
             }  
         }else if (key.split(",").every((char) => parseInt(char) >= 0)){
             let thisKey = key.split(",").map((char)=>parseInt(char));
             if (text.length % thisKey.length ==0){
-                return applyTranspositionKey(text, thisKey).join("");
+                return applyTranspositionKey(text, thisKey);
             }else{
                 alert("Key length must be a factor of text length, using random key...")
             }  
@@ -693,12 +741,11 @@ function transpositionSEncrypt(){
     //keyless
     randNum = rand(5,15);
     key = Array.from(Array(10).keys()).map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
-    text = [...text, ...Array(randNum - (text.length % randNum)).fill("X")]
-    return applyTranspositionKey(text, key).join(""); //need to add random generating transpo key
+    text = [...text, ...Array(randNum - (text.length % randNum)).fill(23)]
+    return applyTranspositionKey(text, key); //need to add random generating transpo key
 }
 
-function transpositionSDecrypt(){
-    var text = globalText.slice(0,globalText.length);
+function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
         if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
@@ -724,21 +771,19 @@ function transpositionSDecrypt(){
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
             let s = decryptTransposition(text,i);
-            if(isEnglish(s.join(""))){
-               return s.join("");
+            if(isEnglish(s)){
+               return s;
             }
         }
     }
 }
 
-function transpositionCEncrypt(){
-    var text = globalText.slice(0,globalText.length);
+function transpositionCEncrypt(text = globalText.slice(0,globalText.length)){
     //keyless
     return col
 }
 
-function transpositionCDecrypt(){
-    var text = globalText.slice(0,globalText.length);
+function transpositionCDecrypt(text = globalText.slice(0,globalText.length)){
     //keyless
     for (let i =2; i < 15; i++){
         if (text.length % i ==0){
@@ -751,14 +796,13 @@ function transpositionCDecrypt(){
      
 }
 
-function vigenereEncrypt(){
-    var text = globalText.slice(0,globalText.length);
+function vigenereEncrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
         if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
-            return putVigenereTogether(text.join(""), key.split("").map((char) => alphaDict[char.toUpperCase()]));
+            return putVigenereTogether(text, key.split("").map((char) => alphaDict[char.toUpperCase()]));
         }else if(key.split(",").every((char) => parseInt(char) >= 0)){
-            return putVigenereTogether(text.join(""), key.split(",").map((char)=>parseInt(char)))
+            return putVigenereTogether(text, key.split(",").map((char)=>parseInt(char)))
         }else{
             alert("Enter key with only letters and no spaces e.g. ABCD" );
         } 
@@ -766,22 +810,20 @@ function vigenereEncrypt(){
     //keyless
     key = Array(rand(5,15)).fill(0)
     key.map((char, index) => key[index] = rand(0,25));
-    return putVigenereTogether(text.join(""), key);
+    return putVigenereTogether(text, key);
 }
 
-function vigenereDecrypt(){
-    var text = globalText.slice(0,globalText.length);
+function vigenereDecrypt(text = globalText.slice(0,globalText.length)){
     // with key
     if (!key == ''){
         if (key.split("").every((char) => char.toUpperCase() in alphaDict)){
-            return putVigenereTogether(text.join(""), key.split("").map((char) => 26 - mod(alphaDict[char.toUpperCase()],26)));
+            return putVigenereTogether(text, key.split("").map((char) => 26 - mod(alphaDict[char.toUpperCase()],26)));
         }else if(key.split(",").every((char) => parseInt(char) >= 0)){
-            return putVigenereTogether(text.join(""), key.split(",").map((char)=>26 - mod(parseInt(char),26)))
+            return putVigenereTogether(text, key.split(",").map((char)=>26 - mod(parseInt(char),26)))
         }else{
             alert("Enter key with only letters and no spaces e.g. ABCD" );
         } 
     }
-
     //keyless
     let keyLength = getKeyLength(text);
     let allVals = returnEveryNth(text, keyLength);
@@ -795,20 +837,30 @@ function vigenereDecrypt(){
         scores = scores.sort(function(a,b) {return a[1]-b[1]});
         shifts.push(scores[0][0]);
     }
-    t = putVigenereTogether(text.join(""), shifts);
+    t = putVigenereTogether(text, shifts);
+    console.log(text)
     return t;
 }
 
-function keywordEncrypt(){
-    substitutionADecrypt()
+function keywordEncrypt(text = globalText.slice(0,globalText.length)){
+    substitutionADecrypt(text);
 }
 
-function keywordDecrypt(){
-    substitutionAEncrypt()
+function keywordDecrypt(text = globalText.slice(0,globalText.length)){
+    substitutionAEncrypt(text)
 }
 
-function determineCipher(){
-    let text = globalText.join("");
+function polybiusDecrypt(text = globalText.slice(0, globalText.length)){
+    let newText = [];
+    let encryptors = getPolybiusEncryptors(text).sort();
+    console.log(encryptors)
+    for (let i = 0; i < text.length -1; i+=2){
+        newText.push((encryptors.indexOf(text[i]) * encryptors.length) + encryptors.indexOf(text[i+1]) % 26);
+    }
+    return substitutionCipher(newText);
+}
+
+function determineCipher(text = globalText.join("")){
     let c = chiTest(text);
     if (c < 120){
         return "Transposition";
@@ -827,26 +879,6 @@ function determineCipher(){
 //--------------------------------------------
 
 generateFullKey = (str) => [...str, ...ALPHA].filter((char, index, arr) => !arr.slice(0,index).includes(char));
-
-function decryptPolybiusCipher(){
-    let text = document.getElementById("textIn").value;
-    let newText = [];
-    let encryptors = getPolybiusEncryptors(text);
-    for (let i = 0; i < text.length -1; i+=2){
-        newText.push(ALPHA[(encryptors.indexOf(text[i]) * encryptors.length) + encryptors.indexOf(text[i+1])]);
-    }
-    substitutionCipher(newText);
-}
-
-function getPolybiusEncryptors(text){
-    enc = [];
-    for (i of text){
-        if (!(enc.includes(i))){
-            enc.push(i);
-        }
-    }
-    return enc;
-}
 
 function playfairDecrypt(){
 
@@ -915,11 +947,30 @@ function time(num, f){
     t = t.toUpperCase();
     let a = performance.now();
     for (let i =0; i < num; i++){
-        f(t);
+        f();//t);
     }
     let b = performance.now();
     console.log(f(t));
     console.log(((b - a) / 1000) / num);
+}
+
+function testAccuracy(num, cipher){
+    let testTexts = [
+            "Considered an invitation do introduced sufficient understood instrument it. Of decisively friendship in as collecting at. No affixed be husband ye females brother garrets proceed. Least child who seven happy yet balls young. Discovery sweetness principle discourse shameless bed one excellent. Sentiments of surrounded friendship dispatched connection is he. Me or produce besides hastily up as pleased. Bore less when had and john shed hope. Demesne far hearted suppose venture excited see had has. Dependent on so extremely delivered by. Yet ﻿no jokes worse her why. Bed one supposing breakfast day fulfilled off depending questions. Whatever boy her exertion his extended. Ecstatic followed handsome drawings entirely mrs one yet outweigh. Of acceptance insipidity remarkably is invitation. Contented get distrusts certainty nay are frankness concealed ham. On unaffected resolution on considered of. No thought me husband or colonel forming effects. End sitting shewing who saw besides son musical adapted. Contrasted interested eat alteration pianoforte sympathize was. He families believed if no elegance interest surprise an. It abode wrong miles an so delay plate. She relation own put outlived may disposed. In by an appetite no humoured returned informed. Possession so comparison inquietude he he conviction no decisively. Marianne jointure attended she hastened surprise but she. Ever lady son yet you very paid form away. He advantage of exquisite resolving if on tolerably. Become sister on in garden it barton waited on. Necessary ye contented newspaper zealously breakfast he prevailed. Melancholy middletons yet understood decisively boy law she. Answer him easily are its barton little. Oh no though mother be things simple itself. Dashwood horrible he strictly on as. Home fine in so am good body this hope. Carriage quitting securing be appetite it declared. High eyes kept so busy feel call in. Would day nor ask walls known. But preserved advantage are but and certainty earnestly enjoyment. Passage weather as up am exposed. And natural related man subject. Eagerness get situation his was delighted. Dispatched entreaties boisterous say why stimulated. Certain forbade picture now prevent carried she get see sitting. Up twenty limits as months. Inhabit so perhaps of in to certain. Sex excuse chatty was seemed warmth. Nay add far few immediate sweetness earnestly dejection.Whether article spirits new her covered hastily sitting her. Money witty books nor son add. Chicken age had evening believe but proceed pretend mrs. At missed advice my it no sister. Miss told ham dull knew see she spot near can. Spirit her entire her called. Is post each that just leaf no. He connection interested so we an sympathize advantages. To said is it shed want do. Occasional middletons everything so to. Have spot part for his quit may. Enable it is square my an regard. Often merit stuff first oh up hills as he. Servants contempt as although addition dashwood is procured. Interest in yourself an do of numerous feelings cheerful confined. She suspicion dejection saw instantly. Well deny may real one told yet saw hard dear. Bed chief house rapid right the. Set noisy one state tears which. No girl oh part must fact high my he. Simplicity in excellence melancholy as remarkably discovered. Own partiality motionless was old excellence she inquietude contrasted. Sister giving so wicket cousin of an he rather marked. Of on game part body rich. Adapted mr savings venture it or comfort affixed friends."
+    ]
+    let numSuccesful = 0;
+    for (let x = 0; x < testTexts.length; x ++){
+        for (let i = 0; i < num; i ++){
+            let e = eval(cipher + "Encrypt")
+            let d = eval(cipher + "Decrypt")
+            let cText = e(cleanText(testTexts[x])[0]).split("");
+            key = '';
+            if (cleanText(testTexts[x])[0] == d(cText)){
+                numSuccesful ++;
+            }
+        }
+    }
+    console.log((numSuccesful / (testTexts.length * num))*100);
 }
 
 //------------------------------------------------------------
