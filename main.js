@@ -145,18 +145,28 @@ function copyText() {
     var copyText = textOut;
     copyText.select();
     copyText.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(copyText.value);
+    navigator.clipboard.writeText(copyText.value.slice(findTextOutBreakPoint()+1));
     alert("Copied the text");
 }
 
 function swapText(){
-    if (!(textOut.value == "")){
-        textIn.value = textOut.value
-        textOut.value = ""
-    }else{
-        alert("No output text to swap")
-    }
+    textIn.value = textOut.value.slice(findTextOutBreakPoint()+1);
+    textOut.value = ""
     updateText();
+}
+
+function findTextOutBreakPoint(){
+    let findBreakText = textOut.value.split("");
+    let num = 0;
+    for (let i = 0 ; i < findBreakText.length; i++){
+        if(findBreakText[i] == '\n'){
+            num ++;
+        }
+        if (num == 2){
+            return i;
+        }
+    }
+    return 0;
 }
 
 //--------------------------------------------------
@@ -442,7 +452,7 @@ function putVigenereTogether(text, shifts){
     for (let i = 0; i < text.length; i++){
         text[i] = (text[i] +shifts[i%shifts.length]) % 26;
     }
-    return text
+    return text;
 }
 
 function getPolybiusEncryptors(text){
@@ -697,6 +707,12 @@ function substitutionADecrypt(text = globalText.slice(0,globalText.length)){
         return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
     }
     //keyless - 0.133s
+    // for (let i = 0; i < 5; i++){
+    //     text =substitutionCipher(text);
+    //     if (isEnglish(text)){
+    //         return text;
+    //     }
+    // }
     return substitutionCipher(text);
 }
 
@@ -845,11 +861,11 @@ function vigenereDecrypt(text = globalText.slice(0,globalText.length)){
 }
 
 function keywordEncrypt(text = globalText.slice(0,globalText.length)){
-    substitutionADecrypt(text);
+    return substitutionADecrypt(text);
 }
 
 function keywordDecrypt(text = globalText.slice(0,globalText.length)){
-    substitutionAEncrypt(text)
+    return substitutionAEncrypt(text);
 }
 
 function polybiusDecrypt(text = globalText.slice(0, globalText.length)){
@@ -958,7 +974,7 @@ function time(num, f){
 function testAccuracy(num, cipher){
     let testTexts = [
             "Considered an invitation do introduced sufficient understood instrument it. Of decisively friendship in as collecting at. No affixed be husband ye females brother garrets proceed. Least child who seven happy yet balls young. Discovery sweetness principle discourse shameless bed one excellent. Sentiments of surrounded friendship dispatched connection is he. Me or produce besides hastily up as pleased. Bore less when had and john shed hope. Demesne far hearted suppose venture excited see had has. Dependent on so extremely delivered by. Yet ﻿no jokes worse her why. Bed one supposing breakfast day fulfilled off depending questions. Whatever boy her exertion his extended. Ecstatic followed handsome drawings entirely mrs one yet outweigh. Of acceptance insipidity remarkably is invitation. Contented get distrusts certainty nay are frankness concealed ham. On unaffected resolution on considered of. No thought me husband or colonel forming effects. End sitting shewing who saw besides son musical adapted. Contrasted interested eat alteration pianoforte sympathize was. He families believed if no elegance interest surprise an. It abode wrong miles an so delay plate. She relation own put outlived may disposed. In by an appetite no humoured returned informed. Possession so comparison inquietude he he conviction no decisively. Marianne jointure attended she hastened surprise but she. Ever lady son yet you very paid form away. He advantage of exquisite resolving if on tolerably. Become sister on in garden it barton waited on. Necessary ye contented newspaper zealously breakfast he prevailed. Melancholy middletons yet understood decisively boy law she. Answer him easily are its barton little. Oh no though mother be things simple itself. Dashwood horrible he strictly on as. Home fine in so am good body this hope. Carriage quitting securing be appetite it declared. High eyes kept so busy feel call in. Would day nor ask walls known. But preserved advantage are but and certainty earnestly enjoyment. Passage weather as up am exposed. And natural related man subject. Eagerness get situation his was delighted. Dispatched entreaties boisterous say why stimulated. Certain forbade picture now prevent carried she get see sitting. Up twenty limits as months. Inhabit so perhaps of in to certain. Sex excuse chatty was seemed warmth. Nay add far few immediate sweetness earnestly dejection.Whether article spirits new her covered hastily sitting her. Money witty books nor son add. Chicken age had evening believe but proceed pretend mrs. At missed advice my it no sister. Miss told ham dull knew see she spot near can. Spirit her entire her called. Is post each that just leaf no. He connection interested so we an sympathize advantages. To said is it shed want do. Occasional middletons everything so to. Have spot part for his quit may. Enable it is square my an regard. Often merit stuff first oh up hills as he. Servants contempt as although addition dashwood is procured. Interest in yourself an do of numerous feelings cheerful confined. She suspicion dejection saw instantly. Well deny may real one told yet saw hard dear. Bed chief house rapid right the. Set noisy one state tears which. No girl oh part must fact high my he. Simplicity in excellence melancholy as remarkably discovered. Own partiality motionless was old excellence she inquietude contrasted. Sister giving so wicket cousin of an he rather marked. Of on game part body rich. Adapted mr savings venture it or comfort affixed friends.",
-            "THE OPPORTUNITIES THIS WILL AFFORD ARE MANY: THE DELIVERY OF LARGE CRATES OF EQUIPMENT WILL GO UNNOTICED, CONSIDERED AS PART OF THE NATURAL BUSINESS OF THE PLACE; ITS LOCATION ON A BUSY WHARF WOULD DISGUISE THE NECESSARY COMINGS AND GOINGS OF OUR CO-CONSPIRATORS; THE WATERWAY WILL PROVIDE US WITH READY TRANSPORTATION BOTH INLAND VIA THE CANALS AND TO THE DOCKS AT TILBURY FOR OUR INTERNATIONAL VENTURES. NOT LEAST, THE EXTRAORDINARY POWER NEEDED FOR OUR DEVICES WILL BE MISTAKEN FOR THE ENERGY REQUIRED TO RUN YOUR PUBLIC EXPERIMENTS.I HAVE LITTLE EXPERTISE IN THE DESIGN OR ENGINEERING OF SUCH STRUCTURES, BUT I IMAGINE THAT THEY REQUIRE SUBSTANTIAL FOOTINGS. THE DEVELOPMENT OF THESE WILL PROVIDE THE COVER WE NEED TO CONSTRUCT OUR SECRET HEADQUARTERS UNDER THE MORE PUBLIC FACE OF THE LIGHTHOUSE ITSELF AND ITS ANCILLARY BUILDINGS.IT MAY BE THAT I HAVE MISSED SOMETHING IMPORTANT IN MY CONSIDERATIONS, IN WHICH CASE PLEASE DO POINT THAT OUT, BUT IF WE ARE TO PASS ON OUR DISCOVERIES, AMBITIONS AND PLANS TO THE NEXT GENERATION WE WILL NEED TO GIVE THEM A MORE PERMANENT HOME, SO I HOPE WE CAN AGREE TOGETHER ON THE BEST WAY TO PROCEED.YOURS, CH",
+            "MY DEAREST M,CAN IT REALLY BE SIXTEEN YEARS SINCE CAROLINE FIRST PROPOSED THIS VENTURE? I CANNOT BELIEVE IT AND WISH WITH ALL MY HEART THAT SHE COULD HAVE SEEN HER VISION TAKING SHAPE.LAST WEDNESDAY I TOOK THE OPPORTUNITY YOU SO KINDLY OFFERED TO SEE THE PROGRESS WITH THE FOUNDATION FOR MYSELF. I WAS VERY ENCOURAGED BY THE INDUSTRY ON DISPLAY, HOWEVER I LEFT WITH A CONCERN THAT WE MAY HAVE MISCALCULATED IN OUR PLANS TO HIDE THE FACILITY IN THE BASEMENT OF THE BUILDING. THE VENTILATION THERE WILL, OF NECESSITY, BE FAR MORE RESTRICTED THAN IT WOULD BE ON THE UPPER FLOORS, AS I KNOW FROM MY OWN RESEARCH. THE EVIDENCE FROM YOUR EXPERIMENTS SUGGESTS THAT OUR DEVICE WILL PRODUCE A VERY LARGE AMOUNT OF HEAT IN OPERATION. I CANNOT SAY FOR SURE, BUT IT SEEMS LIKELY THAT THIS WILL CAUSE PROBLEMS, BOTH FOR THE DEVICE ITSELF AND FOR ITS OPERATORS.LOOKING AT THE PLANS, I WONDERED BRIEFLY IF WE COULD HIDE IT INSTEAD ON AN UPPER FLOOR OF THE LIGHTHOUSE, BUT YOU ARE LIKELY TO HAVE MANY VISITORS WHO ARE INCLINED TO CURIOSITY, AND I SUSPECT THE SECRET WOULD NOT STAY SAFE FOR LONG. WE CANNOT TAKE ANY RISK THAT MIGHT EXPOSE US, AND EVEN IF WE KEEP IT BEHIND A LOCKED DOOR, THE NOISE IT WILL GENERATE IN OPERATION WILL PROPAGATE MORE EASILY ACROSS THE WHARF, LEADING TO QUESTIONS. IN THE BASEMENT WE CAN AT LEAST SUPPRESS THE NOISE, REDUCING THAT RISK, BUT THAT LEAVES THE ISSUE OF MANAGING THE HEAT.I AM AT A LOSS. ANY CHANGES WE WANT TO MAKE TO THE DESIGN OF THE LABORATORY AND ITS FACILITIES WILL NEED TO BE MADE VERY SOON, AS ONCE THE UPPER FLOORS ARE BUILT FURTHER HEAVY CONSTRUCTION WOULD ATTRACT UNWANTED ATTENTION. PERHAPS W WILL BE ABLE TO SUGGEST SOMETHING; HE IS, AFTER ALL, AN ENGINEER. IN ANY CASE, I WAS PLANNING TO ASK HIM TO JOIN US AS HEAD OF SECURITY. I UNDERSTAND THAT HE HAS SOME RATHER INTERESTING IDEAS ABOUT CODES AND CIPHERS.ON A LESS PRESSING MATTER, OUR FIRST EXPERIMENTS WITH THE PROTOTYPE ARE SHOWING SOME SUCCESS. IF WE HAD BEEN ABLE TO RUN THEM EARLIER THIS YEAR, WE MAY EVEN HAVE BEEN ABLE TO PROFIT FROM THE SCHLESWIG CONFLICT, AND IT MAY NOT BE TOO LATE TO DO SO IF WE CAN MOBILISE OUR AGENTS. THERE IS MUCH TO PLAY FOR HERE. OTHERS WILL BE SEEKING TO GAIN FROM THE CONFLICT, AND I SEE NO REASON WHY WE CANNOT DO SO TOO.EVER YOURS,FN",
             "HARRY, THANKS FOR YOUR EMAIL, I FORGOT YOU HAD SPENT TIME HERE IN THE ARCHAEOLOGISTS AND IT WAS GOOD TO BE REMINDED THAT IT CAN LEAD SOMEWHERE. IN THIS CASE I THINK THE BEST WE CAN HOPE FOR IS THAT WE WILL HAVE A NEW BUNCH OF RECRUITS TRAINED AND READY TO TACKLE MORE SERIOUS CHALLENGES, BUT I HAVE TO ADMIT THAT I AM GETTING MORE EXCITED ABOUT THIS CASE, EVEN IF IT IS JUST A TRAINING EXERCISE.THE ATTACHED MEMO FROM ABC REINFORCES WHAT WE LEARNED FROM THE LAST ONE. THE LIGHTHOUSE CONSPIRACY SEEMS TO BE A GROUP OF INFLUENTIAL VICTORIANS WHO ARE AIMING TO USE THEIR NEWFOUND TECHNOLOGICAL PROWESS TO PROFIT FROM WAR, FAMINE, PESTILENCE, AND ANY OTHER DISTURBANCE IN THE FORCE. I DON'T LIKE TO JUMP TO CONCLUSIONS, BUT I CAN'T HELP NOTICING THAT THE INITIALS COINCIDE WITH PEOPLE OF INTEREST TO BOSS. I CHECKED FARADAY'S INTELLIGENCE FILE AND AS YOU SAY, IT WAS EMPTY. IT IS HARD TO BELIEVE THAT A SCIENTIST OF HIS EMINENCE HAD ESCAPED NOTICE, SO IT SEEMS MORE LIKELY THAT THE REAL FILE HAS EITHER BEEN DELETED OR STORED SOMEWHERE MORE SECURE. PERHAPS YOU CAN MAKE ENQUIRIES? B MUST SURELY BE BABBAGE. ALL THE TALK IN THE ATTACHED LETTER IS ABOUT A DEVICE THAT SOUNDS LIKE A COMPUTER, AND THAT WOULD MEAN THAT AL IS ADA LOVELACE, WHO DIED SOME YEARS BEFORE THIS LETTER WAS WRITTEN. I CAN'T BE SURE WHO W OR N ARE, BUT MY GUESS IS THAT THIS N IS THE SAME PERSON AS FN IN THE PREVIOUS LETTER. AS FOR ABC, I HAVE A GUESS, BUT IT ALL SEEMS RATHER FANTASTICAL. AL AND B APPEAR IN SOME OF THE EARLIEST BOSS FILES, AND I ALWAYS ASSUMED THEY WERE ON THE SIDE OF THE ANGELS. COULD THEY HAVE BEEN DOUBLE AGENTS WORKING FOR BOSS INSIDE THE CONSPIRACY? GIVEN THAT IT IS THEIR WORK THAT SEEMS TO BE DRIVING IT ON, IT SEEMS MORE LIKELY THAT THE REVERSE IS TRUE. BUT THAT MEANS BOSS WAS RIDDLED WITH DOMESTIC INSURGENTS FROM THE START. I DON'T THINK THIS HAS THE SAME URGENCY AS YOUR DISCOVERY OF SOVIET AGENTS AT THE HEART OF BRITISH INTELLIGENCE, BUT IT IS STILL RATHER ALARMING.AS IS THE INCREASING SOPHISTICATION OF OUR PROTAGONISTS' COMMUNICATIONS. THEY ARE STILL ONLY RELYING ON SUBSTITUTION CIPHERS, BUT THEIR HEAD OF SECURITY, W, IS CLEARLY SMART ENOUGH TO KNOW THAT THIS IS TOO WEAK FOR SERIOUS USE, AND I SUSPECT THAT FUTURE LETTERS WILL BE PROTECTED BY SOMETHING MORE PROFESSIONAL. I WONDER IF HE WILL PUSH THEM TO THINK ABOUT USING POLYALPHABETIC CIPHERS, OR IF HE WILL JUST INTRODUCE SIMPLE CHANGES LIKE BLOCKING THE CIPHERTEXT.I THINK IT MIGHT PAY FOR ME TO MAKE A TRIP TO LONDON TO CARRY OUT SOME ENQUIRIES, SO I MAY BE OFF GRID FOR A COUPLE OF WEEKS. LET ME KNOW IF YOU HEAR ANYTHING USEFUL.ALL THE BEST,JODIE."
     ]
     let numSuccesful = 0;
@@ -968,10 +984,13 @@ function testAccuracy(num, cipher){
             key = '';
             let d = eval(cipher + "Decrypt")
             let cText = e(cleanText(testTexts[x])[0]);
+            
             key = '';
-            let dec = d(cText);
+            let dec = d(cText.slice(0));
             if (cleanText(testTexts[x])[0].every((char, index) => char == dec[index])){
                 numSuccesful ++;
+            }else{
+                console.log(cText.map((char) => ALPHA[char]).join(""))
             }
         }
     }
