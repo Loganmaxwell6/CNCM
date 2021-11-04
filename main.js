@@ -107,7 +107,6 @@ function output(text){
 }
 
 function addGrammar(text){
-    console.log(text, globalGrammar);
     for (let [key, value] of Object.entries(globalGrammar)){
         text.splice(key, 0, value);
     }
@@ -388,7 +387,7 @@ function transpositionHillClimb(text, length){
     function s(key){
         return bigramTest(applyTranspositionKey(text, key));
     }
-    let key = [...Array(length).keys()];
+    let key = decryptTransposition(text, length);
     let best = [key, s(key)];
 
     let check = false;
@@ -398,9 +397,14 @@ function transpositionHillClimb(text, length){
             for (let x = i; x < key.length; x++){
                 if (!(i == x)){
                     let testKey = best[0].slice(0, best[0].length);
-                    [testKey[i], testKey[x]] = [testKey[x], testKey[i]];
+                    if (Math.random() > 0.5){
+                        [testKey[i], testKey[x]] = [testKey[x], testKey[i]];
+                    }else {
+                        testKey.unshift(testKey.pop());
+                    }
+                    
                     let test = s(testKey);
-                    if (test > best[1]){
+                    if (test < best[1]){
                         check = false;
                         best = [testKey,test];
                     }
@@ -408,9 +412,7 @@ function transpositionHillClimb(text, length){
             }
         }
     }
-
     return applyTranspositionKey(text, best[0]);
-
 }
 
 // run the full bigram decrypt cycle for a single keylength
@@ -453,7 +455,7 @@ function decryptTransposition(text ,length){
     }
     key = key.reverse();
     //applies key to cipher to decrypt
-    return applyTranspositionKey(text, key);
+    return key;
 }
 
 function applyTranspositionKey(text, key){
@@ -820,15 +822,17 @@ function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
     }
 
     //keyless 
+    let correct = ["", 1000000];
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
             let s = transpositionHillClimb(text,i);
             if(isEnglish(s)){
-                console.log(s);
-                return s;
+                if (bigramTest(s) < correct[1])
+                correct =[s, bigramTest(s)]
             }
         }
     }
+    return correct[0];
 }
 
 function transpositionCEncrypt(text = globalText.slice(0,globalText.length)){
