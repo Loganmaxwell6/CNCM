@@ -78,6 +78,7 @@ function updateText(){
     clean = cleanText(textIn.value)
     globalText = clean[0];
     globalGrammar = clean[1];
+    globalLetterCase = clean[2]
 
     updateFrequencyTable();
     updateDataValues();
@@ -115,15 +116,21 @@ function addGrammar(text){
 function cleanText(text){
     a = [];
     b= {};
+    c = [];
     for (let i = 0; i < text.length; i++){
-        char = text[i].toUpperCase();
-        if (char in alphaDict) {
-            a.push(alphaDict[char]);
+        char = text[i];
+        if (char.toUpperCase() in alphaDict) {
+            if (char == char.toUpperCase()){
+                c.push(true);
+            }else{
+                c.push(false)
+            }
+            a.push(alphaDict[char.toUpperCase()]);
         }else{
             b[i] = char;
         }
     }
-    return [a,b]
+    return [a,b,c]
 }
 
 //--------------------------------------------------
@@ -737,12 +744,12 @@ function substitutionADecrypt(text = globalText.slice(0,globalText.length)){
         return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
     }
     //keyless - 0.133s
-    // for (let i = 0; i < 5; i++){
-    //     text =substitutionCipher(text);
-    //     if (isEnglish(text)){
-    //         return text;
-    //     }
-    // }
+    for (let i = 0; i < 5; i++){
+        text =substitutionCipher(text);
+        if (isEnglish(text)){
+            return text;
+        }
+    }
     return substitutionCipher(text);
 }
 
@@ -898,12 +905,24 @@ function keywordDecrypt(text = globalText.slice(0,globalText.length)){
     return substitutionAEncrypt(text);
 }
 
+function polybiusEncrypt(text = globalText.slice(0, globalText.length)){
+    key = ALPHA.map((char)=>alphaDict[char]);//ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value).map((char) => alphaDict[char]);
+    let newText = []
+    for(let i = 0; i < text.length; i+=2){
+        let charNum = key.indexOf(text[i]);
+        newText.push(Math.floor(charNum /5));
+        newText.push(charNum % 5);
+    }
+    return newText;
+}
+
 function polybiusDecrypt(text = globalText.slice(0, globalText.length)){
     let newText = [];
     let encryptors = getPolybiusEncryptors(text).sort();
     for (let i = 0; i < text.length -1; i+=2){
         newText.push((encryptors.indexOf(text[i]) * encryptors.length) + encryptors.indexOf(text[i+1]) % 26);
     }
+    console.log(newText);
     return substitutionCipher(newText);
 }
 
@@ -1020,7 +1039,6 @@ function testAccuracy(num, cipher){
             if (cleanText(testTexts[x])[0].every((char, index) => char == dec[index])){
                 numSuccesful ++;
             }else{
-                console.log(cText.map((char) => ALPHA[char]).join(""))
             }
         }
     }
