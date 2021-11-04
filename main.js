@@ -376,6 +376,36 @@ function findMostLikely(text, accuracy){
     return a.slice(0,accuracy);
 }
 
+function transpositionHillClimb(text, length){
+    function s(){
+
+    }
+    let columns = returnEveryNth(text, length);
+    let key = [...Array(length).keys()];
+    let best = [key, s()];
+
+    let check = false;
+    while(!check){
+        check = true;
+        for (let i = 0; i < key.length; i++){
+            for (let x = i; x < key.length; x++){
+                if (!(i == x)){
+                    let test = s(keyScore, freq, key, length, i, x);
+                    let score = test[1];
+                    if (score < keyScore){
+                        check = false;
+                        testKey = test[0];
+                        best = [testKey,score];
+                    }
+                }
+            }
+        }
+    }
+
+    return applyTranspositionKey(text, best[0]);
+
+}
+
 // run the full bigram decrypt cycle for a single keylength
 function decryptTransposition(text ,length){
     let columns = returnEveryNth(text, length); //split into columns
@@ -789,7 +819,7 @@ function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
     //keyless 
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
-            let s = decryptTransposition(text,i);
+            let s = transpositionHillClimb(text,i);
             if(isEnglish(s)){
                return s;
             }
