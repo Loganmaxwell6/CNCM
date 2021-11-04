@@ -107,6 +107,7 @@ function output(text){
 }
 
 function addGrammar(text){
+    console.log(text, globalGrammar);
     for (let [key, value] of Object.entries(globalGrammar)){
         text.splice(key, 0, value);
     }
@@ -384,12 +385,11 @@ function findMostLikely(text, accuracy){
 }
 
 function transpositionHillClimb(text, length){
-    function s(){
-
+    function s(key){
+        return bigramTest(applyTranspositionKey(text, key));
     }
-    let columns = returnEveryNth(text, length);
     let key = [...Array(length).keys()];
-    let best = [key, s()];
+    let best = [key, s(key)];
 
     let check = false;
     while(!check){
@@ -397,12 +397,12 @@ function transpositionHillClimb(text, length){
         for (let i = 0; i < key.length; i++){
             for (let x = i; x < key.length; x++){
                 if (!(i == x)){
-                    let test = s(keyScore, freq, key, length, i, x);
-                    let score = test[1];
-                    if (score < keyScore){
+                    let testKey = best[0].slice(0, best[0].length);
+                    [testKey[i], testKey[x]] = [testKey[x], testKey[i]];
+                    let test = s(testKey);
+                    if (test > best[1]){
                         check = false;
-                        testKey = test[0];
-                        best = [testKey,score];
+                        best = [testKey,test];
                     }
                 }
             }
@@ -461,11 +461,7 @@ function applyTranspositionKey(text, key){
     let columns = returnEveryNth(text, key.length);
     for (let i = 0 ; i < columns[0].length;i++){
         for (let x = 0; x < columns.length; x++){
-            try{
-                newString.push(columns[key[x]][i]);
-            }catch{
-                return;
-            }
+            newString.push(columns[key[x]][i]);
         }
     }
     return newString;
@@ -828,7 +824,8 @@ function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
         if (text.length % i == 0){
             let s = transpositionHillClimb(text,i);
             if(isEnglish(s)){
-               return s;
+                console.log(s);
+                return s;
             }
         }
     }
