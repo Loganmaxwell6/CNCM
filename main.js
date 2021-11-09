@@ -933,7 +933,7 @@ function determineCipher(text = globalText.slice(0, globalText.length)){
         return "Transposition";
     }
     let i = indexOfCoincidence(text);
-    if (i >= 0.06){
+    if (i >= 0.065 && i <= 0.068){
         return "Substitution"; //placeholder until we narrow down substitution ciphers
     }
     let k = getKeyLength(text)
