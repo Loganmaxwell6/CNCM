@@ -516,6 +516,7 @@ function indexOfCoincidence(text){
 function getKeyLength(text){
     let limit = 16;
     let keyLength = 0; 
+    let highestAvg = 0;
     let ioc = 0;
     for (let step = 2; step < limit; step++){
         let sum = 0;
@@ -524,7 +525,7 @@ function getKeyLength(text){
             sum += indexOfCoincidence(i);
         }
         let avg = sum/step;
-        if (avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength){
+        if ((avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength) && (avg > highestAvg)){
             keyLength = step;
         }
     }
