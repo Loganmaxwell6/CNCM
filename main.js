@@ -896,6 +896,14 @@ function polybiusDecrypt(text = globalText.slice(0, globalText.length)){
     return substitutionCipher(newText);
 }
 
+function morseCodeEncrypt(text=document.getElementById("textIn").split("")){
+
+}
+
+function morseCodeDecrypt(text=document.getElementById("textIn").split("/")){
+    console.log(text)
+}
+
 function determineCipher(text = globalText.slice(0, globalText.length)){
     let c = chiTest(text);
     if (c < 120){
@@ -1018,7 +1026,47 @@ function testAccuracy(num, cipher){
 //------------------------------------------------------------
 //ffs stupid javascript why do i gotta do this
 
-bigrams = [
+
+var morseCodeRef = { 
+    '.-':     'a',
+    '-...':   'b',
+    '-.-.':   'c',
+    '-..':    'd',
+    '.':      'e',
+    '..-.':   'f',
+    '--.':    'g',
+    '....':   'h',
+    '..':     'i',
+    '.---':   'j',
+    '-.-':    'k',
+    '.-..':   'l',
+    '--':     'm',
+    '-.':     'n',
+    '---':    'o',
+    '.--.':   'p',
+    '--.-':   'q',
+    '.-.':    'r',
+    '...':    's',
+    '-':      't',
+    '..-':    'u',
+    '...-':   'v',
+    '.--':    'w',
+    '-..-':   'x',
+    '-.--':   'y',
+    '--..':   'z',
+    '.----':  '1',
+    '..---':  '2',
+    '...--':  '3',
+    '....-':  '4',
+    '.....':  '5',
+    '-....':  '6',
+    '--...':  '7',
+    '---..':  '8',
+    '----.':  '9',
+    '-----':  '0',
+};
+
+var bigrams = [
     "0.0003980324",
     "0.0020294455",
     "0.0041406460",
