@@ -526,6 +526,7 @@ function getKeyLength(text){
         }
         let avg = sum/step;
         if ((avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength) && (avg > highestAvg)){
+            highestAvg = avg;
             keyLength = step;
         }
     }
