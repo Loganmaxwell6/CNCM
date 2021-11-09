@@ -383,6 +383,38 @@ function findMostLikely(text, accuracy){
     return a.slice(0,accuracy);
 }
 
+function transpositionHillClimb(text, length){
+    function s(key){
+        return bigramTest(applyTranspositionKey(text, key));
+    }
+    let key = decryptTransposition(text, length);
+    let best = [key, s(key)];
+
+    let check = false;
+    while(!check){
+        check = true;
+        for (let i = 0; i < key.length; i++){
+            for (let x = i; x < key.length; x++){
+                if (!(i == x)){
+                    let testKey = best[0].slice(0, best[0].length);
+                    if (Math.random() > 0.5){
+                        [testKey[i], testKey[x]] = [testKey[x], testKey[i]];
+                    }else {
+                        testKey.unshift(testKey.pop());
+                    }
+                    
+                    let test = s(testKey);
+                    if (test < best[1]){
+                        check = false;
+                        best = [testKey,test];
+                    }
+                }
+            }
+        }
+    }
+    return applyTranspositionKey(text, best[0]);
+}
+
 // run the full bigram decrypt cycle for a single keylength
 function decryptTransposition(text ,length){
     let columns = returnEveryNth(text, length); //split into columns
@@ -423,7 +455,7 @@ function decryptTransposition(text ,length){
     }
     key = key.reverse();
     //applies key to cipher to decrypt
-    return applyTranspositionKey(text, key);
+    return key;
 }
 
 function applyTranspositionKey(text, key){
@@ -431,11 +463,7 @@ function applyTranspositionKey(text, key){
     let columns = returnEveryNth(text, key.length);
     for (let i = 0 ; i < columns[0].length;i++){
         for (let x = 0; x < columns.length; x++){
-            try{
-                newString.push(columns[key[x]][i]);
-            }catch{
-                return;
-            }
+            newString.push(columns[key[x]][i]);
         }
     }
     return newString;
@@ -488,6 +516,7 @@ function indexOfCoincidence(text){
 function getKeyLength(text){
     let limit = 16;
     let keyLength = 0; 
+    let highestAvg = 0;
     let ioc = 0;
     for (let step = 2; step < limit; step++){
         let sum = 0;
@@ -496,7 +525,8 @@ function getKeyLength(text){
             sum += indexOfCoincidence(i);
         }
         let avg = sum/step;
-        if (avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength){
+        if ((avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength) && (avg > highestAvg)){
+            highestAvg = avg;
             keyLength = step;
         }
     }
@@ -794,14 +824,17 @@ function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
     }
 
     //keyless 
+    let correct = ["", 1000000];
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
-            let s = decryptTransposition(text,i);
+            let s = transpositionHillClimb(text,i);
             if(isEnglish(s)){
-               return s;
+                if (bigramTest(s) < correct[1])
+                correct =[s, bigramTest(s)]
             }
         }
     }
+    return correct[0];
 }
 
 function transpositionCEncrypt(text = globalText.slice(0,globalText.length)){
@@ -910,7 +943,7 @@ function determineCipher(text = globalText.slice(0, globalText.length)){
         return "Transposition";
     }
     let i = indexOfCoincidence(text);
-    if (i >= 0.06){
+    if (i >= 0.064 && i <= 0.069){
         return "Substitution"; //placeholder until we narrow down substitution ciphers
     }
     let k = getKeyLength(text)
