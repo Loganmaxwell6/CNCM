@@ -822,7 +822,7 @@ function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
 
     //keyless 
     let correct = [text, 1000000];
-    for (let i = 2; i < 15; i++){
+    for (let i = 2; i < 20; i++){
         if (text.length % i == 0){
             let s = transpositionHillClimb(text,i);
             if(isEnglish(s)){
@@ -843,7 +843,7 @@ function transpositionCEncrypt(text = globalText.slice(0,globalText.length)){
 function transpositionCDecrypt(text = globalText.slice(0,globalText.length)){
     //keyless
     let correct = [text, 1000000];
-    for (let i =2; i < 15; i++){
+    for (let i =2; i < 20; i++){
         if (text.length % i ==0){
             let s = transpositionHillClimb(columnsToTransposition(text, i), i);
             if (isEnglish(s)) {
