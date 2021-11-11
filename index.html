@@ -11,8 +11,9 @@
     <title>CNCM · Cipher Solver</title>
 
     <!-- Extras -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools28.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
@@ -40,12 +41,12 @@
     </marquee>
 
     <!--Content  (Data, Input/Output, Settings) --> 
-    <div class="content">
+    <div class="cipher-grid">
       <!-- Data -->
       <div id="data">
 
         <!-- Panel -->
-        <div class="panel panel-default" id="dataPanel">
+        <div class="panel cipher-grid-item dataPanel">
           <div class="panel-heading">Data</div>
           <div class="panel-body" id="dataPanelBody">
 
@@ -91,25 +92,25 @@
       </div>
 
       <!-- Input -->
-      <div id="inputAreaDiv" class="ioTextArea">
-        <textarea class="ioTextArea" id="textIn" placeholder="Input text here..." ></textarea>
+      <div class="ioTextArea cipher-grid-item inputAreaDiv">
+        <textarea class="ioTextArea cipher-grid-item" id="textIn" placeholder="Input text here..." ></textarea>
       </div>
 
       <!-- Output -->
-      <div id="outputAreaDiv" class="ioTextArea input">
-        <textarea class="ioTextArea" id="textOut" placeholder="Output text here..." disabled="disabled"></textarea>
+      <div class="ioTextArea outputAreaDiv">
+        <textarea class="ioTextArea cipher-grid-item" id="textOut" placeholder="Output text here..." disabled="disabled"></textarea>
       </div>
 
-      <!-- Options Panels -->
-      <div id="optionsPanels">
+      <!-- Option Panels -->
+      <div class="optionPanels">
 
         <!-- Settings -->
         <div id="settings">
           
           <!-- Settings Panel -->
-          <div class="panel panel-default" id="settingsPanel">
+          <div class="panel cipher-grid-item content-panel">
             <div class="panel-heading">Settings</div>
-            <div class="panel-body" id="settingsPanelBody">
+            <div class="panel-body">
 
               <!-- Cipher Select Dropdown -->
               <div class="dropdown">
@@ -130,7 +131,7 @@
               </div>
 
               <!-- Other settings -->
-              <div id="options">
+              <div class="options"> <!--unused class!-->
                 <button class="btn btn-primary" id="swapText">↑</button>
                 <button class="btn btn-primary" id="clearText">Clear</button>
                 <button class="btn btn-primary" id="reverseText">Reverse</button><br>
@@ -144,23 +145,18 @@
         </div>
 
         <!-- Empty Panel-->
-        <div id="cipherOptions">
-          <div class="panel panel-default">
-            <div class="panel-heading"> Jamie panel </div>
-            <div class="panel-body"> hey </div>
-          </div>
-        </div>
-
-        <div id="ad">
-          <div class="panel panel-default">
-            <div class="panel-heading">Advert </div>
-            <div class="panel-body"> 
-              <!--<iframe width="250" height="200" src="https://www.youtube.com/embed/videoseries?list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              -->
-              </div>
-          </div>
+        <div class="panel cipher-grid-item content-panel">
+          <div class="panel-heading"> Jamie panel </div>
+          <div class="panel-body"> hey </div>
         </div>
         
+        <div class="panel cipher-grid-item panel-default">
+          <div class="panel-heading">Advert </div>
+          <div class="panel-body"> 
+            <!--<iframe width="250" height="200" src="https://www.youtube.com/embed/videoseries?list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            -->
+          </div>
+        </div>
       </div>
     </div>
 
