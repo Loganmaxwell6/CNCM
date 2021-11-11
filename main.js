@@ -443,6 +443,7 @@ function decryptTransposition(text ,length){
     //generates key
     let key = [];
     var currentKey = endVal[0];
+    console.log(currentKey)
     following[currentKey][1] = -1;
     for(let i = 0; i< length; i++){
         key.push(currentKey);
@@ -473,12 +474,8 @@ function applyTranspositionKey(text, key){
 function columnsToTransposition(text, length){
     let num = text.length / length;
     let columns = [];
-    for (let i = 0; i < length; i++){
-        let column = [];
-        for (let x = 0; x < num; x++){
-            column.push(text[(i * num) +x]);
-        }
-        columns.push(column)
+    for (let i = 0; i < text.length; i++){
+        columns.push(text[(i % length) * (num) + Math.floor(i / length)]);
     }
     return columns
 }
@@ -824,13 +821,14 @@ function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
     }
 
     //keyless 
-    let correct = ["", 1000000];
+    let correct = [text, 1000000];
     for (let i = 2; i < 15; i++){
         if (text.length % i == 0){
             let s = transpositionHillClimb(text,i);
             if(isEnglish(s)){
-                if (bigramTest(s) < correct[1])
-                correct =[s, bigramTest(s)]
+                if (bigramTest(s) < correct[1]){
+                    correct =[s, bigramTest(s)]
+                }
             }
         }
     }
@@ -844,15 +842,18 @@ function transpositionCEncrypt(text = globalText.slice(0,globalText.length)){
 
 function transpositionCDecrypt(text = globalText.slice(0,globalText.length)){
     //keyless
+    let correct = [text, 1000000];
     for (let i =2; i < 15; i++){
         if (text.length % i ==0){
-            let s = decryptTransposition(columnsToTransposition(text, i), i);
+            let s = transpositionHillClimb(columnsToTransposition(text, i), i);
             if (isEnglish(s)) {
-                return s;
+                if (bigramTest(s) < correct[1]){
+                    correct =[s, bigramTest(s)]
+                }
             }
         }
     }
-     
+    return correct[0];
 }
 
 function vigenereEncrypt(text = globalText.slice(0,globalText.length)){
@@ -925,7 +926,6 @@ function polybiusDecrypt(text = globalText.slice(0, globalText.length)){
     for (let i = 0; i < text.length -1; i+=2){
         newText.push((encryptors.indexOf(text[i]) * encryptors.length) + encryptors.indexOf(text[i+1]) % 26);
     }
-    console.log(newText);
     return substitutionCipher(newText);
 }
 
