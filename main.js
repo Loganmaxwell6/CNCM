@@ -824,7 +824,7 @@ function transpositionSDecrypt(text = globalText.slice(0,globalText.length)){
     //keyless 
     let correct = [text, 1000000];
     for (let i = 2; i < 20; i++){
-        if (text.length % i == 0){
+        if (true){//text.length % i == 0){
             let s = transpositionHillClimb(text,i);
             if(isEnglish(s)){
                 if (bigramTest(s) < correct[1]){
