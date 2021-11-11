@@ -412,7 +412,7 @@ function transpositionHillClimb(text, length){
             }
         }
     }
-    return applyTranspositionKey(text, best[0]);
+    return applyTranspositionKey(text, key);
 }
 
 // run the full bigram decrypt cycle for a single keylength
@@ -443,20 +443,21 @@ function decryptTransposition(text ,length){
     //generates key
     let key = [];
     var currentKey = endVal[0];
-    console.log(currentKey)
-    following[currentKey][1] = -1;
-    for(let i = 0; i< length; i++){
-        key.push(currentKey);
-        for (let x =0; x < length; x++){
-            if(following[x][1] == currentKey){
-                currentKey = x;
-                break;
+    if (!(currentKey == -1)){
+        following[currentKey][1] = -1;
+        for(let i = 0; i< length; i++){
+            key.push(currentKey);
+            for (let x =0; x < length; x++){
+                if(following[x][1] == currentKey){
+                    currentKey = x;
+                    break;
+                }
             }
         }
+        key = key.reverse();
+        return key;
     }
-    key = key.reverse();
-    //applies key to cipher to decrypt
-    return key;
+    return [...Array(length).keys()];
 }
 
 function applyTranspositionKey(text, key){
@@ -793,7 +794,7 @@ function transpositionSEncrypt(text = globalText.slice(0,globalText.length)){
 
     //keyless
     randNum = rand(5,15);
-    key = Array.from(Array(10).keys()).map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
+    key = Array.from(Array(randNum).keys()).map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
     text = [...text, ...Array(randNum - (text.length % randNum)).fill(23)]
     return applyTranspositionKey(text, key); //need to add random generating transpo key
 }
@@ -1044,12 +1045,12 @@ function testAccuracy(num, cipher){
             key = '';
             let d = eval(cipher + "Decrypt")
             let cText = e(cleanText(testTexts[x])[0]);
-            
             key = '';
             let dec = d(cText.slice(0));
-            if (cleanText(testTexts[x])[0].every((char, index) => char == dec[index])){
+            if (cleanText(testTexts[x])[0].every((char, index) =>char == alphaDict["X"] ? char == dec[index] : true)){
                 numSuccesful ++;
             }else{
+                console.log(cText.map((char)=> ALPHA[char]).join(""))
             }
         }
     }
