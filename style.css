@@ -1,24 +1,39 @@
+html {
+  margin: 0px;
+}
+
 body {
   margin: 0px;
   font-family: 'Roboto', sans-serif;
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto;
-  background-color: white;
+  background: rgb(37,37,37);
+  background: linear-gradient(146deg, rgba(37,37,37,1) 0%, rgba(116,115,115,1) 100%);
 }
 
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+h1 {
+  margin: 1rem;
+  font-size: 50px;
+}
+
+h2 {
+  margin: 1rem;
+  font-size: 25px;
+  background-color: rgba(0, 0, 0, 0)
+}
 
 .header {
   width: 100%;
   padding: 2rem 0;
   text-align: center;
-  background: #e0d6c0;
+  background: rgb(255,0,0);
+  background: linear-gradient(100deg, rgba(200,0,0,1) 0%, rgba(9,9,121,1) 59%, rgba(0,212,255,1) 100%);
   color: white;
-}
-
-.header h1{
-  font-size: 50px;
-  margin: 1rem;
 }
 
 .header .header-subtitle{
@@ -58,6 +73,10 @@ textarea{
   outline: none;
 }
 
+textarea::selection{
+  border-color:hsl(0, 0%, 20%);
+}
+
 .ioTextDiv{
   height: 100%;
   width: 100%;
@@ -66,7 +85,7 @@ textarea{
 .ioTextArea {
   height:100%;
   width: 100%;
-  min-width: 15.625rem;
+  min-width: 15.5rem;
 }
 
 #encryptInputBox{
@@ -78,10 +97,19 @@ textarea{
 }
 
 .panel{
-  padding: 0.5rem;
   background-color: white;
   border: 0.05rem solid hsl(0, 0%, 50%);
   border-radius: 0.1rem;
+}
+
+.panel-heading {
+  background-color:hsl(0, 0%, 80%);
+  padding: 0.5rem;
+  font-weight: medium;
+}
+
+.panel-body {
+  padding: 0.5rem;
 }
 
 .data { grid-area: dataArea;}
@@ -93,13 +121,16 @@ textarea{
   padding: 0.75rem;
   grid-gap: 0.75rem;
   display: grid;
-  background-color: hsl(0, 0%, 90%);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 0.1rem solid hsl(0, 0%, 50%);
+  border-radius: 0.1rem
 }
 
 .cipher-grid-item {
   background-color: white;
   border: 0.05rem solid hsl(0, 0%, 50%);
   border-radius: 0.1rem;
+  box-sizing: border-box;
   box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.2);
 }
 
@@ -112,7 +143,7 @@ textarea{
   color: hsl(0, 0%, 20%);
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown::selection .dropdown-menu {
   display: block;
 }
 
