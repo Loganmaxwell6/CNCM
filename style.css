@@ -17,10 +17,6 @@ body {
   box-sizing: inherit;
 }
 
-a{
-  color: white;
-}
-
 h1 {
   margin: 1rem;
   font-size: 50px;
@@ -34,8 +30,26 @@ h2 {
 
 ul {
   list-style-type: none;
-
 }
+
+a {
+  text-decoration: none;
+}
+
+footer ul{
+  margin: 0;
+  padding: 0;
+}
+
+footer ul li{
+  padding: 0.75rem 1.5rem;
+  color: white;
+}
+footer ul li:hover{
+  background-color:hsl(0, 0%, 10%);
+  color: burlywood;
+}
+
 .header {
   width: 100%;
   padding: 2rem 0;
@@ -49,18 +63,22 @@ ul {
   font-size: 16px;
 }
 
+.data{
+  height:90vh;
+}
+
 button{
-  margin: .35rem 0.175rem;
+  margin: .3rem 0.15rem;
   border: 0;
 }
 
 .btn {
   display: inline-block;
   cursor: pointer;
-  border: 2px solid #D9196F;
+  border: 2px solid #744D98;
   outline: 2px solid hsl(0, 0%, 25%);
   border-radius: 2px;
-  background-color: #D9196F;
+  background-color: #744D98;
   color: white;
   font-size: 14px;
   padding: 0.25rem 0.5rem;
@@ -69,9 +87,12 @@ button{
   line-height: 1;
   transition: outline-offset 150ms ease;
 }
-
-.btn:hover, .btn:focus {
+.btn:hover{
   outline-offset: -4px;
+}
+.btn:active{
+  border-color: #5F3F7D;
+  background: #5F3F7D;
 }
 
 textarea{
@@ -79,16 +100,11 @@ textarea{
   outline: none;
   color: white;
   background-color: hsl(0, 0%, 25%);
-  border-color: hsl(0, 0%, 10%);
+  border: none;
+  box-sizing: border-box;
 }
-
-textarea::selection{
-  border-color:hsl(0, 0%, 20%);
-}
-
-.ioTextDiv{
-  height: 100%;
-  width: 100%;
+textarea::selection {
+  border: 2px solid #744D98;
 }
 
 .ioTextArea {
@@ -101,7 +117,7 @@ textarea::selection{
   border:none;
   margin-left: 0.175rem;
   background-color: hsl(0, 0%, 30%);
-  height: 2rem;
+  height: 2.5rem;
 }
 
 .data{
@@ -110,8 +126,6 @@ textarea::selection{
 
 .panel{
   background-color: hsl(0, 0%, 25%);
-  border: 0.05rem solid hsl(0, 0%, 10%);
-  border-radius: 0.1rem;
 }
 
 .panel-heading {
@@ -125,7 +139,7 @@ textarea::selection{
 }
 
 .option-panel{
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .table, .table td, .table th{
@@ -134,36 +148,14 @@ textarea::selection{
   padding: 0.25rem;
 }
 
-.data { grid-area: dataArea;}
-.inputAreaDiv { grid-area: inputArea;}
-.outputAreaDiv { grid-area: outputArea;}
-.optionsPanel {grid-area: optionsPanelArea;}
-
-.cipher-grid {
-  padding: 0.75rem;
-  grid-gap: 0.75rem;
-  display: grid;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.cipher-grid-item {
-  border-radius: 0.1rem;
-  box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.2);
-}
-
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
-.dropdown::selection .dropdown-menu {
-  display: block;
-}
-
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 35%;
   padding: 0;
   background-color:hsl(0, 0%, 20%);
   min-width: 10rem;
@@ -171,7 +163,10 @@ textarea::selection{
   z-index: 1;
   border: 0.05rem solid hsl(0, 0%, 15%);
   border-radius: 0.1rem;
+  transform: translateY(-15px);
 }
+
+.show{display:block;}
 
 .dropdown-menu li{
   padding: 0.1rem 0.25rem;
@@ -203,25 +198,42 @@ textarea::selection{
   visibility: hidden;
 }
 
+.data { grid-area: data;}
+.inputAreaDiv { grid-area: input;}
+.outputAreaDiv { grid-area: output;}
+.optionsPanel {grid-area: optionsPanel;}
+
+.cipher-grid {
+  height: fit-content;
+  padding: 0.75rem;
+  grid-gap: 0.75rem;
+  display: grid;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.cipher-grid-item {
+  display: block;
+  border-radius: 0.1rem;
+  box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.2);
+}
 
 @media only screen and (min-width:901px){
   .cipher-grid {
-    grid: 
-    'dataArea inputArea optionsPanelArea'
-    'dataArea outputArea optionsPanelArea'
-    '. outputArea optionsPanelArea';
-    grid-auto-columns: max-content 3fr 1fr;
-    grid-auto-rows: 1fr .5fr .5fr;
+    grid-template-areas: 
+    'data input optionsPanel'
+    'data output optionsPanel';
+    grid-template-columns: 20rem 3fr 1fr;
+    grid-template-rows: 50% 50%;
   }
 }
 
 @media only screen and (max-width:900px){
   .cipher-grid {
-    grid: 
-    'inputArea optionsPanelArea'
-    'outputArea optionsPanelArea'
-    'dataArea dataArea';
-    grid-auto-columns: 3fr 1fr;
-    grid-auto-rows: 1fr 1fr 1fr;
+    grid-template-areas: 
+    'input optionsPanel'
+    'output optionsPanel'
+    'data data';
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
   }
 }

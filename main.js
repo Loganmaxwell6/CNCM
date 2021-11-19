@@ -162,6 +162,10 @@ function swapText(){
     updateText();
 }
 
+function toggleDropdown(){
+    dropdown = document.getElementById("dropdownMenu").classList.toggle("show");
+}
+
 function findTextOutBreakPoint(){
     let findBreakText = textOut.value.split("");
     let num = 0;
@@ -180,6 +184,7 @@ function findTextOutBreakPoint(){
 
 // store the selected cipher for global access
 function setCipher(cipher){
+    toggleDropdown();
     selectedCipher = cipher;
 }
 

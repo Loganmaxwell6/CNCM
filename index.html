@@ -106,8 +106,8 @@
 
               <!-- Cipher Select Dropdown -->
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Cipher <span class="caret"></span></button>
-                <ul class="dropdown-menu">
+                <button class="btn btn-primary dropdown-toggle" id="dropdownToggle">Select Cipher <span class="caret"></span></button>
+                <ul class="dropdown-menu" id="dropdownMenu">
                   <li><a id="caesar">Caesar</a></li>
                   <li><a id="affine">Affine</a></li>
                   <li><a id="substitutionA">Substitution (automatic)</a></li>
@@ -154,12 +154,12 @@
 
     <!-- Footer -->
     <div class="container">
-      <footer class="py-3 my-4">
-        <ul class="nav border-bottom pb-3 mb-3">
+      <footer>
+        <ul>
           <li class="nav-item"><a href="https://github.com/Loganmaxwell6/CNCM" class="nav-link px-2 text-muted">Github repo</a></li>
           <li class="nav-item"><a href="https://cipherchallenge.org" class="nav-link px-2 text-muted">Cipher challenge</a></li>
           <li class="nav-item"><a href="https://open.spotify.com/artist/1GLnyPuL45vOsZPs5iANcC" class="nav-link px-2 text-muted">Ciphertools</a></li>
-          <li class="nav-item"><a href="https://www.youtube.com/channel/UCEngD8C9GIJmDryhI8Rkqtg" class="nav-link px-2 text-muted" style="color:rgba(255, 50, 50)">morg</a></li>
+          <li class="nav-item morg"><a href="https://www.youtube.com/channel/UCEngD8C9GIJmDryhI8Rkqtg" class="nav-link px-2 text-muted" >morg</a></li>
         </ul>
         <p class="text-center text-muted">&copy; Crooked Nazgul Code Men 2021</p>
       </footer>
@@ -176,6 +176,8 @@
               changeKeyInput();
           });
         });
+        $('#dropdownToggle').on('click', function(){toggleDropdown();});
+
         $('#textIn').on('input', function(){updateText();});
         $('#swapText').on('click', function(){swapText();});
         $('#clearText').on('click', function(){clearText();});
