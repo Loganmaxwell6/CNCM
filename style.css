@@ -18,12 +18,11 @@ body {
 }
 
 h1 {
-  margin: 1rem;
-  font-size: 50px;
+  font-size: 3.125em;
 }
 
 h2 {
-  margin: 1rem;
+  margin: 1em;
   font-size: 25px;
   background-color: rgba(0, 0, 0, 0);
 }
@@ -32,24 +31,20 @@ ul {
   list-style-type: none;
 }
 
-a {
-  color: white;
-  text-decoration: none;
-}
-a:hover {
-  color: #8055A9;
-}
-
 footer ul{
   margin: 0;
   padding: 0;
 }
 
-
 .nav-item a {
-  padding: 0.75rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  padding: 0.75em 1.5em;
   display:block;
   height:100%;
+}
+.nav-item a:hover {
+  color: #8055A9;
 }
 .nav-item:hover {
   background-color:hsl(0, 0%, 10%);
@@ -57,24 +52,24 @@ footer ul{
 
 footer p{
   margin: 0;
-  padding: 0.75rem;
+  padding: 0.75em;
 }
 
 .header {
   width: 100%;
-  padding: 2rem 0;
+  padding: 2em;
   text-align: center;
   background: rgb(217,0,111);
   background: linear-gradient(114deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 55%, rgba(0,51,171,1) 100%);
   color: white;
 }
 
-.header .header-subtitle{
-  font-size: 16px;
+.header-subtitle{
+  font-size: 1em;
 }
 
 button{
-  margin: .3rem 0.3rem;
+  margin: .3em 0.3em;
   border: 0;
 }
 
@@ -86,7 +81,7 @@ button{
   background-color: #744D98;
   color: white;
   font-size: 14px;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25em 0.5em;
   text-decoration: none;
   font-size: inherit;
   line-height: 1;
@@ -115,15 +110,15 @@ textarea::selection {
 .ioTextArea {
   height:100%;
   width: 100%;
-  min-width: 15.5rem;
+  min-width: 15.5em;
 }
 
 .input-box {
   border:none;
   background-color: hsl(0, 0%, 30%);
-  height: 2.5rem;
+  height: 2.5em;
   width: 100%;
-  margin: 0.3rem;
+  margin: 0.3em;
 }
 
 .data{
@@ -136,26 +131,26 @@ textarea::selection {
 
 .panel-heading {
   background-color:hsl(0, 0%, 20%);
-  padding: 0.5rem;
+  padding: 0.5em;
   font-weight: medium;
 }
 
 .panel-body {
-  padding: 0.5rem;
+  padding: 0.5em;
 }
 
 .option-panel{
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.75em;
 }
 
 .settings-panel {
-  min-width: 260px;
+  min-width: 30ch;
 }
 
 .table, .table td, .table th {
-  border: 0.1rem solid hsl(0, 0%, 60%);
+  border: 0.1em solid hsl(0, 0%, 60%);
   border-collapse: collapse;
-  padding: 0.25rem;
+  padding: 0.25em;
 }
 
 .dropdown {
@@ -169,37 +164,36 @@ textarea::selection {
   position: absolute;
   padding: 0;
   background-color:hsl(0, 0%, 20%);
-  min-width: 15rem;
-  box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.2);
+  min-width: 15em;
+  box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
   z-index: 1;
-  border: 0.05rem solid hsl(0, 0%, 15%);
-  border-radius: 0.1rem;
+  border: 0.05em solid hsl(0, 0%, 15%);
+  border-radius: 0.1rm;
 }
 
 .show { display:block; }
 
-.dropdown-menu li {
-  padding: 0.15rem 0.5rem;
+.dropdown-item {
+  padding: 0.15em 0.5em;
 }
-.dropdown-menu li:hover {
+.dropdown-item:hover {
   cursor: pointer;
   background-color: hsl(0, 0%, 15%);
 }
-.dropdown-menu li::before { /* bullet points */
+.dropdown-item::before { /* bullet points */
   content: '';
   display: inline-block;
-  border-radius: 0.15rem;
-  height: 0.3rem;
-  width: 0.3rem;
-  margin-right: 0.3rem;
+  border-radius: 0.15em;
+  height: 0.3em;
+  width: 0.3em;
+  margin-right: 0.3em;
   background-color: #bdbdbd;
-  transform: translateY(-0.15rem);
+  transform: translateY(-0.15em);
 }
 
 .list-divider {
-  border-top: 0.05rem solid hsl(0, 0%, 30%);
-  padding: 0;
-  width: 100%;
+  border-top: 0.05em solid hsl(0, 0%, 30%);
+  padding: 0.125em 0;
   height: 0;
   transform: translateY(50%);
 }
@@ -214,25 +208,26 @@ textarea::selection {
 
 .cipher-grid {
   height: fit-content;
-  padding: 0.75rem;
-  grid-gap: 0.75rem;
+  padding: 0.75em;
+  grid-gap: 0.75em;
   display: grid;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 .cipher-grid-item {
   display: block;
-  border-radius: 0.1rem;
-  box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.2);
+  border-radius: 0.1em;
+  box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
 }
 
 @media only screen and (min-width:901px){
   .cipher-grid {
     grid-template-areas: 
     'data input optionsPanel'
-    'data output optionsPanel';
-    grid-template-columns: 20rem 3fr 1fr;
-    grid-template-rows: 50% 50%;
+    'data output optionsPanel'
+    '. . .';
+    grid-template-columns: 20em 3fr 1fr;
+    grid-template-rows: 50% 50% auto;
   }
 }
 
@@ -243,6 +238,6 @@ textarea::selection {
     'output optionsPanel'
     'data data';
     grid-template-columns: 3fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr auto;
   }
 }
