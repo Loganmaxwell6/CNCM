@@ -33,7 +33,11 @@ ul {
 }
 
 a {
+  color: white;
   text-decoration: none;
+}
+a:hover {
+  color: #8055A9;
 }
 
 footer ul{
@@ -41,12 +45,19 @@ footer ul{
   padding: 0;
 }
 
-footer ul li{
+
+.nav-item a {
   padding: 0.75rem 1.5rem;
-  color: white;
+  display:block;
+  height:100%;
 }
-footer ul li:hover{
+.nav-item:hover {
   background-color:hsl(0, 0%, 10%);
+}
+
+footer p{
+  margin: 0;
+  padding: 0.75rem;
 }
 
 .header {
