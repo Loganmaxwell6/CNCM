@@ -56,7 +56,6 @@ footer p{
 }
 
 .header {
-  width: 100%;
   padding: 2em;
   text-align: center;
   background: rgb(217,0,111);
@@ -121,10 +120,6 @@ textarea::selection {
   margin: 0.3em;
 }
 
-.data{
-  max-width:700px;
-}
-
 .panel{
   background-color: hsl(0, 0%, 25%);
 }
@@ -132,7 +127,6 @@ textarea::selection {
 .panel-heading {
   background-color:hsl(0, 0%, 20%);
   padding: 0.5em;
-  font-weight: medium;
 }
 
 .panel-body {
@@ -141,10 +135,6 @@ textarea::selection {
 
 .option-panel{
   margin-bottom: 0.75em;
-}
-
-.settings-panel {
-  min-width: 30ch;
 }
 
 .table, .table td, .table th {
@@ -168,7 +158,7 @@ textarea::selection {
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
   z-index: 1;
   border: 0.05em solid hsl(0, 0%, 15%);
-  border-radius: 0.1rm;
+  border-radius: 0.1em;
 }
 
 .show { display:block; }
@@ -204,13 +194,12 @@ textarea::selection {
 .data { grid-area: data;}
 .inputAreaDiv { grid-area: input;}
 .outputAreaDiv { grid-area: output;}
-.optionsPanel {grid-area: optionsPanel;}
+.optionPanels {grid-area: optionsPanel;}
 
 .cipher-grid {
-  height: fit-content;
   padding: 0.75em;
-  grid-gap: 0.75em;
   display: grid;
+  grid-gap: 0.75em;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -224,10 +213,9 @@ textarea::selection {
   .cipher-grid {
     grid-template-areas: 
     'data input optionsPanel'
-    'data output optionsPanel'
-    '. . .';
-    grid-template-columns: 20em 3fr 1fr;
-    grid-template-rows: 50% 50% auto;
+    'data output optionsPanel';
+    grid-template-columns: 20em 3fr 30ch;
+    grid-template-rows: 50% 50%;
   }
 }
 
@@ -237,7 +225,7 @@ textarea::selection {
     'input optionsPanel'
     'output optionsPanel'
     'data data';
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr auto;
   }
 }
