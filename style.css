@@ -47,7 +47,6 @@ footer ul li{
 }
 footer ul li:hover{
   background-color:hsl(0, 0%, 10%);
-  color: burlywood;
 }
 
 .header {
@@ -55,7 +54,7 @@ footer ul li:hover{
   padding: 2rem 0;
   text-align: center;
   background: rgb(217,0,111);
-  background: linear-gradient(114deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 49%, rgba(0,51,171,1) 100%);
+  background: linear-gradient(114deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 55%, rgba(0,51,171,1) 100%);
   color: white;
 }
 
@@ -63,12 +62,8 @@ footer ul li:hover{
   font-size: 16px;
 }
 
-.data{
-  height:90vh;
-}
-
 button{
-  margin: .3rem 0.15rem;
+  margin: .3rem 0.3rem;
   border: 0;
 }
 
@@ -77,7 +72,6 @@ button{
   cursor: pointer;
   border: 2px solid #744D98;
   outline: 2px solid hsl(0, 0%, 25%);
-  border-radius: 2px;
   background-color: #744D98;
   color: white;
   font-size: 14px;
@@ -115,9 +109,10 @@ textarea::selection {
 
 .input-box {
   border:none;
-  margin-left: 0.175rem;
   background-color: hsl(0, 0%, 30%);
   height: 2.5rem;
+  width: 100%;
+  margin: 0.3rem;
 }
 
 .data{
@@ -142,7 +137,11 @@ textarea::selection {
   margin-bottom: 0.75rem;
 }
 
-.table, .table td, .table th{
+.settings-panel {
+  min-width: 260px;
+}
+
+.table, .table td, .table th {
   border: 0.1rem solid hsl(0, 0%, 60%);
   border-collapse: collapse;
   padding: 0.25rem;
@@ -154,22 +153,22 @@ textarea::selection {
 }
 
 .dropdown-menu {
+  margin: 0;
   display: none;
   position: absolute;
   padding: 0;
   background-color:hsl(0, 0%, 20%);
-  min-width: 10rem;
+  min-width: 15rem;
   box-shadow: 0.1rem 0.1rem 0.1rem rgba(0,0,0,0.2);
   z-index: 1;
   border: 0.05rem solid hsl(0, 0%, 15%);
   border-radius: 0.1rem;
-  transform: translateY(-15px);
 }
 
-.show{display:block;}
+.show { display:block; }
 
-.dropdown-menu li{
-  padding: 0.1rem 0.25rem;
+.dropdown-menu li {
+  padding: 0.15rem 0.5rem;
 }
 .dropdown-menu li:hover {
   cursor: pointer;
@@ -185,7 +184,6 @@ textarea::selection {
   background-color: #bdbdbd;
   transform: translateY(-0.15rem);
 }
-
 
 .list-divider {
   border-top: 0.05rem solid hsl(0, 0%, 30%);
