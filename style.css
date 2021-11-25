@@ -232,6 +232,10 @@ textarea::selection {
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
 }
 
+.dataValues {
+  text-align: left;
+}
+
 @media only screen and (min-width:901px){
   .outputAreaDiv {padding-bottom: 1em;}
 
