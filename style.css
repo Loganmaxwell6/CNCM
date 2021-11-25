@@ -55,11 +55,11 @@ footer p{
   padding: 0.75em;
 }
 
-.header {
+header {
   padding: 2em;
   text-align: center;
   background: rgb(217,0,111);
-  background: linear-gradient(114deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 55%, rgba(0,51,171,1) 100%);
+  background: linear-gradient(114deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
   color: white;
 }
 
