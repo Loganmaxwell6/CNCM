@@ -35,7 +35,7 @@ ul {
 
 footer {
   background: #000;
-  background: linear-gradient(0deg,rgba(0,0,0,0.15) 30%, rgba(0,0,0,0) 100%);
+  background: linear-gradient(0deg,rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.05) 100%);
 }
 footer ul{
   margin: 0;
