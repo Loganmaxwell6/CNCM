@@ -194,7 +194,6 @@ function findTextOutBreakPoint(){
 
 // store the selected cipher for global access
 function setCipher(cipher){
-    addDropdown();
     selectedCipher = cipher;
 }
 

@@ -5,11 +5,12 @@ html {
 body {
   margin: 0px;
   font-family: 'Roboto', sans-serif;
+  text-align: center;
   display: grid;
+  background: rgb(217,0,111);
+  background: linear-gradient(110deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
   grid-template-columns: auto;
   grid-template-rows: auto;
-  background: rgb(71,71,71);
-  background: linear-gradient(85deg, rgba(50,50,50,1) 0%, rgba(29,29,29,1) 60%);
   color: white;
 }
 
@@ -31,9 +32,17 @@ ul {
   list-style-type: none;
 }
 
+footer {
+  background: #000;
+  background: linear-gradient(0deg, rgba(0,0,0,0.10) 70%, rgba(0,0,0,0.12) 100%);
+}
 footer ul{
   margin: 0;
   padding: 0;
+}
+footer p{
+  margin: 0;
+  padding: 0.75em;
 }
 
 .nav-item a {
@@ -44,22 +53,14 @@ footer ul{
   height:100%;
 }
 .nav-item a:hover {
-  color: #8055A9;
+  color: rgb(116,77,152);
 }
 .nav-item:hover {
-  background-color:hsl(0, 0%, 10%);
-}
-
-footer p{
-  margin: 0;
-  padding: 0.75em;
+  background-color: rgba(0, 0, 0, 0.35);
 }
 
 header {
   padding: 2em;
-  text-align: center;
-  background: rgb(217,0,111);
-  background: linear-gradient(114deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
   color: white;
 }
 
@@ -147,19 +148,23 @@ textarea::selection {
 .dropdown {
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
 .dropdown-menu {
+  text-align:left;
   margin: 0;
   display: none;
   position: absolute;
   padding: 0;
   background-color:hsl(0, 0%, 20%);
+  width: inherit;
   min-width: 15em;
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
   z-index: 1;
   border: 0.05em solid hsl(0, 0%, 15%);
   border-radius: 0.1em;
+  transform: translateY(-0.275em);
 }
 
 .show { display:block; }
@@ -198,10 +203,11 @@ textarea::selection {
 .optionPanels {grid-area: optionsPanel;}
 
 .cipher-grid {
-  padding: 0.75em;
+  margin: 1.5em 2em;
+  padding: 1em;
   display: grid;
   grid-gap: 0.75em;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
 .cipher-grid-item {
@@ -211,6 +217,8 @@ textarea::selection {
 }
 
 @media only screen and (min-width:901px){
+  .outputAreaDiv {padding-bottom: 1em;}
+
   .cipher-grid {
     grid-template-areas: 
     'data input optionsPanel'
