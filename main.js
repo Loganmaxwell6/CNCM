@@ -231,11 +231,8 @@ function encrypt(){
         eval(selectedCipher + "Cipher")();
     }
     else{
-            var f = eval(selectedCipher + "Encrypt");
-            output(input(f));
-        // }catch{
-        //     alert("Please select a cipher from the dropdown")
-        // }
+        var f = eval(selectedCipher + "Encrypt");
+        output(input(f));
     }
 }
 
@@ -244,11 +241,8 @@ function decrypt(){
     if (selectedCipher == "determine"){
         eval(selectedCipher + "Cipher")();
     }else{
-            var f = eval(selectedCipher + "Decrypt");
-            output(input(f));
-        //}catch{
-        //     alert("Please select a cipher from the dropdown")
-        // }
+        var f = eval(selectedCipher + "Decrypt");
+        output(input(f));
     }
 }
 
@@ -911,7 +905,7 @@ function keywordDecrypt(text = globalText.slice(0,globalText.length)){
 }
 
 function polybiusEncrypt(text = globalText.slice(0, globalText.length)){
-    key = ALPHA.map((char)=>alphaDict[char]);//ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value).map((char) => alphaDict[char]);
+    key = ALPHA.filter((char) => char != "J").map((char)=>alphaDict[char]);//ALPHA.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value).map((char) => alphaDict[char]);
     let newText = []
     for(let i = 0; i < text.length; i+=2){
         let charNum = key.indexOf(text[i]);
@@ -936,6 +930,15 @@ function morseCodeEncrypt(text=document.getElementById("textIn").split("")){
 
 function morseCodeDecrypt(text=document.getElementById("textIn").split("/")){
     console.log(text)
+}
+
+function railFenceDecrypt(text=globalText.slice(0)){
+    for (let n = 2; n < 20; n++){
+        let col = returnEveryNth(text, n);
+        for (let i =0; i < text.length; i++){
+            
+        }
+    }
 }
 
 function determineCipher(text = globalText.slice(0, globalText.length)){
