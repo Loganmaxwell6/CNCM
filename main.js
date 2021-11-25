@@ -163,7 +163,13 @@ function swapText(){
 }
 
 function openDropdown(){
-    document.getElementById("dropdownMenu").classList.add("show");
+    let d = document.getElementById("dropdownMenu");
+    if (d.classList.contains("show")){
+        d.classList.remove("show");
+    }
+    else{
+        d.classList.add("show");
+    }
 }
 
 function closeDropdown(){
