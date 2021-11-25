@@ -162,8 +162,12 @@ function swapText(){
     updateText();
 }
 
-function toggleDropdown(){
-    dropdown = document.getElementById("dropdownMenu").classList.toggle("show");
+function openDropdown(){
+    document.getElementById("dropdownMenu").classList.add("show");
+}
+
+function closeDropdown(){
+    document.getElementById("dropdownMenu").classList.remove("show");
 }
 
 function findTextOutBreakPoint(){
@@ -184,7 +188,7 @@ function findTextOutBreakPoint(){
 
 // store the selected cipher for global access
 function setCipher(cipher){
-    toggleDropdown();
+    addDropdown();
     selectedCipher = cipher;
 }
 

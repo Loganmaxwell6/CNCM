@@ -106,7 +106,7 @@
 
               <!-- Cipher Select Dropdown -->
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="dropdownToggle">Select Cipher <span class="caret"></span></button>
+                <button class="btn btn-primary dropdown-toggle" id="dropdownToggle">Select Cipher ↓</button>
                 <ul class="dropdown-menu" id="dropdownMenu">
                   <li class="dropdown-item"><a id="caesar">Caesar</a>
                   </li><li class="dropdown-item"><a id="affine">Affine</a>
@@ -172,8 +172,6 @@
               changeKeyInput();
           });
         });
-        $('#dropdownToggle').on('click', function(){toggleDropdown();});
-
         $('#textIn').on('input', function(){updateText();});
         $('#swapText').on('click', function(){swapText();});
         $('#clearText').on('click', function(){clearText();});
@@ -182,6 +180,12 @@
         $('#encrypt').on('click', function(){encrypt();});
         $('#decrypt').on('click', function(){decrypt();});
         $('#encryptInputBox').on('input', function(){setKey();});
+      });
+      $('#dropdownToggle').on('click', function(){openDropdown();});
+      $(window).on('click', function(event){
+        if (!event.target.matches('#dropdownToggle')){
+          closeDropdown();
+        }
       });
       init();
     </script>
