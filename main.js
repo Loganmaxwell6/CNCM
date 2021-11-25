@@ -162,6 +162,20 @@ function swapText(){
     updateText();
 }
 
+function openDropdown(){
+    let d = document.getElementById("dropdownMenu");
+    if (d.classList.contains("show")){
+        d.classList.remove("show");
+    }
+    else{
+        d.classList.add("show");
+    }
+}
+
+function closeDropdown(){
+    document.getElementById("dropdownMenu").classList.remove("show");
+}
+
 function findTextOutBreakPoint(){
     let findBreakText = textOut.value.split("");
     let num = 0;
