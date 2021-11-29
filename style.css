@@ -189,13 +189,13 @@ textarea::selection {
   border-radius: 0.15em;
   height: 0.33em;
   width: 0.33em;
-  margin-right: 0.33em;
+  margin: 0 0.33em;
   background-color: #bdbdbd;
   transform: translateY(-0.15em);
 }
 .dropdown-item a {
   display: inline-block;
-  width: 92%;
+  width: 85%;
   padding: 0.25em;
 }
 
