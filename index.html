@@ -1,34 +1,193 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
   <head>
-    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3schools28.css">
-    <script type="text/javascript" src="main.js"></script>
-    <title>Crooked Nazgul Code Men</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cipher solving tool for the cipher challenge">
+    <meta name="author" content="Logan Maxwell, Jamie Holloway, Fenwick Thompson">
+
+    <title>CNCM · Cipher Solver</title>
+
+    <!-- Extras -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Main program file -->
+    <script src="main.js"></script>
   </head>
-  <body>
-    <div id="inputPart">
-      <textarea id="textIn" rows="10" cols="100" placeholder="Input text here..."></textarea>
-    </div>
-    <div id="outputPart">
-      <textarea id="textOut" rows="10" cols="100" placeholder="Output text here" disabled="disabled"></textarea>
-    </div>
-    <button id="swapText" onclick="swapText()">↑</button>
-    <div id="cipherButtons">
-      <button id="caesarCipher">Caesar Cipher</button>
-      <button id="affineCipher">Affine Cipher</button>
-      <button id="substitutionCipher">Substitution Cipher</button>
-      <button id="transpositionCipher">Transposition Cipher</button>
-      <button id="vigenereCipher">Vigenère cipher</button>
-      <button id="keywordCipher">Keyword cipher</button>
-    </div>
-    <div id="optionsButtons">
-      <div id="caesarOptions">
-        <button style="visibility:hidden;position: relative;top:3px" id="caesarDecrypt">decrypt</button> 
-        <button style="visibility:hidden;position: relative;top:+3px" id="caesarEncrypt">encrypt</button> 
+
+  <body class="bg-light">
+
+    <!-- Header -->
+    <header>
+      <h1>Crooked Nazgul Code Men Official Website</h1>
+      <div class="header-subtitle">SEMATARY GRAVE MAN FROM THE HAUNTED MOUND REAL NAZGUL SKINCARVER DEER GOD KEEPER OF THE TREES TRUE RELIGION FIEND HAUNTED MOUND LORD</div>
+    </header>
+
+    <!--Content  (Data, Input/Output, Settings) --> 
+    <div class="cipher-grid">
+      <!-- Data -->
+      <div id="data">
+
+        <!-- Panel -->
+        <div class="panel cipher-grid-item data">
+          <div class="panel-heading">Data</div>
+          <div class="panel-body data-body" id="dataPanelBody">
+
+            <!-- Frequency table -->
+            <table class="table" id="frequencyTable">
+              <tr>
+                <th>Letter</th>
+                <th>Frequency</th>
+                <th>Letter</th>
+                <th>Frequency</th>
+              </tr>
+            </table>
+
+            <!-- Other table -->
+            <table class="dataValues">
+              <tr>
+                <td>Text Length:</td>
+                <td id="fullLen" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Text Length (No Grammar):</td>
+                <td id="Len" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Most Likely Cipher:</td>
+                <td id="likely" class="dataValues">Unknown</td>
+              </tr>
+              <tr>
+                <td>IoC:</td>
+                <td id="IoC" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Chi: </td>
+                <td id = "Chi" class="dataValues">0</td>
+              </tr>
+              <tr>
+                <td>Time taken: </td>
+                <td id = "Time" class="dataValues">0</td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
-      <div id="affineOptions">
-        <button style="visibility:hidden;position:relative;top:-25px" id="affineDecrypt" >decrypt</button> 
+
+      <!-- Input -->
+      <div class="ioTextDiv inputAreaDiv">
+        <textarea class="io-text-area cipher-grid-item" id="textIn" placeholder="Input text here..." ></textarea>
+      </div>
+
+      <!-- Output -->
+      <div class="ioTextDiv outputAreaDiv">
+        <textarea class="io-text-area cipher-grid-item output" id="textOut" placeholder="Output text here..." disabled="disabled"></textarea>
+      </div>
+
+      <!-- Option Panels -->
+      <div class="optionPanels">
+
+        <!-- Settings -->
+        <div id="settings">
+          
+          <!-- Settings Panel -->
+          <div class="panel cipher-grid-item option-panel settings-panel">
+            <div class="panel-heading">Options</div>
+            <div class="panel-body">
+
+              <!-- Cipher Select Dropdown -->
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" id="dropdownToggle">Select Cipher ↓</button>
+                <ul class="dropdown-menu" id="dropdownMenu">
+                  <li class="dropdown-item"><a id="caesar">Caesar</a>
+                  </li><li class="dropdown-item"><a id="affine">Affine</a>
+                  </li><li class="dropdown-item"><a id="substitutionA">Substitution (automatic)</a>
+                  </li><li class="dropdown-item"><a id="substitutionM">Substitution (manual)</a>
+                  </li><li class="dropdown-item"><a id="transpositionS">Transposition (simple)</a>
+                  </li><li class="dropdown-item"><a id="transpositionC">Transposition (columnar)</a>
+                  </li><li class="dropdown-item"><a id="vigenere">Vigenère</a>
+                  </li><li class="dropdown-item"><a id="keyword">Keyword</a>
+                  </li><li class="dropdown-item"><a id="polybius">Polybius Square</a>
+                  </li><li class="list-divider">
+                  </li><li class="dropdown-item"><a id="determine">Determine cipher</a></li>
+                </ul>
+              </div>
+
+              <!-- Other settings -->
+              <div class="options">
+                <button class="btn" id="swapText">↑</button><!-- comments remove weird whitespace
+                --><button class="btn" id="clearText">Clear</button><!--
+                --><button class="btn" id="reverseText">Reverse</button><!--
+                --><button class="btn" id="copyText">Copy to Clipboard</button><!--
+                --><textarea class="input-box" id="encryptInputBox" placeholder="Input key..."></textarea><!--
+                --><button class="btn" id="encrypt">Encrypt</button><!--
+                --><button class="btn" id="decrypt">Decrypt</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty Panel-->
+        <div class="panel cipher-grid-item option-panel">
+          <div class="panel-heading"> Jamie panel </div>
+          <div class="panel-body"> hey </div>
+        </div>
+        
+        <div class="panel cipher-grid-item option-panel">
+          <div class="panel-heading">Advert </div>
+          <div class="panel-body"> 
+            <!--<iframe width="250" height="200" src="https://www.youtube.com/embed/videoseries?list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            -->
+          </div>
+        </div>
       </div>
     </div>
-  </body>
+
+    <!-- Footer -->
+    <footer>
+      <div class="nav-item"><a href="https://github.com/Loganmaxwell6/CNCM">Github repo</a></div>
+      <div class="nav-item"><a href="https://cipherchallenge.org">Cipher challenge</a></div>
+      <div class="nav-item"><a href="https://open.spotify.com/artist/1GLnyPuL45vOsZPs5iANcC">Ciphertools</a></div>
+      <div class="nav-item morg"><a href="https://www.youtube.com/channel/UCEngD8C9GIJmDryhI8Rkqtg">morg</a></div>
+      <p>&copy; Crooked Nazgul Code Men 2021</p>
+    </footer>
+
+    <!-- Input Binding -->
+    <script>
+      $( document ).ready(function() {
+        $('.dropdown').each(function (key, dropdown) {
+          var $dropdown = $(dropdown);
+          $dropdown.find('.dropdown-menu a').on('click', function () {
+              $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
+              setCipher(($(this).attr('id')));
+              changeKeyInput();
+          });
+        });
+        $('#dropdownToggle').on('click', function(){openDropdown();});
+        $(window).on('click', function(event){
+          if (!event.target.matches('#dropdownToggle')){
+            closeDropdown();
+          }
+        });
+        $('#textIn').on('input', function(){updateText();});
+        $('#swapText').on('click', function(){swapText();});
+        $('#clearText').on('click', function(){clearText();});
+        $('#reverseText').on('click', function(){reverseText();});
+        $('#copyText').on('click', function(){copyText();});
+        $('#encrypt').on('click', function(){encrypt();});
+        $('#decrypt').on('click', function(){decrypt();});
+        $('#encryptInputBox').on('input', function(){setKey();});
+      });
+      init();
+    </script>
+  </body>  
 </html>
