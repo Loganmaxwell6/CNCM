@@ -18,6 +18,10 @@ body {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+*::selection {
+  background-color:#744D98;
+  color:#FFF;
+}
 
 h1 {
   font-size: 3.125em;
@@ -107,9 +111,6 @@ textarea{
   border: none;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
-}
-textarea::selection {
-  background-color:#744D98;
 }
 
 .io-text-area {
