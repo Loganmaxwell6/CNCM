@@ -109,7 +109,7 @@ textarea{
   font-family: 'Roboto', sans-serif;
 }
 textarea::selection {
-  border: 2px solid #744D98;
+  background-color:#744D98;
 }
 
 .io-text-area {
