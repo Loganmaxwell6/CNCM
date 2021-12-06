@@ -750,12 +750,12 @@ function substitutionADecrypt(text = globalText.slice(0,globalText.length)){
         return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
     }
     //keyless - 0.133s
-    for (let i = 0; i < 5; i++){
-        text =substitutionCipher(text);
-        if (isEnglish(text)){
-            return text;
-        }
-    }
+    // for (let i = 0; i < 5; i++){
+    //     text =substitutionCipher(text);
+    //     if (isEnglish(text)){
+    //         return text;
+    //     }
+    // }
     return substitutionCipher(text);
 }
 
@@ -1045,7 +1045,7 @@ function time(num, f){
         f();//t);
     }
     let b = performance.now();
-    console.log(f(t));
+    //console.log(f(t));
     console.log(((b - a) / 1000) / num);
 }
 
@@ -2532,3 +2532,96 @@ var check = {
     "ZY": "0.0000244838",
     "ZZ": "0.0000511722"
 };
+
+
+
+
+
+
+function subTransCipher(text, bigramFreq){
+    let freq = findMostLikely(text, ALPHA.length).map((char)=> parseInt(char[0]));
+    let key = new Array(ALPHA.length).fill(0);
+    for (i in key){
+        key[freq[i]] = mostLikelyNum[i];
+    }
+    let score = bigramTestForSub(bigramFreq, key, text.length);
+    for (let i =0; i < 100; i++){
+        let newKey = subTransHillClimb(bigramFreq, key, text.length, score, freq);
+        if (newKey == -1){
+            break;
+        }else{
+            key = newKey[0].slice(0);
+            score = newKey[1];
+        }
+    }
+    //key = substitutionAnnealing(bigramFreq, key, text.length, score);
+    return [key, score];
+}
+
+function subTransHillClimb(freq, key, length, keyScore){
+    function s(score, freq, key, length, a, b){
+        let testKey = key.slice(0);
+        let firstLetter = testKey[a];
+        testKey[a] = testKey[b];
+        testKey[b] = firstLetter;
+        for (let k = 0; k < key.length; k ++) {
+            var changes = [k * 26 + a, k * 26 + b, a * 26 + k, b * 26 + k];
+            for (i of changes){
+                score -= (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2;
+                score += (freq[i] - (bigrams[testKey[Math.floor(i / 26)] * 26 + testKey[i % 26]]*length)) ** 2;
+            }
+        }
+        return [testKey,score];
+    }
+    for (let i = 0; i < key.length; i++){
+        for (let x = i; x < key.length; x++){
+            if (!(i == x)){
+                let test = s(keyScore, freq, key, length, i, x);
+                let score = test[1];
+                if (score < keyScore){
+                    testKey = test[0];
+                    return [testKey,score];
+                }
+            }
+        }
+    }
+    return -1;
+}
+
+
+
+function decryptSubTrans(text ,length){
+    let columns = returnEveryNth(text, length); //split into columns
+    let keyScores = [];
+    for (let i =0; i < columns.length; i++){ //loop through each column
+        for (let x =0; x<columns.length;x++){ //checking each column against current collumn
+            if (!(x == i)){ //asserts we are not checking column against the same column
+                let bigramCount = {}
+                for (let b = 0; b < 676; b++){
+                    bigramCount[b] = 0
+                }
+                for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
+                    if (!(j >= columns[x].length)){
+                        bigramCount[(columns[i][j] * 26) + columns[x][j]] ++;
+                    }
+                }
+                let s = subTransCipher(text, bigramCount);
+                if (!(s in keyScores)){
+                    keyScores.push(s);//add bigram score to scores
+                }
+            }
+        }
+    }
+    let best = []
+    for (i of keyScores){
+        let s = applySubstitutionKey(text, i[0])
+        best.push([s, chiTest(s)])
+        console.log(decryptTransposition(substitutionCipher(s),length).map((char)=>ALPHA[char]).join(""));
+        console.log(applyTranspositionKey(text, decryptTransposition(substitutionCipher(s),length)).map((char)=>ALPHA[char]).join(""));
+    }
+    console.log(best)
+    best = best.sort(function(a,b) {
+        return a[1] - b[1];
+    });
+    console.log(best[0][0].map((char)=>ALPHA[char]).join(""))
+}
