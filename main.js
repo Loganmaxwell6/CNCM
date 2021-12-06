@@ -1864,7 +1864,8 @@ var check = {
 
 
 
-
+//substitution solving code, as per the hill climbing / jakobsen method that we normally use, slightly modified but the difference
+//is not noteworthy
 function subTransCipher(text, bigramFreq){
     let freq = findMostLikely(text, ALPHA.length).map((char)=> parseInt(char[0]));
     let key = new Array(ALPHA.length).fill(0);
@@ -1885,6 +1886,7 @@ function subTransCipher(text, bigramFreq){
     return [key, score];
 }
 
+//basically the same, performs the hill climbing bits
 function subTransHillClimb(freq, key, length, keyScore){
     function s(score, freq, key, length, a, b){
         let testKey = key.slice(0);
@@ -1929,26 +1931,27 @@ function decryptSubTrans(text ,length){
                 }
                 for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
                     if (!(j >= columns[x].length)){
-                        bigramCount[(columns[i][j] * 26) + columns[x][j]] ++;
-                    }
+                        bigramCount[(columns[i][j] * 26) + columns[x][j]] ++;//creating dictionary of all bigram frequencies within 
+                    }                                                        // the two comparing columns
                 }
-                let s = subTransCipher(text, bigramCount);
-                if (!(s in keyScores)){
-                    keyScores.push(s);//add bigram score to scores
-                }
+                let s = subTransCipher(text, bigramCount); //generates one likely substitution key from the column comparison bigram
+                keyScores.push(s);//adds this key to the list of all possible key candidates
             }
         }
     }
     let best = []
     for (i of keyScores){
-        let s = applySubstitutionKey(text, i[0])
-        best.push([s, chiTest(s)])
-        console.log(decryptTransposition(substitutionCipher(s),length).map((char)=>ALPHA[char]).join(""));
-        console.log(applyTranspositionKey(text, decryptTransposition(substitutionCipher(s),length)).map((char)=>ALPHA[char]).join(""));
+        let s = applySubstitutionKey(text, i[0])//applies one substitution key to the text meaning we are hopefully left with only transpo ciphertext
+        let k = decryptTransposition(substitutionCipher(s), length);//uses our typical transpo method to find most likely transpo key
+        console.log(k)
+        let p = substitutionCipher(applyTranspositionKey(text, k))//applies transposition key and then does an extra sub-hill-climb for accuracy 
+        best.push([s, bigramTest(s)])//pushes this text and its bigram score to array
     }
-    console.log(best)
-    best = best.sort(function(a,b) {
+    best = best.sort(function(a,b) { //sorts array so that lowest bigram score is first
         return a[1] - b[1];
     });
-    console.log(best[0][0].map((char)=>ALPHA[char]).join(""))
+    // for (i of best){
+    //     console.log(i[0])
+    // }
+    console.log(best[0][0].map((char)=>ALPHA[char]).join("")) //prints text with lowest bigram score
 }
