@@ -18,9 +18,13 @@ body {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+*::selection {
+  background-color:#744D98;
+  color:#FFF;
+}
 
 h1 {
-  font-size: 3.125em;
+  font-size: 40px;
 }
 
 h2 {
@@ -108,9 +112,6 @@ textarea{
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
 }
-textarea::selection {
-  border: 2px solid #744D98;
-}
 
 .io-text-area {
   height:100%;
@@ -189,13 +190,13 @@ textarea::selection {
   border-radius: 0.15em;
   height: 0.33em;
   width: 0.33em;
-  margin-right: 0.33em;
+  margin: 0 0.33em;
   background-color: #bdbdbd;
   transform: translateY(-0.15em);
 }
 .dropdown-item a {
   display: inline-block;
-  width: 92%;
+  width: 85%;
   padding: 0.25em;
 }
 
@@ -211,6 +212,10 @@ textarea::selection {
 
 .data-body {
   padding: 0.75em;
+}
+
+.data {
+  min-width: 36ch;
 }
 
 .data { grid-area: data;}
@@ -236,7 +241,8 @@ textarea::selection {
   text-align: left;
 }
 
-@media only screen and (min-width:901px){
+@media only screen and (min-width:1001px){ /*landscape mode - only grid and min-width stuff*/
+
   .outputAreaDiv {padding-bottom: 1em;}
 
   .cipher-grid {
@@ -248,13 +254,35 @@ textarea::selection {
   }
 }
 
-@media only screen and (max-width:900px){
+@media only screen and (max-width:1000px){ /*portrait mode - only grid and min-width stuff, currently */
+  h1 {
+    font-size: 30px;
+  }
+  h2{
+    font-size: 1em;
+  }
+
+  .data {
+    text-align: center;
+    margin: 0 auto;
+  }
+
   .cipher-grid {
     grid-template-areas: 
-    'input optionsPanel'
-    'output optionsPanel'
-    'data data';
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 1fr 1fr auto;
+    'optionsPanel'
+    'input'
+    'output'
+    'data';
+    grid-template-columns: auto;
+    grid-template-rows: auto 1fr 1fr auto;
+    margin: 0 auto;
+    max-width: 50ch;
+
+  }
+
+  @media only screen and (max-width:400px){
+    body {
+      font-size: 10px;
+    }
   }
 }
