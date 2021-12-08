@@ -1,25 +1,51 @@
+/*
+fef css
+
+navigation parts:
+  general
+
+  button stuff
+  text area stuff
+  data panel, table stuff
+  dropdown stuff
+  panel and cipher grid items stuff
+
+*/
+
+:root { /*colour variables */
+  --bg: hsl(0, 0%, 25%);
+  --bgdark: hsl(0, 0%, 20%);
+  --bglight: hsl(0, 0%, 30%);
+  --highlight: rgba(116,77,152,1);
+  --highlightdark: #5F3F7D;
+}
 
 html {
   margin: 0px;
 }
 
-body {
+body { /* sets up font, background gradient, grid layout on whole website*/
   margin: 0px;
   font-family: 'Roboto', sans-serif;
   text-align: center;
   display: grid;
   background: rgb(217,0,111);
-  background: linear-gradient(100deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
+  background: linear-gradient(100deg, rgba(217,0,111,1) 0%, var(--highlight) 48%, var(--highlight) 52%, rgba(0,51,171,1) 100%);
   grid-template-columns: auto;
   grid-template-rows: auto;
   color: white;
 }
 
-*, *::before, *::after {
+* {
+  scrollbar-width: thin;
+}
+
+*, *::before, *::after { /* makes sure before and after pseudo-elements by default inherit size*/
   box-sizing: inherit;
 }
-*::selection {
-  background-color:#744D98;
+
+*::selection { /* makes selected text / items purple */
+  background-color: var(--highlight);
   color:#FFF;
 }
 
@@ -33,7 +59,7 @@ h2 {
   background-color: rgba(0, 0, 0, 0);
 }
 
-ul {
+ul { /* removes bullet points so i can make custom ones */
   list-style-type: none;
 }
 
@@ -76,6 +102,10 @@ header {
   font-size: 1em;
 }
 
+/* 
+button stuff
+*/
+
 button{
   margin: .3em 0.3em;
   border: 0;
@@ -84,9 +114,9 @@ button{
 .btn {
   display: inline-block;
   cursor: pointer;
-  border: 2px solid #744D98;
-  outline: 2px solid hsl(0, 0%, 25%);
-  background-color: #744D98;
+  border: 2px solid var(--highlight);
+  outline: 2px solid var(--bg);
+  background-color: var(--highlight);
   color: white;
   font-size: 14px;
   padding: 0.25em 0.5em;
@@ -99,18 +129,30 @@ button{
   outline-offset: -4px;
 }
 .btn:active{
-  border-color: #5F3F7D;
-  background: #5F3F7D;
+  border-color: var(--highlightdark);
+  background: var(--highlightdark);
 }
 
+/*
+text area stuff
+*/
+
 textarea{
+  display: inline-block;
   resize: none;
   outline: none;
   color: white;
-  background-color: hsl(0, 0%, 25%);
+  background-color: var(--bg);
   border: none;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+}
+textarea::-webkit-scrollbar {
+  width: 1em;
+}
+textarea::-webkit-scrollbar-thumb {
+  border-radius: 7px;
+  background-color: var(--highlightdark);
 }
 
 .io-text-area {
@@ -118,36 +160,40 @@ textarea{
   width: 100%;
   min-width: 15.5em;
 }
-
-/* might make output box darker
-.output {
-  background-color:hsl(0, 0%, 23%);
+.io-text-area::-webkit-scrollbar-thumb {
+  border: 3px solid var(--bg);
 }
-*/
 
 .input-box {
   border:none;
-  background-color: hsl(0, 0%, 30%);
+  background-color: var(--bglight);
   height: 2.5em;
   width: 100%;
   margin: 0.3em;
 }
-
-.panel{
-  background-color: hsl(0, 0%, 25%);
+.input-box::-webkit-scrollbar-thumb {
+  border: 3px solid var(--bglight);
+  background-color: var(--bg);
 }
 
-.panel-heading {
-  background-color:hsl(0, 0%, 20%);
-  padding: 0.5em;
+.output {
+  background-color: var(--bgdark);
 }
 
-.panel-body {
-  padding: 0.5em;
+/*
+data panel, table stuff
+*/
+
+.data-body {
+  padding: 0.75em;
 }
 
-.option-panel{
-  margin-bottom: 0.75em;
+.data {
+  min-width: 36ch;
+}
+
+.table { /* centers table but leaves 1em gap on bottom */
+  margin: auto auto 1em auto;
 }
 
 .table, .table td, .table th {
@@ -155,6 +201,15 @@ textarea{
   border-collapse: collapse;
   padding: 0.25em;
 }
+
+.data-values-table {
+  text-align: left;
+  margin: auto;
+}
+
+/*
+dropdown stuff
+*/
 
 .dropdown {
   position: relative;
@@ -168,7 +223,7 @@ textarea{
   display: none;
   position: absolute;
   padding: 0;
-  background-color:hsl(0, 0%, 20%);
+  background-color: var(--bgdark);
   width: inherit;
   min-width: 15em;
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
@@ -201,7 +256,7 @@ textarea{
 }
 
 .list-divider {
-  border-top: 0.05em solid hsl(0, 0%, 30%);
+  border-top: 0.05em solid var(--bglight);
   padding: 0.125em 0;
   height: 0;
   transform: translateY(50%);
@@ -210,12 +265,34 @@ textarea{
   visibility: hidden;
 }
 
-.data-body {
-  padding: 0.75em;
+/*
+panel and cipher item stuff
+*/
+
+.panel{
+  background-color: var(--bg);
 }
 
-.data {
-  min-width: 36ch;
+.panel-heading {
+  background-color: var(--bgdark);
+  padding: 0.5em;
+}
+
+.panel-body {
+  padding: 0.5em;
+}
+
+.option-panel, .twitter-timeline {
+  margin-bottom: 0.75em;
+  
+}
+
+.twitter-timeline-error {
+  background-color: var(--bgdark);
+  padding: 0.5em;
+  display: block;
+  border-radius: 0.1em;
+  box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
 }
 
 .data { grid-area: data;}
@@ -237,12 +314,12 @@ textarea{
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
 }
 
-.dataValues {
-  text-align: left;
-}
+/*
+media queries. Currently only based on width. Changes cipher grid formatting, text size, and background gradient angle
+*/
 
-@media only screen and (min-width:1001px){ /*landscape mode - only grid and min-width stuff*/
-
+@media only screen and (min-width:1001px) { /*landscape mode - only grid and min-width stuff*/
+  
   .outputAreaDiv {padding-bottom: 1em;}
 
   .cipher-grid {
@@ -255,6 +332,10 @@ textarea{
 }
 
 @media only screen and (max-width:1000px){ /*portrait mode - only grid and min-width stuff, currently */
+  
+  body{
+    background: linear-gradient(94deg, rgba(217,0,111,1) 0%, var(--highlight) 48%, var(--highlight) 52%, rgba(0,51,171,1) 100%);
+  }
   h1 {
     font-size: 30px;
   }
@@ -267,22 +348,22 @@ textarea{
     margin: 0 auto;
   }
 
+  .data-values-header { text-align: center;}
+
   .cipher-grid {
     grid-template-areas: 
-    'optionsPanel'
     'input'
     'output'
+    'optionsPanel'
     'data';
     grid-template-columns: auto;
-    grid-template-rows: auto 1fr 1fr auto;
-    margin: 0 auto;
+    grid-template-rows: 1fr 1fr 2fr auto;
+    margin: 2em auto;
     max-width: 50ch;
 
   }
+}
 
-  @media only screen and (max-width:400px){
-    body {
-      font-size: 10px;
-    }
-  }
+@media only screen and (max-width:400px){
+  body {font-size: 10px;}
 }
