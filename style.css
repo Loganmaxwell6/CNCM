@@ -9,6 +9,7 @@ navigation parts:
   data panel, table stuff
   dropdown stuff
   panel and cipher grid items stuff
+  media queries
 
 */
 
@@ -148,10 +149,10 @@ textarea{
   font-family: 'Roboto', sans-serif;
 }
 textarea::-webkit-scrollbar {
-  width: 1em;
+  width: 1.25em;
 }
 textarea::-webkit-scrollbar-thumb {
-  border-radius: 7px;
+  border-radius: 0.75em;
   background-color: var(--highlightdark);
 }
 
@@ -161,7 +162,7 @@ textarea::-webkit-scrollbar-thumb {
   min-width: 15.5em;
 }
 .io-text-area::-webkit-scrollbar-thumb {
-  border: 3px solid var(--bg);
+  border: 0.125em solid var(--bg);
 }
 
 .input-box {
@@ -333,9 +334,10 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
 
 @media only screen and (max-width:1000px){ /*portrait mode - only grid and min-width stuff, currently */
   
-  body{
+  body{ /* changes angle of gradient to be steeper */
     background: linear-gradient(94deg, rgba(217,0,111,1) 0%, var(--highlight) 48%, var(--highlight) 52%, rgba(0,51,171,1) 100%);
   }
+
   h1 {
     font-size: 30px;
   }
@@ -357,13 +359,13 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
     'optionsPanel'
     'data';
     grid-template-columns: auto;
-    grid-template-rows: 1fr 1fr 2fr auto;
+    grid-template-rows: 1fr 1fr 3fr auto;
     margin: 2em auto;
     max-width: 50ch;
 
   }
 }
 
-@media only screen and (max-width:400px){
+@media only screen and (max-width:355px){
   body {font-size: 10px;}
 }
