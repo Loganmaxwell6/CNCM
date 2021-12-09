@@ -30,12 +30,27 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   font-family: 'Roboto', sans-serif;
   text-align: center;
   display: grid;
-  background: rgb(217,0,111);
-  background: linear-gradient(100deg, rgba(217,0,111,1) 0%, var(--highlight) 48%, var(--highlight) 52%, rgba(0,51,171,1) 100%);
   grid-template-columns: auto;
   grid-template-rows: auto;
   color: white;
 }
+
+.bi-flag { /*highlight: rgba(116,77,152,1)*/
+  background: rgb(217,0,111);
+  background: linear-gradient(100deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
+}
+
+.pride-flag { /*highlight: rgba(246,138,30,1)*/
+  background: rgb(209,34,41);
+  background: linear-gradient(100deg, rgba(209,34,41,1) 0%, rgba(246,138,30,1) 22%, rgba(253,224,26,1) 41%, rgba(0,121,64,1) 59%, rgba(36,64,142,1) 78%, rgba(115,41,130,1) 100%);  
+}
+
+.pan-flag { /*highlight: rgba(255,33,142,1)*/
+  background: rgb(255,33,142);
+  background: linear-gradient(100deg, rgba(255,33,142,1) 10%, rgba(252,216,0,1) 50%, rgba(1,148,252,1) 90%);
+}
+
+
 
 * {
   scrollbar-width: thin;
