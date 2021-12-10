@@ -26,6 +26,19 @@
 
   <body class="bi-flag">
 
+    <!-- Style Dropdown -->
+    <div class="dropdown style-dropdown">
+      <button class="btn-2" id="styleDropdownToggle">Select Style ↓</button>
+      <ul class="style-dropdown-menu dropdown-menu" id="styleDropdownMenu">
+        <li class="dropdown-item "><a id="bingusStyle">Bingus Style</a>
+        </li><li class="dropdown-item bi-flag"><a id="biStyle">Bi Style</a>
+        </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride Style</a>
+        </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan Style</a>
+        </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans Style</a>
+        </li>
+      </ul>
+    </div>
+
     <!-- Header -->
     <header>
       <h1>Crooked Nazgul Code Men Official Website</h1>
@@ -106,8 +119,8 @@
 
               <!-- Cipher Select Dropdown -->
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="dropdownToggle">Select Cipher ↓</button>
-                <ul class="dropdown-menu" id="dropdownMenu">
+                <button class="btn-1" id="cipherDropdownToggle">Select Cipher ↓</button>
+                <ul class="cipher-dropdown-menu dropdown-menu" id="cipherDropdownMenu">
                   <li class="dropdown-item"><a id="caesar">Caesar</a>
                   </li><li class="dropdown-item"><a id="affine">Affine</a>
                   </li><li class="dropdown-item"><a id="substitutionA">Substitution (automatic)</a>
@@ -124,13 +137,13 @@
 
               <!-- Other settings -->
               <div class="options">
-                <button class="btn" id="swapText">↑</button><!-- comments remove weird whitespace
-                --><button class="btn" id="clearText">Clear</button><!--
-                --><button class="btn" id="reverseText">Reverse</button><!--
-                --><button class="btn" id="copyText">Copy to Clipboard</button><!--
+                <button class="btn-1" id="swapText">↑</button><!-- comments remove weird whitespace
+                --><button class="btn-1" id="clearText">Clear</button><!--
+                --><button class="btn-1" id="reverseText">Reverse</button><!--
+                --><button class="btn-1" id="copyText">Copy to Clipboard</button><!--
                 --><textarea class="input-box" id="encryptInputBox" placeholder="Input key..."></textarea><!--
-                --><button class="btn" id="encrypt">Encrypt</button><!--
-                --><button class="btn" id="decrypt">Decrypt</button>
+                --><button class="btn-1" id="encrypt">Encrypt</button><!--
+                --><button class="btn-1" id="decrypt">Decrypt</button>
               </div>
             </div>
           </div>
@@ -163,20 +176,35 @@
     <!-- Input Binding -->
     <script>
       $( document ).ready(function() {
-        $('.dropdown').each(function (key, dropdown) {
+        $('.cipher-dropdown').each(function (key, dropdown) {
           var $dropdown = $(dropdown);
-          $dropdown.find('.dropdown-menu a').on('click', function () {
+          $dropdown.find('.cipher-dropdown-menu a').on('click', function () {
               $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
               setCipher(($(this).attr('id')));
               changeKeyInput();
           });
         });
-        $('#dropdownToggle').on('click', function(){openDropdown();});
+        $('#cipherDropdownToggle').on('click', function(){openCipherDropdown();});
         $(window).on('click', function(event){
-          if (!event.target.matches('#dropdownToggle')){
-            closeDropdown();
+          if (!event.target.matches('#cipherDropdownToggle')){
+            closeCipherDropdown();
           }
         });
+
+        $('.style-dropdown').each(function (key, dropdown) {
+          var $dropdown = $(dropdown);
+          $dropdown.find('.style-dropdown-menu a').on('click', function () {
+              $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
+              setStyle(($(this).attr('id')));
+          });
+        });
+        $('#styleDropdownToggle').on('click', function(){openStyleDropdown();});
+        $(window).on('click', function(event){
+          if (!event.target.matches('#styleDropdownToggle')){
+            closeStyleDropdown();
+          }
+        });
+
         $('#textIn').on('input', function(){updateText();});
         $('#swapText').on('click', function(){swapText();});
         $('#clearText').on('click', function(){clearText();});

@@ -23,6 +23,7 @@ navigation parts:
 
 html {
   margin: 0px;
+  background-color: var(--bgdark);
 }
 
 body { /* sets up font, background gradient, grid layout on whole website*/
@@ -35,22 +36,27 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   color: white;
 }
 
-.bi-flag { /*highlight: rgba(116,77,152,1)*/
+
+
+.bi-flag {
   background: rgb(217,0,111);
   background: linear-gradient(100deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
 }
 
-.pride-flag { /*highlight: rgba(246,138,30,1)*/
+.pride-flag {
   background: rgb(209,34,41);
   background: linear-gradient(100deg, rgba(209,34,41,1) 0%, rgba(246,138,30,1) 22%, rgba(253,224,26,1) 41%, rgba(0,121,64,1) 59%, rgba(36,64,142,1) 78%, rgba(115,41,130,1) 100%);  
 }
 
-.pan-flag { /*highlight: rgba(255,33,142,1)*/
-  background: rgb(255,33,142);
-  background: linear-gradient(100deg, rgba(255,33,142,1) 10%, rgba(252,216,0,1) 50%, rgba(1,148,252,1) 90%);
+.pan-flag {
+  background: rgba(252,216,0,1);
+  background: linear-gradient(100deg, rgba(255,33,142,1) 33%, rgba(252,216,0,1) 33%, rgba(252,216,0,1) 67%, rgba(1,148,252,1) 67%);
 }
 
-
+.trans-flag {
+  background: rgb(85,205,252);
+  background: linear-gradient(100deg, rgba(85,205,252,1) 20%, rgba(247,168,184,1) 20%, rgba(247,168,184,1) 40%, rgba(255,255,255,1) 40%, rgba(255,255,255,1) 60%, rgba(247,168,184,1) 60%, rgba(247,168,184,1) 80%, rgba(85,205,252,1) 80%);
+}
 
 * {
   scrollbar-width: thin;
@@ -124,30 +130,40 @@ button stuff
 
 button{
   margin: .3em 0.3em;
+  padding: 0.25em 0.5em;
   border: 0;
-}
-
-.btn {
   display: inline-block;
   cursor: pointer;
+  font-size: 0.875em;
+  text-decoration: none;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.btn-1 {
   border: 2px solid var(--highlight);
   outline: 2px solid var(--bg);
   background-color: var(--highlight);
   color: white;
-  font-size: 14px;
-  padding: 0.25em 0.5em;
-  text-decoration: none;
-  font-size: inherit;
-  line-height: 1;
   transition: outline-offset 150ms ease;
 }
-.btn:hover{
+.btn-1:hover {
   outline-offset: -4px;
 }
-.btn:active{
+.btn-1:active {
   border-color: var(--highlightdark);
   background: var(--highlightdark);
 }
+
+.btn-2 {
+  opacity: 0.7;
+  background-color: var(--bg);
+  color: white;
+  border: 2px solid var(--bgdark);
+  border-radius: 4px;
+}
+
+
 
 /*
 text area stuff
@@ -234,19 +250,28 @@ dropdown stuff
 }
 
 .dropdown-menu {
-  text-align:left;
   margin: 0;
+  padding: 0;
   display: none;
   position: absolute;
-  padding: 0;
   background-color: var(--bgdark);
   width: inherit;
+  z-index: 1;
+}
+
+.cipher-dropdown-menu {
+  text-align:left;
   min-width: 15em;
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
-  z-index: 1;
+  border-radius: 0.1em;  
   border: 0.05em solid hsl(0, 0%, 15%);
-  border-radius: 0.1em;
   transform: translateY(-0.275em);
+}
+
+.style-dropdown { text-align: left;}
+
+.style-dropdown-menu {
+  max-width: 15em;
 }
 
 .show { display:block; }
@@ -255,7 +280,7 @@ dropdown stuff
   cursor: pointer;
   background-color: hsl(0, 0%, 15%);
 }
-.dropdown-item::before { /* bullet points */
+.cipher-dropdown-menu .dropdown-item::before { /* bullet points */
   content: '';
   display: inline-block;
   border-radius: 0.15em;
