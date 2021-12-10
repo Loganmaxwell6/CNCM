@@ -117,7 +117,7 @@ a {
 
 header {
   padding: 2em;
-  color: white;
+  color: #ddd;
 }
 
 .header-subtitle{
@@ -272,6 +272,8 @@ dropdown stuff
 
 .style-dropdown-menu {
   max-width: 15em;
+  border: 3px solid var(--bgdark);
+  border-radius: 3px;
 }
 
 .show { display:block; }
@@ -373,10 +375,6 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
 }
 
 @media only screen and (max-width:1000px){ /*portrait mode - only grid and min-width stuff, currently */
-  
-  body{ /* changes angle of gradient to be steeper */
-    background: linear-gradient(94deg, rgba(217,0,111,1) 0%, var(--highlight) 48%, var(--highlight) 52%, rgba(0,51,171,1) 100%);
-  }
 
   h1 {
     font-size: 30px;
