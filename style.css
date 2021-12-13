@@ -58,6 +58,10 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   background: linear-gradient(100deg, rgba(85,205,252,1) 20%, rgba(247,168,184,1) 20%, rgba(247,168,184,1) 40%, rgba(255,255,255,1) 40%, rgba(255,255,255,1) 60%, rgba(247,168,184,1) 60%, rgba(247,168,184,1) 80%, rgba(85,205,252,1) 80%);
 }
 
+.boring {
+  background-color: #333;
+}
+
 * {
   scrollbar-width: thin;
 }
@@ -116,7 +120,7 @@ a {
 }
 
 header {
-  padding: 2em;
+  padding: 0 2em 2em 2em;
   color: #ddd;
 }
 
@@ -155,14 +159,19 @@ button{
   background: var(--highlightdark);
 }
 
-.btn-2 {
-  opacity: 0.7;
-  background-color: var(--bg);
+.style-btn {
+  padding: 0.3em 0.6em;
+  margin: 2fr;
+  background-color: rgba(0, 0, 0, 0);
   color: white;
-  border: 2px solid var(--bgdark);
+  font-weight: bold;
+  border: 2px solid white;
   border-radius: 4px;
+  transition: padding 150ms ease;
 }
-
+.style-btn:active {
+  padding: 0.2em 0.4em;
+}
 
 
 /*
@@ -268,7 +277,14 @@ dropdown stuff
   transform: translateY(-0.275em);
 }
 
-.style-dropdown { text-align: left;}
+.style-dropdown { 
+  height: 3em;
+  width: 10em;
+  text-align: left;
+}
+.style-dropdown a {
+  width: calc(100% - 0.5em);
+}
 
 .style-dropdown-menu {
   max-width: 15em;
@@ -278,10 +294,23 @@ dropdown stuff
 
 .show { display:block; }
 
+.dropdown-item {
+  border-radius: 2px;
+}
 .dropdown-item:hover {
   cursor: pointer;
   background-color: hsl(0, 0%, 15%);
 }
+
+.dropdown-menu a {
+  display: inline-block;
+  padding: 0.25em;
+}
+
+.cipher-dropdown-menu a {
+  width: 85%;
+}
+
 .cipher-dropdown-menu .dropdown-item::before { /* bullet points */
   content: '';
   display: inline-block;
@@ -291,11 +320,6 @@ dropdown stuff
   margin: 0 0.33em;
   background-color: #bdbdbd;
   transform: translateY(-0.15em);
-}
-.dropdown-item a {
-  display: inline-block;
-  width: 85%;
-  padding: 0.25em;
 }
 
 .list-divider {

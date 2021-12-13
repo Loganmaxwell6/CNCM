@@ -28,14 +28,15 @@
 
     <!-- Style Dropdown -->
     <div class="dropdown style-dropdown">
-      <button class="btn-2" id="styleDropdownToggle">Select Style ↓</button>
+      <button class="style-btn" id="styleDropdownToggle">Select Style</button>
       <ul class="style-dropdown-menu dropdown-menu" id="styleDropdownMenu">
-        <li class="dropdown-item bi-flag"><a id="biStyle">Bi Style</a>
-        </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride Style</a>
-        </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan Style</a>
-        </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans Style</a>
-        </li><li class="dropdown-item list-divider"></li>
-        <li class="dropdown-item "><a id="bingusStyle">Bingus Style</a>
+        <li class="dropdown-item bi-flag"><a id="biStyle">Bi flag</a>
+        </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride flag</a>
+        </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan flag</a>
+        </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans flag</a>
+        </li><li class="list-divider">
+        </li><li class="dropdown-item boring"><a id="boringStyle">Boring Style</a>
+        </li><li class="dropdown-item "><a id="bingusStyle">Bingus Style</a>
         </li>
       </ul>
     </div>
@@ -119,7 +120,7 @@
             <div class="panel-body">
 
               <!-- Cipher Select Dropdown -->
-              <div class="dropdown">
+              <div class="dropdown cipher-dropdown">
                 <button class="btn-1" id="cipherDropdownToggle">Select Cipher ↓</button>
                 <ul class="cipher-dropdown-menu dropdown-menu" id="cipherDropdownMenu">
                   <li class="dropdown-item"><a id="caesar">Caesar</a>
@@ -177,10 +178,11 @@
     <!-- Input Binding -->
     <script>
       $( document ).ready(function() {
-        $('.cipher-dropdown').each(function (key, dropdown) {
-          var $dropdown = $(dropdown);
-          $dropdown.find('.cipher-dropdown-menu a').on('click', function () {
-              $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
+
+        $('.cipher-dropdown').each(function (key, cipher_dropdown) {
+          var $cipher_dropdown = $(cipher_dropdown);
+          $cipher_dropdown.find('.dropdown-item a').on('click', function () {
+              $cipher_dropdown.find('button').text($(this).text()).append('<span class="caret"></span>');
               setCipher(($(this).attr('id')));
               changeKeyInput();
           });
@@ -192,10 +194,9 @@
           }
         });
 
-        $('.style-dropdown').each(function (key, dropdown) {
-          var $dropdown = $(dropdown);
-          $dropdown.find('.style-dropdown-menu a').on('click', function () {
-              $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
+        $('.style-dropdown').each(function (key, style_dropdown) {
+          var $style_dropdown = $(style_dropdown);
+          $style_dropdown.find('.style-dropdown-menu a').on('click', function () {
               setStyle(($(this).attr('id')));
           });
         });

@@ -162,6 +162,7 @@ function swapText(){
     updateText();
 }
 
+/* dropdown opening / closing functions */
 function closeCipherDropdown(){
     document.getElementById("cipherDropdownMenu").classList.remove("show");
 }
@@ -190,6 +191,7 @@ function openStyleDropdown(){
     }
 }
 
+/* changes the highlight colour and background for each style in the dropdown */
 function setStyle(style){
     var root = document.querySelector(':root');
 
@@ -215,10 +217,18 @@ function setStyle(style){
             root.style.setProperty("--highlightdark", 'rgba(0, 87, 150, 1)');
             break;
         case "transStyle":
+            console.log("tran");
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("trans-flag");
             root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
             root.style.setProperty("--highlightdark", 'rgba(196, 133, 146, 1)');
+            break;
+        case 'boringStyle':
+            console.log("boringe");
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("boring");
+            root.style.setProperty('--highlight', '#666666');
+            root.style.setProperty('--highlightdark', '#555555');
     }
 }
 
