@@ -958,6 +958,69 @@ function railFenceDecrypt(text=globalText.slice(0)){
     }
 }
 
+function inverse(mat){
+    let invdet = 1/(mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]);
+    let invmat = [
+        [mod((mat[1][1] * invdet), 26), mod((mat[0][1] * invdet * (-1)), 26)],
+        [mod((mat[1][0] * invdet * (-1)), 26), mod((mat[0][0] * invdet), 26)]
+    ];
+    return invmat;
+}
+
+function dotproductDec(obs, exp){
+    let prod = [
+        [(obs[0][0] * exp[0][0] + obs[0][1] * exp[1][0]), (obs[0][0] * exp[0][1] + obs[0][1] * exp[1][1])],
+        [(obs[1][0] * exp[0][0] + obs[1][1] * exp[1][0]), (obs[1][0] * exp[0][1] + obs[1][1] * exp[1][1])]
+    ];
+    return prod;
+}
+
+function dotproductEnc(invmat, bigram){
+    let prod = [
+        [ALPHA[mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26)]],
+        [ALPHA[mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26)]]
+    ];
+    return prod;
+}
+
+
+function hillDecrypt(text = globalText.slice(0, globalText.length)){
+    // https://sites.wcsu.edu/mbxml/html/hill_decrypt_section.html
+    let o = observedBigramCount(text);
+    let max = o.sort((x,y) => y - x).slice(0, 2); // max 0 2nd max 1
+    let th = 0;
+    let he = 0;
+    for (i in o){
+        if (ALPHA[o[i]] == max[0]){
+            th = bigrams[i];
+        }
+        else if (ALPHA[o[i]] == max[1]){
+            he = bigrams[i];
+        };
+    }; 
+    let obsMat = [
+        [ALPHA.indexOf(th[0]),ALPHA.indexOf(he[0])],
+        [ALPHA.indexOf(th[1]),ALPHA.indexOf(he[1])]
+    ];
+    obsMat = inverse(obsMat);
+    let expMat = [
+        [19,7],
+        [7,4]
+    ];
+    let inverseKey = dotproductDec(obsMat, expMat);
+    let t = text.match(/.{1,2}/g); // bruh
+    let plain = "";
+    for (bigram in t){
+        let d = dotproductEnc(inverseKey, [bigram[0], bigram[1]]);
+        plain += d[0] + d[1];
+    };
+    return plain;
+}
+
+function hillEncrypt(){
+
+}
+
 function determineCipher(text = globalText.slice(0, globalText.length)){
     let c = chiTest(text);
     if (c < 120){
