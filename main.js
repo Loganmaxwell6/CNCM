@@ -575,6 +575,17 @@ function indexOfCoincidence(text){
     return (sum / N) / 26;
 }
 
+function indexOfDigraphicCoincidence(text){
+    let o = observedBigramCount(text);
+    let n = 0;
+    let sum = 0;
+    for (let i = 0; i < 676; i++){
+        sum += o[i] * (o[i] - 1);
+        n += o[i];
+    }
+    return (sum / (n * (n-1)));
+}
+
 // it worky now :)
 function getKeyLength(text){
     let limit = 16;
@@ -611,12 +622,9 @@ function observedCount(text){
     for (let i = 0; i < 26; i++){
         o[i] = 0;
     }
-    
     for (let i = 0; i <text.length; i++){
         o[text[i]] ++;
     }
-    
-    
     return o;
 }
 
@@ -661,8 +669,7 @@ function observedBigramCount(text){
         o.push(0);
     }
     for (let i = 0; i < text.length-1; i++){
-        let p = text.slice(i, i+2)
-        o[(p[0] * 26) + (p[1])]++;
+        o[(text[i] * 26) + (text[i+1])]++;
     }
     return o;
 }
@@ -810,12 +817,12 @@ function substitutionADecrypt(text = globalText.slice(0,globalText.length)){
         return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
     }
     //keyless - 0.133s
-    // for (let i = 0; i < 5; i++){
-    //     text =substitutionCipher(text);
-    //     if (isEnglish(text)){
-    //         return text;
-    //     }
-    // }
+    for (let i = 0; i < 5; i++){
+        text =substitutionCipher(text);
+        if (isEnglish(text)){
+            return text;
+        }
+    }
     return substitutionCipher(text);
 }
 
@@ -1107,21 +1114,20 @@ function playfairDecrypt(){
 
 }
 
-function removePlayfairKey(text, key){
-    key = generateFullKey(key.toLocaleUpperCase());
+function removePlayfairKey(key, text=globalText.slice(0)){
+    //key = generateFullKey(key.toLocaleUpperCase());
     for (let i = 0; i < text.length -1; i+=2) {
-        bigram = text[i] + text[i+1];
-        point1 = key.indexOf(bigram[0]);
-        point2 = key.indexOf(bigram[1]);
+        point1 = key.indexOf(text[i]);
+        point2 = key.indexOf(text[i+1]);
         if (point1 %5 == point2%5){
-            text[i] = ALPHA[(point1 - 5) % 25];
-            text[i+1] = ALPHA[(point2 - 5) % 25];
+            text[i] = mod((point1 - 5),25);
+            text[i+1] = mod((point2 - 5),25);
         }else if(Math.floor(point1 / 5) == Math.floor(point2 / 5)){
-            text[i] = ALPHA[(Math.floor(point1 / 5)*5) + mod((point1 -1),5)];
-            text[i+1] = ALPHA[(Math.floor(point2 / 5)*5) + mod((point2 -1),5)];
+            text[i] = (Math.floor(point1 / 5)*5) + mod((point1 -1),5);
+            text[i+1] = (Math.floor(point2 / 5)*5) + mod((point2 -1),5);
         }else{
-            text[i] = ALPHA[point2%5 + (Math.floor(point1 / 5) *5)];
-            text[i+1] = ALPHA[point1%5 + (Math.floor(point2 / 5) *5)];
+            text[i] = point2%5 + (Math.floor(point1 / 5) *5);
+            text[i+1] = point1%5 + (Math.floor(point2 / 5) *5);
         }
     }
     return text;
@@ -1163,6 +1169,55 @@ function applyPlayfairKey(text, key){
         }
     }
     return text;
+}
+
+function playFairHillClimb(text=globalText.slice(0)){
+    let key = [...Array(26).keys()]
+    let score = bigramTest(removePlayfairKey(key, text))
+    for (let i =0; i < 100; i++){
+        let newKey = fullPlayfairSwapTest(key, text, score);
+        if (newKey == -1){
+            console.log(i, score)
+            break;
+        }else{
+            key = newKey[0].slice(0);
+            score = newKey[1];
+        }
+    }
+    //key = substitutionAnnealing(bigramFreq, key, text.length, score);
+    console.log(key)
+    console.log(text)
+    return removePlayfairKey(key, text).map((char)=>ALPHA[char]).join("");
+}
+
+function bigramTestForSub(freq, key, length){
+    let sum = 0;
+    for (i in freq){
+        sum += (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2; 
+    }
+    return sum;
+}
+
+function fullPlayfairSwapTest(key, text, keyScore){
+    function s(text, key){
+        return bigramTest(removePlayfairKey(key,text));
+    }
+    for (let i = 0; i < key.length; i++){
+        for (let x = i; x < key.length; x++){
+            if (!(i == x)){
+
+                let testKey = key.slice(0);
+                let firstLetter = testKey[a];
+                testKey[a] = testKey[b];
+                testKey[b] = firstLetter;
+                let test = s(text, key);
+                if (test < keyScore){
+                    return [testKey, test];
+                }
+            }
+        }
+    }
+    return -1;
 }
 
 function time(num, f){
@@ -1991,49 +2046,190 @@ var check = {
 
 //substitution solving code, as per the hill climbing / jakobsen method that we normally use, slightly modified but the difference
 //is not noteworthy
-function subTransCipher(text, bigramFreq){
-    let freq = findMostLikely(text, ALPHA.length).map((char)=> parseInt(char[0]));
-    let key = new Array(ALPHA.length).fill(0);
-    for (i in key){
-        key[freq[i]] = mostLikelyNum[i];
+function subTransCipher(text, length){
+    function s(text, sKey){
+        return Math.abs(0.0067 - indexOfDigraphicCoincidence(applyTranspositionKey(text, sKey)))
     }
-    let score = bigramTestForSub(bigramFreq, key, text.length);
-    for (let i =0; i < 100; i++){
-        let newKey = subTransHillClimb(bigramFreq, key, text.length, score, freq);
-        if (newKey == -1){
-            break;
+    let key = [...Array(length).keys()]//getBestKey(applyTranspositionKey, function(x){return Math.abs(0.0067 -indexOfDigraphicCoincidence(x))},[...Array(length).keys()], text, 1000);
+    let score = Math.abs(0.0067 - indexOfDigraphicCoincidence(applyTranspositionKey(text, key)));
+    for (let gen = 0; gen < 100 * length; gen++){
+        let randNum = rand(0,4);
+        let testKey = key.slice(0);
+        if (randNum == 1){
+            let i = Math.floor(Math.random() * length)
+            let x = Math.floor(Math.random(length) * length)
+            let firstLetter = testKey[i];
+            testKey[i] = testKey[x];
+            testKey[x] = firstLetter;
+        }else if(randNum == 2){
+            let p = Math.floor(Math.random() * length);
+            testKey = [...testKey.slice(p, length),...testKey.slice(0,p)];
+        }else if(randNum == 3){
+            testKey = testKey.reverse();
         }else{
-            key = newKey[0].slice(0);
-            score = newKey[1];
+            for (let i = 0; i < length -1; i+=2){
+                let firstLetter = testKey[i];
+                testKey[i] = testKey[i+1];
+                testKey[i+1] = firstLetter;
+            }
+        }
+        let testScore = s(text, testKey);
+        if (testScore < score || ( testScore - 0.000022 < score && rand(0,20) == 1)){
+            score = testScore;
+            key = testKey;
         }
     }
-    //key = substitutionAnnealing(bigramFreq, key, text.length, score);
-    return [key, score];
+    return [substitutionADecrypt(applyTranspositionKey(text, key)), score];
+}
+
+function subTransDecrypt(text=globalText.slice(0)){
+    let best = [[], 100000000];
+    for (let i = 2; i < 20; i++){
+        let t = transpositionSDecrypt(subTransCipher(text, i));
+        if (t[1] < best[1]){
+            best = t.slice(0)
+        }
+    }
+    console.log(transpositionSDecrypt(substitutionADecrypt(best[0])).map((char)=>ALPHA[char]).join(""));
+}
+//ADFGVX
+
+adfgvx = ["A", "D", "F", "G", "V", "X"]
+adfgvxEncryptors = [...ALPHA,..."123456789".split("")];
+function removeAdfgvx(text){
+    let t = [];
+    for (let x = 0; x < text.length-1; x+=2){
+        t.push(adfgvx.indexOf(ALPHA[text[x]]) * 6 + adfgvx.indexOf(ALPHA[text[x+1]]));
+    }
+    return t;
+}
+
+function adfgvxCipher(text, length){
+    function s(text, sKey){
+        return indexOfDigraphicCoincidence(removeAdfgvx(applyTranspositionKey(text, sKey)));
+    }
+    let key = getBestKey(applyTranspositionKey, function(x){return Math.abs(0.0067 -indexOfDigraphicCoincidence(x))},[...Array(length).keys()], text, 10000);
+    let score = indexOfDigraphicCoincidence(removeAdfgvx(applyTranspositionKey(text, key)));
+    for (let gen = 0; gen < 100 * length; gen++){
+        let randNum = rand(0,5);
+        let testKey = key.slice(0);
+        if (randNum == 1){
+            let i = Math.floor(Math.random() * length)
+            let x = Math.floor(Math.random(length) * length)
+            while(i == x){
+                x = Math.floor(Math.random(length) * length);
+            }
+            let firstLetter = testKey[i];
+            testKey[i] = testKey[x];
+            testKey[x] = firstLetter;
+        }else if(randNum == 2){
+            let p = Math.floor(Math.random() * length);
+            testKey = [...testKey.slice(p, length),...testKey.slice(0,p)];
+        }else if(randNum == 3){
+            testKey = testKey.reverse();
+        }else{//if(randNum ==4){
+            for (let i = 0; i < length -1; i+=2){
+                let firstLetter = testKey[i];
+                testKey[i] = testKey[i+1];
+                testKey[i+1] = firstLetter;
+            }
+        }//else{
+            // let size = rand(0, length - 1);
+            // let arrChunk = [];
+            // console.log(arrChunk, length)
+            // for (let b = rand(0, Math.ceil(length / size)); b < Math.ceil(length / size); b++){
+            //     let chunk = [];
+            //     for (let c = 0; c < size; c++){
+            //         if ((b% length) * size + c < length){
+            //             chunk.push(testKey[(b % length) * size + c])
+            //         }
+            //     }
+            //     console.log(chunk)
+            //     arrChunk.concat(chunk)
+            // }
+            // console.log(arrChunk, size);
+            // let i = Math.floor(Math.random() * length);
+            // let x = Math.floor(Math.random(length) * length);
+            // while(i == x){
+            //     x = Math.floor(Math.random(length) * length);
+            // }
+            // let firstLetter = arrChunk[i];
+            // arrChunk[i] = arrChunk[x];
+            // arrChunk[x] = firstLetter;
+            // testKey = [].concat(...arrChunk);
+            // arrChunk = []
+            // console.log(testKey);
+        //}
+        let testScore = s(text, testKey);
+        if (testScore > score){//} || ( testScore - 0.000082 < score && rand(0,20) == 1)){
+            score = testScore;
+            key = testKey;
+            console.log(score, key)
+        }
+    }
+    console.log(key, length, score)
+    return [removeAdfgvx(applyTranspositionKey(text, key)), score];
+}
+
+function adfgvxDecrypt(text=document.getElementById("textIn").value.split("")){
+    text = text.filter((char) => adfgvx.includes(char.toLocaleUpperCase()));
+    let best = [[], 100000000];
+    for (let i = 2; i < 20; i++){
+        if (text.length % i == 0){
+            let c = columnsToTransposition(text, i);
+            let s = adfgvxCipher(c.map((char)=>alphaDict[char]), i);
+            if (s[1] < best[1]){
+                best = s.slice(0)
+                console.log(i, best[1])
+            }
+        }
+    }
+    let subbed = substitutionADecrypt(best[0]);
+    console.log(subbed.map((char)=>ALPHA[char]).join(""));
+
+}
+//vigenere substitution shit
+
+
+function subVigCipher(text){
+    while (!(isEnglish(text))) {
+        let freq = findMostLikely(text, ALPHA.length).map((char)=> parseInt(char[0]));
+        let key = [...Array(26).keys()].map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value)
+        for (i in key){
+            key[freq[i]] = mostLikelyNum[i];
+        }
+        let score = bigramTest(vigenereDecrypt(applySubstitutionKey(text, key)));
+        for (let i =0; i < 100; i++){
+            let newKey = subVigHillClimb(text, key, score);
+            if (newKey == -1){
+                break;
+            }else{
+                key = newKey[0].slice(0);
+                score = newKey[1];
+            }
+        }
+        //key = substitutionAnnealing(bigramFreq, key, text.length, score);
+        text = vigenereDecrypt(applySubstitutionKey(text, key));
+        console.log(bigramTest(text));
+    }
+    
 }
 
 //basically the same, performs the hill climbing bits
-function subTransHillClimb(freq, key, length, keyScore){
-    function s(score, freq, key, length, a, b){
-        let testKey = key.slice(0);
-        let firstLetter = testKey[a];
-        testKey[a] = testKey[b];
-        testKey[b] = firstLetter;
-        for (let k = 0; k < key.length; k ++) {
-            var changes = [k * 26 + a, k * 26 + b, a * 26 + k, b * 26 + k];
-            for (i of changes){
-                score -= (freq[i] - (bigrams[key[Math.floor(i / 26)] * 26 + key[i % 26]]*length)) ** 2;
-                score += (freq[i] - (bigrams[testKey[Math.floor(i / 26)] * 26 + testKey[i % 26]]*length)) ** 2;
-            }
-        }
-        return [testKey,score];
+function subVigHillClimb(text, key, keyScore){
+    function s(text, key){
+        return bigramTest(vigenereDecrypt(applySubstitutionKey(text, key)));
+        //return Math.abs(getKeyLength(applySubstitutionKey(text, key))-0.067);
     }
     for (let i = 0; i < key.length; i++){
         for (let x = i; x < key.length; x++){
             if (!(i == x)){
-                let test = s(keyScore, freq, key, length, i, x);
-                let score = test[1];
+                let testKey = key.slice(0);
+                let firstLetter = testKey[i];
+                testKey[i] = testKey[x];
+                testKey[x] = firstLetter;
+                let score = s(text, testKey)
                 if (score < keyScore){
-                    testKey = test[0];
                     return [testKey,score];
                 }
             }
@@ -2042,41 +2238,45 @@ function subTransHillClimb(freq, key, length, keyScore){
     return -1;
 }
 
-
-
-function decryptSubTrans(text ,length){
-    let columns = returnEveryNth(text, length); //split into columns
-    let keyScores = [];
-    for (let i =0; i < columns.length; i++){ //loop through each column
-        for (let x =0; x<columns.length;x++){ //checking each column against current collumn
-            if (!(x == i)){ //asserts we are not checking column against the same column
-                let bigramCount = {}
-                for (let b = 0; b < 676; b++){
-                    bigramCount[b] = 0
-                }
-                for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
-                    if (!(j >= columns[x].length)){
-                        bigramCount[(columns[i][j] * 26) + columns[x][j]] ++;//creating dictionary of all bigram frequencies within 
-                    }                                                        // the two comparing columns
-                }
-                let s = subTransCipher(text, bigramCount); //generates one likely substitution key from the column comparison bigram
-                keyScores.push(s);//adds this key to the list of all possible key candidates
-            }
+function getKeyLengthIoc(text){
+    let limit = 16;
+    let keyLength = 0; 
+    let highestAvg = 0;
+    let ioc = 0;
+    for (let step = 2; step < limit; step++){
+        let sum = 0;
+        let allVals = returnEveryNth(text, step);     
+        for (i of allVals){
+            sum += indexOfCoincidence(i);
+        }
+        let avg = sum/step;
+        if ((avg > ioc && avg > 0.55|| avg > 0.055 && step > keyLength) && (avg > highestAvg)){
+            highestAvg = avg;
+            keyLength = step;
         }
     }
-    let best = []
-    for (i of keyScores){
-        let s = applySubstitutionKey(text, i[0])//applies one substitution key to the text meaning we are hopefully left with only transpo ciphertext
-        let k = decryptTransposition(substitutionCipher(s), length);//uses our typical transpo method to find most likely transpo key
-        console.log(k)
-        let p = substitutionCipher(applyTranspositionKey(text, k))//applies transposition key and then does an extra sub-hill-climb for accuracy 
-        best.push([s, bigramTest(s)])//pushes this text and its bigram score to array
-    }
-    best = best.sort(function(a,b) { //sorts array so that lowest bigram score is first
-        return a[1] - b[1];
-    });
-    // for (i of best){
-    //     console.log(i[0])
-    // }
-    console.log(best[0][0].map((char)=>ALPHA[char]).join("")) //prints text with lowest bigram score
+    return highestAvg;
 }
+
+function getBestKey(a, s, key, text, num){
+    let best = [[],1000000];
+    for (let i =0; i < num; i++){
+        let testKey = key.map((value) => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value)
+        let t = a(text, testKey);
+        let p = s(t);
+        if (p < best[1]){
+            best = [testKey, p];
+        }
+    }
+    return best[0];
+}
+
+const chunk = (arr, size) => arr.reduce((acc, e, i) => (i % size ? acc[acc.length - 1].push(e) : acc.push([e]), acc), []);
+// function chunk(arr, size){
+//     let newArr = Array(Math.ceil(arr.length / size)).fill([]);
+//     for (let i=0; i< arr.length; i++){
+//         newArr[ Math.floor( i / size)].push(arr[i]);
+//     }
+//     console.log(newArr)
+//     return newArr;
+// }
