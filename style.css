@@ -19,6 +19,8 @@ navigation parts:
   --bglight: hsl(0, 0%, 30%);
   --highlight: rgba(116,77,152,1);
   --highlightdark: #5F3F7D;
+
+  --transparent: rgba(0, 0, 0, 0);
 }
 
 html {
@@ -64,8 +66,14 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   background: linear-gradient(100deg, rgba(16,4,40,1) 0%, rgba(23,4,74,1) 23%, rgba(63,8,109,1) 43%, rgba(155,46,144,1) 70%, rgba(52,17,172,1) 100%);
 }
 
-.boring-style {
+.dark-mode {
   background-color: #333;
+}
+
+.light-mode {
+  color: black;
+  background-color: rgba(240,240,240,1);
+
 }
 
 .bingus-style {
@@ -97,7 +105,7 @@ h1 {
 h2 {
   margin: 1em;
   font-size: 25px;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: var(--transparent);
 }
 
 ul { /* removes bullet points so i can make custom ones */
@@ -128,7 +136,7 @@ a {
   display:block;
 }
 .nav-item a:hover {
-  color: rgb(116,77,152);
+  color: var(--highlightdark);
 }
 .nav-item:hover {
   background-color: rgba(0, 0, 0, 0.35);
@@ -176,7 +184,7 @@ button{
 .style-btn {
   padding: 0.3em 0.6em;
   margin: 2fr;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: var(--transparent);
   color: white;
   font-weight: bold;
   border: 2px solid white;
