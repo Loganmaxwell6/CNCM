@@ -1,25 +1,77 @@
+/*
+fef css
+
+navigation parts:
+  general
+
+  button stuff
+  text area stuff
+  data panel, table stuff
+  dropdown stuff
+  panel and cipher grid items stuff
+  media queries
+
+*/
+
+:root { /*colour variables */
+  --bg: hsl(0, 0%, 25%);
+  --bgdark: hsl(0, 0%, 20%);
+  --bglight: hsl(0, 0%, 30%);
+  --highlight: rgba(116,77,152,1);
+  --highlightdark: #5F3F7D;
+}
 
 html {
   margin: 0px;
+  background-color: var(--bgdark);
 }
 
-body {
+body { /* sets up font, background gradient, grid layout on whole website*/
   margin: 0px;
   font-family: 'Roboto', sans-serif;
   text-align: center;
   display: grid;
-  background: rgb(217,0,111);
-  background: linear-gradient(100deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
   grid-template-columns: auto;
   grid-template-rows: auto;
   color: white;
 }
 
-*, *::before, *::after {
+
+
+.bi-flag {
+  background: rgb(217,0,111);
+  background: linear-gradient(100deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
+}
+
+.pride-flag {
+  background: rgb(209,34,41);
+  background: linear-gradient(100deg, rgba(209,34,41,1) 0%, rgba(246,138,30,1) 22%, rgba(253,224,26,1) 41%, rgba(0,121,64,1) 59%, rgba(36,64,142,1) 78%, rgba(115,41,130,1) 100%);  
+}
+
+.pan-flag {
+  background: rgba(252,216,0,1);
+  background: linear-gradient(100deg, rgba(255,33,142,1) 33%, rgba(252,216,0,1) 33%, rgba(252,216,0,1) 67%, rgba(1,148,252,1) 67%);
+}
+
+.trans-flag {
+  background: rgb(85,205,252);
+  background: linear-gradient(100deg, rgba(85,205,252,1) 20%, rgba(247,168,184,1) 20%, rgba(247,168,184,1) 40%, rgba(255,255,255,1) 40%, rgba(255,255,255,1) 60%, rgba(247,168,184,1) 60%, rgba(247,168,184,1) 80%, rgba(85,205,252,1) 80%);
+}
+
+.boring {
+  background-color: #333;
+}
+
+* {
+  scrollbar-width: thin;
+}
+
+*, *::before, *::after { /* makes sure before and after pseudo-elements by default inherit size*/
   box-sizing: inherit;
 }
-*::selection {
-  background-color:#744D98;
+
+*::selection { /* makes selected text / items purple */
+  background-color: var(--highlight);
   color:#FFF;
 }
 
@@ -33,7 +85,7 @@ h2 {
   background-color: rgba(0, 0, 0, 0);
 }
 
-ul {
+ul { /* removes bullet points so i can make custom ones */
   list-style-type: none;
 }
 
@@ -68,49 +120,80 @@ a {
 }
 
 header {
-  padding: 2em;
-  color: white;
+  padding: 0 2em 2em 2em;
+  color: #ddd;
 }
 
 .header-subtitle{
   font-size: 1em;
 }
 
+/* 
+button stuff
+*/
+
 button{
   margin: .3em 0.3em;
+  padding: 0.25em 0.5em;
   border: 0;
-}
-
-.btn {
   display: inline-block;
   cursor: pointer;
-  border: 2px solid #744D98;
-  outline: 2px solid hsl(0, 0%, 25%);
-  background-color: #744D98;
-  color: white;
-  font-size: 14px;
-  padding: 0.25em 0.5em;
+  font-size: 0.875em;
   text-decoration: none;
   font-size: inherit;
   line-height: 1;
-  transition: outline-offset 150ms ease;
-}
-.btn:hover{
-  outline-offset: -4px;
-}
-.btn:active{
-  border-color: #5F3F7D;
-  background: #5F3F7D;
 }
 
+.btn-1 {
+  border: 2px solid var(--highlight);
+  outline: 2px solid var(--bg);
+  background-color: var(--highlight);
+  color: white;
+  transition: outline-offset 150ms ease;
+}
+.btn-1:hover {
+  outline-offset: -4px;
+}
+.btn-1:active {
+  border-color: var(--highlightdark);
+  background: var(--highlightdark);
+}
+
+.style-btn {
+  padding: 0.3em 0.6em;
+  margin: 2fr;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  font-weight: bold;
+  border: 2px solid white;
+  border-radius: 4px;
+  transition: padding 150ms ease;
+}
+.style-btn:active {
+  padding: 0.2em 0.4em;
+}
+
+
+/*
+text area stuff
+*/
+
 textarea{
+  display: inline-block;
   resize: none;
   outline: none;
   color: white;
-  background-color: hsl(0, 0%, 25%);
+  background-color: var(--bg);
   border: none;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+}
+textarea::-webkit-scrollbar {
+  width: 1.25em;
+}
+textarea::-webkit-scrollbar-thumb {
+  border-radius: 0.75em;
+  background-color: var(--highlightdark);
 }
 
 .io-text-area {
@@ -118,36 +201,40 @@ textarea{
   width: 100%;
   min-width: 15.5em;
 }
-
-/* might make output box darker
-.output {
-  background-color:hsl(0, 0%, 23%);
+.io-text-area::-webkit-scrollbar-thumb {
+  border: 0.125em solid var(--bg);
 }
-*/
 
 .input-box {
   border:none;
-  background-color: hsl(0, 0%, 30%);
+  background-color: var(--bglight);
   height: 2.5em;
   width: 100%;
   margin: 0.3em;
 }
-
-.panel{
-  background-color: hsl(0, 0%, 25%);
+.input-box::-webkit-scrollbar-thumb {
+  border: 3px solid var(--bglight);
+  background-color: var(--bg);
 }
 
-.panel-heading {
-  background-color:hsl(0, 0%, 20%);
-  padding: 0.5em;
+.output {
+  background-color: var(--bgdark);
 }
 
-.panel-body {
-  padding: 0.5em;
+/*
+data panel, table stuff
+*/
+
+.data-body {
+  padding: 0.75em;
 }
 
-.option-panel{
-  margin-bottom: 0.75em;
+.data {
+  min-width: 36ch;
+}
+
+.table { /* centers table but leaves 1em gap on bottom */
+  margin: auto auto 1em auto;
 }
 
 .table, .table td, .table th {
@@ -156,6 +243,15 @@ textarea{
   padding: 0.25em;
 }
 
+.data-values-table {
+  text-align: left;
+  margin: auto;
+}
+
+/*
+dropdown stuff
+*/
+
 .dropdown {
   position: relative;
   display: inline-block;
@@ -163,28 +259,59 @@ textarea{
 }
 
 .dropdown-menu {
-  text-align:left;
   margin: 0;
+  padding: 0;
   display: none;
   position: absolute;
-  padding: 0;
-  background-color:hsl(0, 0%, 20%);
+  background-color: var(--bgdark);
   width: inherit;
+  z-index: 1;
+}
+
+.cipher-dropdown-menu {
+  text-align:left;
   min-width: 15em;
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
-  z-index: 1;
+  border-radius: 0.1em;  
   border: 0.05em solid hsl(0, 0%, 15%);
-  border-radius: 0.1em;
   transform: translateY(-0.275em);
+}
+
+.style-dropdown { 
+  height: 3em;
+  width: 10em;
+  text-align: left;
+}
+.style-dropdown a {
+  width: calc(100% - 0.5em);
+}
+
+.style-dropdown-menu {
+  max-width: 15em;
+  border: 3px solid var(--bgdark);
+  border-radius: 3px;
 }
 
 .show { display:block; }
 
+.dropdown-item {
+  border-radius: 2px;
+}
 .dropdown-item:hover {
   cursor: pointer;
   background-color: hsl(0, 0%, 15%);
 }
-.dropdown-item::before { /* bullet points */
+
+.dropdown-menu a {
+  display: inline-block;
+  padding: 0.25em;
+}
+
+.cipher-dropdown-menu a {
+  width: 85%;
+}
+
+.cipher-dropdown-menu .dropdown-item::before { /* bullet points */
   content: '';
   display: inline-block;
   border-radius: 0.15em;
@@ -194,14 +321,9 @@ textarea{
   background-color: #bdbdbd;
   transform: translateY(-0.15em);
 }
-.dropdown-item a {
-  display: inline-block;
-  width: 85%;
-  padding: 0.25em;
-}
 
 .list-divider {
-  border-top: 0.05em solid hsl(0, 0%, 30%);
+  border-top: 0.05em solid var(--bglight);
   padding: 0.125em 0;
   height: 0;
   transform: translateY(50%);
@@ -210,12 +332,34 @@ textarea{
   visibility: hidden;
 }
 
-.data-body {
-  padding: 0.75em;
+/*
+panel and cipher item stuff
+*/
+
+.panel{
+  background-color: var(--bg);
 }
 
-.data {
-  min-width: 36ch;
+.panel-heading {
+  background-color: var(--bgdark);
+  padding: 0.5em;
+}
+
+.panel-body {
+  padding: 0.5em;
+}
+
+.option-panel, .twitter-timeline {
+  margin-bottom: 0.75em;
+  
+}
+
+.twitter-timeline-error {
+  background-color: var(--bgdark);
+  padding: 0.5em;
+  display: block;
+  border-radius: 0.1em;
+  box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
 }
 
 .data { grid-area: data;}
@@ -237,12 +381,12 @@ textarea{
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
 }
 
-.dataValues {
-  text-align: left;
-}
+/*
+media queries. Currently only based on width. Changes cipher grid formatting, text size, and background gradient angle
+*/
 
-@media only screen and (min-width:1001px){ /*landscape mode - only grid and min-width stuff*/
-
+@media only screen and (min-width:1001px) { /*landscape mode - only grid and min-width stuff*/
+  
   .outputAreaDiv {padding-bottom: 1em;}
 
   .cipher-grid {
@@ -255,6 +399,7 @@ textarea{
 }
 
 @media only screen and (max-width:1000px){ /*portrait mode - only grid and min-width stuff, currently */
+
   h1 {
     font-size: 30px;
   }
@@ -267,22 +412,22 @@ textarea{
     margin: 0 auto;
   }
 
+  .data-values-header { text-align: center;}
+
   .cipher-grid {
     grid-template-areas: 
-    'optionsPanel'
     'input'
     'output'
+    'optionsPanel'
     'data';
     grid-template-columns: auto;
-    grid-template-rows: auto 1fr 1fr auto;
-    margin: 0 auto;
+    grid-template-rows: 1fr 1fr 3fr auto;
+    margin: 2em auto;
     max-width: 50ch;
 
   }
+}
 
-  @media only screen and (max-width:400px){
-    body {
-      font-size: 10px;
-    }
-  }
+@media only screen and (max-width:355px){
+  body {font-size: 10px;}
 }

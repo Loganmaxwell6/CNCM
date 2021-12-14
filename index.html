@@ -24,7 +24,22 @@
     <script src="main.js"></script>
   </head>
 
-  <body class="bg-light">
+  <body class="bi-flag">
+
+    <!-- Style Dropdown -->
+    <div class="dropdown style-dropdown">
+      <button class="style-btn" id="styleDropdownToggle">Select Style</button>
+      <ul class="style-dropdown-menu dropdown-menu" id="styleDropdownMenu">
+        <li class="dropdown-item bi-flag"><a id="biStyle">Bi flag</a>
+        </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride flag</a>
+        </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan flag</a>
+        </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans flag</a>
+        </li><li class="list-divider">
+        </li><li class="dropdown-item boring"><a id="boringStyle">Boring Style</a>
+        </li><li class="dropdown-item "><a id="bingusStyle">Bingus Style</a>
+        </li>
+      </ul>
+    </div>
 
     <!-- Header -->
     <header>
@@ -53,30 +68,30 @@
             </table>
 
             <!-- Other table -->
-            <table class="dataValues">
+            <table class="data-values-table">
               <tr>
-                <td>Text Length:</td>
+                <td class="data-values-header">Text Length:</td>
                 <td id="fullLen" class="dataValues">0</td>
               </tr>
               <tr>
-                <td>Text Length (No Grammar):</td>
-                <td id="Len" class="dataValues">0</td>
+                <td class="data-values-header">Text Length (No Grammar):</td>
+                <td id="Len">0</td>
               </tr>
               <tr>
-                <td>Most Likely Cipher:</td>
-                <td id="likely" class="dataValues">Unknown</td>
+                <td class="data-values-header">Most Likely Cipher:</td>
+                <td id="likely">Unknown</td>
               </tr>
               <tr>
-                <td>IoC:</td>
-                <td id="IoC" class="dataValues">0</td>
+                <td class="data-values-header">IoC:</td>
+                <td id="IoC">0</td>
               </tr>
               <tr>
-                <td>Chi: </td>
-                <td id = "Chi" class="dataValues">0</td>
+                <td class="data-values-header">Chi: </td>
+                <td id = "Chi">0</td>
               </tr>
               <tr>
-                <td>Time taken: </td>
-                <td id = "Time" class="dataValues">0</td>
+                <td class="data-values-header">Time taken: </td>
+                <td id = "Time">0</td>
               </tr>
             </table>
           </div>
@@ -105,9 +120,9 @@
             <div class="panel-body">
 
               <!-- Cipher Select Dropdown -->
-              <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="dropdownToggle">Select Cipher ↓</button>
-                <ul class="dropdown-menu" id="dropdownMenu">
+              <div class="dropdown cipher-dropdown">
+                <button class="btn-1" id="cipherDropdownToggle">Select Cipher ↓</button>
+                <ul class="cipher-dropdown-menu dropdown-menu" id="cipherDropdownMenu">
                   <li class="dropdown-item"><a id="caesar">Caesar</a>
                   </li><li class="dropdown-item"><a id="affine">Affine</a>
                   </li><li class="dropdown-item"><a id="substitutionA">Substitution (automatic)</a>
@@ -124,24 +139,18 @@
 
               <!-- Other settings -->
               <div class="options">
-                <button class="btn" id="swapText">↑</button><!-- comments remove weird whitespace
-                --><button class="btn" id="clearText">Clear</button><!--
-                --><button class="btn" id="reverseText">Reverse</button><!--
-                --><button class="btn" id="copyText">Copy to Clipboard</button><!--
+                <button class="btn-1" id="swapText">↑</button><!-- comments remove weird whitespace
+                --><button class="btn-1" id="clearText">Clear</button><!--
+                --><button class="btn-1" id="reverseText">Reverse</button><!--
+                --><button class="btn-1" id="copyText">Copy to Clipboard</button><!--
                 --><textarea class="input-box" id="encryptInputBox" placeholder="Input key..."></textarea><!--
-                --><button class="btn" id="encrypt">Encrypt</button><!--
-                --><button class="btn" id="decrypt">Decrypt</button>
+                --><button class="btn-1" id="encrypt">Encrypt</button><!--
+                --><button class="btn-1" id="decrypt">Decrypt</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Empty Panel-->
-        <div class="panel cipher-grid-item option-panel">
-          <div class="panel-heading"> Jamie panel </div>
-          <div class="panel-body"> hey </div>
-        </div>
-        
         <div class="panel cipher-grid-item option-panel">
           <div class="panel-heading">Advert </div>
           <div class="panel-body"> 
@@ -149,6 +158,11 @@
             -->
           </div>
         </div>
+
+        <div>
+          <a class="twitter-timeline" data-tweet-limit="1" data-theme="dark" href="https://twitter.com/Cipher_Master?ref_src=twsrc%5Etfw">Tweets by Cipher_Master</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+
       </div>
     </div>
 
@@ -164,20 +178,35 @@
     <!-- Input Binding -->
     <script>
       $( document ).ready(function() {
-        $('.dropdown').each(function (key, dropdown) {
-          var $dropdown = $(dropdown);
-          $dropdown.find('.dropdown-menu a').on('click', function () {
-              $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
+
+        $('.cipher-dropdown').each(function (key, cipher_dropdown) {
+          var $cipher_dropdown = $(cipher_dropdown);
+          $cipher_dropdown.find('.dropdown-item a').on('click', function () {
+              $cipher_dropdown.find('button').text($(this).text()).append('<span class="caret"></span>');
               setCipher(($(this).attr('id')));
               changeKeyInput();
           });
         });
-        $('#dropdownToggle').on('click', function(){openDropdown();});
+        $('#cipherDropdownToggle').on('click', function(){openCipherDropdown();});
         $(window).on('click', function(event){
-          if (!event.target.matches('#dropdownToggle')){
-            closeDropdown();
+          if (!event.target.matches('#cipherDropdownToggle')){
+            closeCipherDropdown();
           }
         });
+
+        $('.style-dropdown').each(function (key, style_dropdown) {
+          var $style_dropdown = $(style_dropdown);
+          $style_dropdown.find('.style-dropdown-menu a').on('click', function () {
+              setStyle(($(this).attr('id')));
+          });
+        });
+        $('#styleDropdownToggle').on('click', function(){openStyleDropdown();});
+        $(window).on('click', function(event){
+          if (!event.target.matches('#styleDropdownToggle')){
+            closeStyleDropdown();
+          }
+        });
+
         $('#textIn').on('input', function(){updateText();});
         $('#swapText').on('click', function(){swapText();});
         $('#clearText').on('click', function(){clearText();});

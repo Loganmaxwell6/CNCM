@@ -162,8 +162,13 @@ function swapText(){
     updateText();
 }
 
-function openDropdown(){
-    let d = document.getElementById("dropdownMenu");
+/* dropdown opening / closing functions */
+function closeCipherDropdown(){
+    document.getElementById("cipherDropdownMenu").classList.remove("show");
+}
+
+function openCipherDropdown(){
+    let d = document.getElementById("cipherDropdownMenu");
     if (d.classList.contains("show")){
         d.classList.remove("show");
     }
@@ -172,9 +177,61 @@ function openDropdown(){
     }
 }
 
-function closeDropdown(){
-    document.getElementById("dropdownMenu").classList.remove("show");
+function closeStyleDropdown(){
+    document.getElementById("styleDropdownMenu").classList.remove("show");
 }
+
+function openStyleDropdown(){
+    let d = document.getElementById("styleDropdownMenu");
+    if (d.classList.contains("show")){
+        d.classList.remove("show");
+    }
+    else{
+        d.classList.add("show");
+    }
+}
+
+/* changes the highlight colour and background for each style in the dropdown */
+function setStyle(style){
+    var root = document.querySelector(':root');
+
+    switch(style) {
+        case "biStyle":
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("bi-flag");
+            root.style.setProperty('--highlight', 'rgba(116,77,152,1)');
+            root.style.setProperty("--highlightdark", '#5F3F7D');
+            break;
+
+        case "prideStyle":
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("pride-flag");
+            root.style.setProperty('--highlight', 'rgba(0,121,64,1)');
+            root.style.setProperty("--highlightdark", 'rgba(1, 87, 47, 1)');
+            break;
+
+        case "panStyle":
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("pan-flag");
+            root.style.setProperty('--highlight', 'rgba(1,148,252,1)');
+            root.style.setProperty("--highlightdark", 'rgba(0, 87, 150, 1)');
+            break;
+        case "transStyle":
+            console.log("tran");
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("trans-flag");
+            root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
+            root.style.setProperty("--highlightdark", 'rgba(196, 133, 146, 1)');
+            break;
+        case 'boringStyle':
+            console.log("boringe");
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("boring");
+            root.style.setProperty('--highlight', '#666666');
+            root.style.setProperty('--highlightdark', '#555555');
+    }
+}
+
 
 function findTextOutBreakPoint(){
     let findBreakText = textOut.value.split("");
@@ -963,6 +1020,69 @@ function railFenceDecrypt(text=globalText.slice(0)){
             
         }
     }
+}
+
+function inverse(mat){
+    let invdet = 1/(mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]);
+    let invmat = [
+        [mod((mat[1][1] * invdet), 26), mod((mat[0][1] * invdet * (-1)), 26)],
+        [mod((mat[1][0] * invdet * (-1)), 26), mod((mat[0][0] * invdet), 26)]
+    ];
+    return invmat;
+}
+
+function dotproductDec(obs, exp){
+    let prod = [
+        [(obs[0][0] * exp[0][0] + obs[0][1] * exp[1][0]), (obs[0][0] * exp[0][1] + obs[0][1] * exp[1][1])],
+        [(obs[1][0] * exp[0][0] + obs[1][1] * exp[1][0]), (obs[1][0] * exp[0][1] + obs[1][1] * exp[1][1])]
+    ];
+    return prod;
+}
+
+function dotproductEnc(invmat, bigram){
+    let prod = [
+        [ALPHA[mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26)]],
+        [ALPHA[mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26)]]
+    ];
+    return prod;
+}
+
+
+function hillDecrypt(text = globalText.slice(0, globalText.length)){
+    // https://sites.wcsu.edu/mbxml/html/hill_decrypt_section.html
+    let o = observedBigramCount(text);
+    let max = o.sort((x,y) => y - x).slice(0, 2); // max 0 2nd max 1
+    let th = 0;
+    let he = 0;
+    for (i in o){
+        if (ALPHA[o[i]] == max[0]){
+            th = bigrams[i];
+        }
+        else if (ALPHA[o[i]] == max[1]){
+            he = bigrams[i];
+        };
+    }; 
+    let obsMat = [
+        [ALPHA.indexOf(th[0]),ALPHA.indexOf(he[0])],
+        [ALPHA.indexOf(th[1]),ALPHA.indexOf(he[1])]
+    ];
+    obsMat = inverse(obsMat);
+    let expMat = [
+        [19,7],
+        [7,4]
+    ];
+    let inverseKey = dotproductDec(obsMat, expMat);
+    let t = text.match(/.{1,2}/g); // bruh
+    let plain = "";
+    for (bigram in t){
+        let d = dotproductEnc(inverseKey, [bigram[0], bigram[1]]);
+        plain += d[0] + d[1];
+    };
+    return plain;
+}
+
+function hillEncrypt(){
+
 }
 
 function determineCipher(text = globalText.slice(0, globalText.length)){
