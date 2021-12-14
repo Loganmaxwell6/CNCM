@@ -1015,7 +1015,7 @@ function railFenceDecrypt(text=globalText.slice(0)){
     }
 }
 
-function inverse(mat){
+function inverse(mat){ // DEAL WITH NON INTEGER NUMBERS HERE TO FIX !!!!!!!!
     let invdet = 1/(mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]);
     let invmat = [
         [mod((mat[1][1] * invdet), 26), mod((mat[0][1] * invdet * (-1)), 26)],
@@ -1034,8 +1034,8 @@ function dotproductDec(obs, exp){
 
 function dotproductEnc(invmat, bigram){
     let prod = [
-        [ALPHA[mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26)]],
-        [ALPHA[mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26)]]
+        ALPHA[mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26)],
+        ALPHA[mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26)]
     ];
     return prod;
 }
@@ -1044,31 +1044,36 @@ function dotproductEnc(invmat, bigram){
 function hillDecrypt(text = globalText.slice(0, globalText.length)){
     // https://sites.wcsu.edu/mbxml/html/hill_decrypt_section.html
     let o = observedBigramCount(text);
-    let max = o.sort((x,y) => y - x).slice(0, 2); // max 0 2nd max 1
+    let max = observedBigramCount(text).sort((x,y) => y - x).slice(0, 2); // max 0 2nd max 1
     let th = 0;
     let he = 0;
     for (i in o){
-        if (ALPHA[o[i]] == max[0]){
-            th = bigrams[i];
+        if (o[i] == max[0]){
+            th = ALPHA[Math.floor(i/26)] + ALPHA[i%26];
         }
-        else if (ALPHA[o[i]] == max[1]){
-            he = bigrams[i];
+        else if (o[i] == max[1]){
+            he = ALPHA[Math.floor(i/26)] + ALPHA[i%26];
         };
     }; 
+    console.log(th, he);
     let obsMat = [
         [ALPHA.indexOf(th[0]),ALPHA.indexOf(he[0])],
         [ALPHA.indexOf(th[1]),ALPHA.indexOf(he[1])]
     ];
+    console.log(obsMat);
     obsMat = inverse(obsMat);
+    console.log(obsMat);
     let expMat = [
         [19,7],
         [7,4]
     ];
     let inverseKey = dotproductDec(obsMat, expMat);
-    let t = text.match(/.{1,2}/g); // bruh
+    console.log(inverseKey);
+    let t = (text.map((char)=> ALPHA[char]).join("")).match(/.{1,2}/g); // bruh
     let plain = "";
-    for (bigram in t){
+    for (bigram of t){
         let d = dotproductEnc(inverseKey, [bigram[0], bigram[1]]);
+        console.log(d);
         plain += d[0] + d[1];
     };
     return plain;
