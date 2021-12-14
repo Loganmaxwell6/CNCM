@@ -54,12 +54,23 @@ body { /* sets up font, background gradient, grid layout on whole website*/
 }
 
 .trans-flag {
+  color: #ddd;
   background: rgb(85,205,252);
   background: linear-gradient(100deg, rgba(85,205,252,1) 20%, rgba(247,168,184,1) 20%, rgba(247,168,184,1) 40%, rgba(255,255,255,1) 40%, rgba(255,255,255,1) 60%, rgba(247,168,184,1) 60%, rgba(247,168,184,1) 80%, rgba(85,205,252,1) 80%);
 }
 
-.boring {
+.ben-style {
+  background: rgb(16,4,40);
+  background: linear-gradient(100deg, rgba(16,4,40,1) 0%, rgba(23,4,74,1) 23%, rgba(63,8,109,1) 43%, rgba(155,46,144,1) 70%, rgba(52,17,172,1) 100%);
+}
+
+.boring-style {
   background-color: #333;
+}
+
+.bingus-style {
+  background-image: url('bingus.png');
+  background-repeat: repeat;
 }
 
 * {
@@ -121,7 +132,6 @@ a {
 
 header {
   padding: 0 2em 2em 2em;
-  color: #ddd;
 }
 
 .header-subtitle{

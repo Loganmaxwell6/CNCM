@@ -207,28 +207,39 @@ function setStyle(style){
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("pride-flag");
             root.style.setProperty('--highlight', 'rgba(0,121,64,1)');
-            root.style.setProperty("--highlightdark", 'rgba(1, 87, 47, 1)');
+            root.style.setProperty("--highlightdark", 'rgba(1,87,47,1)');
             break;
 
         case "panStyle":
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("pan-flag");
             root.style.setProperty('--highlight', 'rgba(1,148,252,1)');
-            root.style.setProperty("--highlightdark", 'rgba(0, 87, 150, 1)');
+            root.style.setProperty("--highlightdark", 'rgba(0,87,150,1)');
             break;
         case "transStyle":
-            console.log("tran");
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("trans-flag");
             root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
-            root.style.setProperty("--highlightdark", 'rgba(196, 133, 146, 1)');
+            root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
             break;
         case 'boringStyle':
-            console.log("boringe");
             document.body.classList.remove(...document.body.classList);
-            document.body.classList.add("boring");
+            document.body.classList.add("boring-style");
             root.style.setProperty('--highlight', '#666666');
             root.style.setProperty('--highlightdark', '#555555');
+            break;
+        case 'benStyle':
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("ben-style");
+            root.style.setProperty('--highlight', 'rgba(155,46,144,1)');
+            root.style.setProperty('--highlightdark', 'rgba(117,34,109,1)');
+            break;
+        case 'bingusStyle':
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("bingus-style");
+            root.style.setProperty('--highlight', 'rgba(198,155,154,1)');
+            root.style.setProperty('--highlightdark', 'rgba(171,107,105,1)');
+            break;
     }
 }
 
