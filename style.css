@@ -72,6 +72,10 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   background-image: url('bingus.png');
   background-repeat: repeat;
 }
+.bingus-a-style {
+  background-image: url('bingus.png');
+  background-size: 100% 100%;
+}
 
 * {
   scrollbar-width: thin;
