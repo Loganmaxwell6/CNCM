@@ -364,6 +364,15 @@ panel and cipher item stuff
   
 }
 
+.advert{
+  padding:10px;
+}
+
+.nft{
+  width: inherit;
+
+}
+
 .twitter-timeline-error {
   background-color: var(--bgdark);
   padding: 0.5em;
