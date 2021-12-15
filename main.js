@@ -15,6 +15,8 @@ var key = null;
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 const d = new Date();
 
+horn = new Audio('disallow/horn.mp3')
+
 currentButton = "";
 numthing = 0;
 
@@ -98,6 +100,9 @@ function input(f){
 }
 
 function output(text){
+    if (isEnglish(text) && document.getElementById("sound").checked){
+        horn.play()
+    }
     text = addGrammar(text).map((char, index) => index in globalGrammar ? globalGrammar[index] : ALPHA[char]).join("");
     text = "Key : " + key + "\n\n" + text;
     if(!(textOut.value == text)){
