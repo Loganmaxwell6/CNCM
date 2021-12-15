@@ -3,7 +3,7 @@ fef css
 
 navigation parts:
   general
-
+  styles stuff
   button stuff
   text area stuff
   data panel, table stuff
@@ -18,7 +18,9 @@ navigation parts:
   --bgdark: hsl(0, 0%, 20%);
   --bglight: hsl(0, 0%, 30%);
   --highlight: rgba(116,77,152,1);
-  --highlightdark: #5F3F7D;
+  --highlightdark: rgba(85,63,125,1);
+
+  --transparent: rgba(0, 0, 0, 0);
 }
 
 html {
@@ -34,32 +36,6 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   grid-template-columns: auto;
   grid-template-rows: auto;
   color: white;
-}
-
-
-
-.bi-flag {
-  background: rgb(217,0,111);
-  background: linear-gradient(100deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
-}
-
-.pride-flag {
-  background: rgb(209,34,41);
-  background: linear-gradient(100deg, rgba(209,34,41,1) 0%, rgba(246,138,30,1) 22%, rgba(253,224,26,1) 41%, rgba(0,121,64,1) 59%, rgba(36,64,142,1) 78%, rgba(115,41,130,1) 100%);  
-}
-
-.pan-flag {
-  background: rgba(252,216,0,1);
-  background: linear-gradient(100deg, rgba(255,33,142,1) 33%, rgba(252,216,0,1) 33%, rgba(252,216,0,1) 67%, rgba(1,148,252,1) 67%);
-}
-
-.trans-flag {
-  background: rgb(85,205,252);
-  background: linear-gradient(100deg, rgba(85,205,252,1) 20%, rgba(247,168,184,1) 20%, rgba(247,168,184,1) 40%, rgba(255,255,255,1) 40%, rgba(255,255,255,1) 60%, rgba(247,168,184,1) 60%, rgba(247,168,184,1) 80%, rgba(85,205,252,1) 80%);
-}
-
-.boring {
-  background-color: #333;
 }
 
 * {
@@ -79,12 +55,6 @@ h1 {
   font-size: 40px;
 }
 
-h2 {
-  margin: 1em;
-  font-size: 25px;
-  background-color: rgba(0, 0, 0, 0);
-}
-
 ul { /* removes bullet points so i can make custom ones */
   list-style-type: none;
 }
@@ -102,30 +72,79 @@ footer p{
   padding: 0.75em;
 }
 
-a {
+.nav-item a {
   color: white;
   text-decoration: none;
   height:100%;
-}
-
-.nav-item a{
   padding: 0.75em 1.5em;
   display:block;
 }
 .nav-item a:hover {
-  color: rgb(116,77,152);
-}
-.nav-item:hover {
+  color: var(--highlightdark);
   background-color: rgba(0, 0, 0, 0.35);
 }
 
 header {
   padding: 0 2em 2em 2em;
-  color: #ddd;
 }
 
 .header-subtitle{
   font-size: 1em;
+}
+
+/*
+Styles stuff
+*/
+
+.bi-flag {
+  color: white;
+  background: rgb(217,0,111);
+  background: linear-gradient(96deg, rgba(217,0,111,1) 0%, rgba(116,77,152,1) 48%, rgba(116,77,152,1) 52%, rgba(0,51,171,1) 100%);
+}
+
+.pride-flag {
+  color: white;
+  background: rgb(209,34,41);
+  background: linear-gradient(96deg, rgba(209,34,41,1) 0%, rgba(246,138,30,1) 22%, rgba(253,224,26,1) 41%, rgba(0,121,64,1) 59%, rgba(36,64,142,1) 78%, rgba(115,41,130,1) 100%);  
+}
+
+.pan-flag {
+  color: white;
+  background: rgba(252,216,0,1);
+  background: linear-gradient(96deg, rgba(255,33,142,1) 33%, rgba(252,216,0,1) 33%, rgba(252,216,0,1) 67%, rgba(1,148,252,1) 67%);
+}
+
+.trans-flag {
+  color: #ddd;
+  background: rgb(85,205,252);
+  background: linear-gradient(96deg, rgba(85,205,252,1) 26%, rgba(247,168,184,1) 26%, rgba(247,168,184,1) 42%, rgba(255,255,255,1) 42%, rgba(255,255,255,1) 58%, rgba(247,168,184,1) 58%, rgba(247,168,184,1) 74%, rgba(85,205,252,1) 74%);
+}
+
+.ben-style {
+  color: white;
+  background: rgb(16,4,40);
+  background: linear-gradient(96deg, rgba(16,4,40,1) 0%, rgba(23,4,74,1) 23%, rgba(63,8,109,1) 43%, rgba(155,46,144,1) 70%, rgba(52,17,172,1) 100%);
+}
+
+.dark-mode {
+  color: white;
+  background-color: #333;
+}
+
+.light-mode {
+  color: black;
+  background-color: rgba(240,240,240,1);
+
+}
+
+.bingus-style {
+  color: white;
+  background-image: url('bingus.png');
+  background-repeat: repeat;
+}
+.bingus-a-style {
+  background-image: url('bingus.png');
+  background-size: 100% 100%;
 }
 
 /* 
@@ -162,7 +181,7 @@ button{
 .style-btn {
   padding: 0.3em 0.6em;
   margin: 2fr;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: var(--transparent);
   color: white;
   font-weight: bold;
   border: 2px solid white;
@@ -273,7 +292,6 @@ dropdown stuff
   min-width: 15em;
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
   border-radius: 0.1em;  
-  border: 0.05em solid hsl(0, 0%, 15%);
   transform: translateY(-0.275em);
 }
 
@@ -299,7 +317,7 @@ dropdown stuff
 }
 .dropdown-item:hover {
   cursor: pointer;
-  background-color: hsl(0, 0%, 15%);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-menu a {
@@ -360,7 +378,6 @@ panel and cipher item stuff
 
 .nft{
   width: inherit;
-
 }
 
 .twitter-timeline-error {

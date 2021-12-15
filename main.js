@@ -205,36 +205,71 @@ function setStyle(style){
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("bi-flag");
             root.style.setProperty('--highlight', 'rgba(116,77,152,1)');
-            root.style.setProperty("--highlightdark", '#5F3F7D');
+            root.style.setProperty("--highlightdark", 'rgba(85,63,125,1)');
+            bgsToNormal();
             break;
 
         case "prideStyle":
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("pride-flag");
             root.style.setProperty('--highlight', 'rgba(0,121,64,1)');
-            root.style.setProperty("--highlightdark", 'rgba(1, 87, 47, 1)');
+            root.style.setProperty("--highlightdark", 'rgba(1,87,47,1)');
+            bgsToNormal();
             break;
 
         case "panStyle":
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("pan-flag");
             root.style.setProperty('--highlight', 'rgba(1,148,252,1)');
-            root.style.setProperty("--highlightdark", 'rgba(0, 87, 150, 1)');
+            root.style.setProperty("--highlightdark", 'rgba(0,87,150,1)');
+            bgsToNormal();
             break;
         case "transStyle":
-            console.log("tran");
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("trans-flag");
             root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
-            root.style.setProperty("--highlightdark", 'rgba(196, 133, 146, 1)');
+            root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
+            bgsToNormal();
             break;
-        case 'boringStyle':
-            console.log("boringe");
+        case 'darkMode':
             document.body.classList.remove(...document.body.classList);
-            document.body.classList.add("boring");
+            document.body.classList.add("dark-mode");
             root.style.setProperty('--highlight', '#666666');
             root.style.setProperty('--highlightdark', '#555555');
+            bgsToNormal();
+            break;
+        case 'lightMode':
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("light-mode");
+            root.style.setProperty('--bg', 'rgba(240,240,240,1)');
+            root.style.setProperty('--bgdark', 'rgba(200,200,200,1)');
+            root.style.setProperty('--bglight', 'rgba(255,255,255,1)');
+            root.style.setProperty('--highlight', 'rgba(86,80,163,1)');
+            root.style.setProperty('--highlightdark', 'rgba(67,62,126,1)');
+            break;
+        case 'benStyle':
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("ben-style");
+            root.style.setProperty('--highlight', 'rgba(155,46,144,1)');
+            root.style.setProperty('--highlightdark', 'rgba(117,34,109,1)');
+            bgsToNormal();
+            break;
+        case 'bingusStyle':
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("bingus-style");
+            root.style.setProperty('--highlight', 'rgba(198,155,154,1)');
+            root.style.setProperty('--highlightdark', 'rgba(171,107,105,1)');
+            bgsToNormal();
+            break;
     }
+}
+
+function bgsToNormal() {
+    var root = document.querySelector(':root');
+
+    root.style.setProperty('--bg', 'hsl(0, 0%, 25%)');
+    root.style.setProperty('--bgdark', 'hsl(0, 0%, 20%)');
+    root.style.setProperty('--bglight', 'hsl(0, 0%, 30%)');
 }
 
 
@@ -1030,24 +1065,24 @@ function railFenceDecrypt(text=globalText.slice(0)){
 function inverse(mat){ // DEAL WITH NON INTEGER NUMBERS HERE TO FIX !!!!!!!!
     let invdet = 1/(mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]);
     let invmat = [
-        [mod((mat[1][1] * invdet), 26), mod((mat[0][1] * invdet * (-1)), 26)],
-        [mod((mat[1][0] * invdet * (-1)), 26), mod((mat[0][0] * invdet), 26)]
+        [Math.round(mod((mat[1][1] * invdet), 26)), Math.round(mod((mat[0][1] * invdet * (-1)), 26))],
+        [Math.round(mod((mat[1][0] * invdet * (-1)), 26)), Math.round(mod((mat[0][0] * invdet), 26))]
     ];
     return invmat;
 }
 
 function dotproductDec(obs, exp){
     let prod = [
-        [(obs[0][0] * exp[0][0] + obs[0][1] * exp[1][0]), (obs[0][0] * exp[0][1] + obs[0][1] * exp[1][1])],
-        [(obs[1][0] * exp[0][0] + obs[1][1] * exp[1][0]), (obs[1][0] * exp[0][1] + obs[1][1] * exp[1][1])]
+        [Math.round(mod((obs[0][0] * exp[0][0] + obs[0][1] * exp[1][0]), 26)), Math.round(mod((obs[0][0] * exp[0][1] + obs[0][1] * exp[1][1]), 26))],
+        [Math.round(mod((obs[1][0] * exp[0][0] + obs[1][1] * exp[1][0]), 26)), Math.round(mod((obs[1][0] * exp[0][1] + obs[1][1] * exp[1][1]), 26))]
     ];
     return prod;
 }
 
 function dotproductEnc(invmat, bigram){
     let prod = [
-        ALPHA[mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26)],
-        ALPHA[mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26)]
+        ALPHA[Math.round(mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26))],
+        ALPHA[Math.round(mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26))]
     ];
     return prod;
 }
