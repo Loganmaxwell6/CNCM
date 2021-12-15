@@ -1060,24 +1060,24 @@ function railFenceDecrypt(text=globalText.slice(0)){
 function inverse(mat){ // DEAL WITH NON INTEGER NUMBERS HERE TO FIX !!!!!!!!
     let invdet = 1/(mat[0][0] * mat[1][1] - mat[1][0] * mat[0][1]);
     let invmat = [
-        [mod((mat[1][1] * invdet), 26), mod((mat[0][1] * invdet * (-1)), 26)],
-        [mod((mat[1][0] * invdet * (-1)), 26), mod((mat[0][0] * invdet), 26)]
+        [Math.round(mod((mat[1][1] * invdet), 26)), Math.round(mod((mat[0][1] * invdet * (-1)), 26))],
+        [Math.round(mod((mat[1][0] * invdet * (-1)), 26)), Math.round(mod((mat[0][0] * invdet), 26))]
     ];
     return invmat;
 }
 
 function dotproductDec(obs, exp){
     let prod = [
-        [(obs[0][0] * exp[0][0] + obs[0][1] * exp[1][0]), (obs[0][0] * exp[0][1] + obs[0][1] * exp[1][1])],
-        [(obs[1][0] * exp[0][0] + obs[1][1] * exp[1][0]), (obs[1][0] * exp[0][1] + obs[1][1] * exp[1][1])]
+        [Math.round(mod((obs[0][0] * exp[0][0] + obs[0][1] * exp[1][0]), 26)), Math.round(mod((obs[0][0] * exp[0][1] + obs[0][1] * exp[1][1]), 26))],
+        [Math.round(mod((obs[1][0] * exp[0][0] + obs[1][1] * exp[1][0]), 26)), Math.round(mod((obs[1][0] * exp[0][1] + obs[1][1] * exp[1][1]), 26))]
     ];
     return prod;
 }
 
 function dotproductEnc(invmat, bigram){
     let prod = [
-        ALPHA[mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26)],
-        ALPHA[mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26)]
+        ALPHA[Math.round(mod((invmat[0][0] * bigram[0] + invmat[0][1] * bigram[1]), 26))],
+        ALPHA[Math.round(mod((invmat[1][0] * bigram[0] + invmat[1][1] * bigram[1]), 26))]
     ];
     return prod;
 }
