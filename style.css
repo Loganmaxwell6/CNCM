@@ -3,7 +3,7 @@ fef css
 
 navigation parts:
   general
-
+  styles stuff
   button stuff
   text area stuff
   data panel, table stuff
@@ -18,7 +18,7 @@ navigation parts:
   --bgdark: hsl(0, 0%, 20%);
   --bglight: hsl(0, 0%, 30%);
   --highlight: rgba(116,77,152,1);
-  --highlightdark: #5F3F7D;
+  --highlightdark: rgba(85,63,125,1);
 
   --transparent: rgba(0, 0, 0, 0);
 }
@@ -38,7 +38,63 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   color: white;
 }
 
+* {
+  scrollbar-width: thin;
+}
 
+*, *::before, *::after { /* makes sure before and after pseudo-elements by default inherit size*/
+  box-sizing: inherit;
+}
+
+*::selection { /* makes selected text / items purple */
+  background-color: var(--highlight);
+  color:#FFF;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+ul { /* removes bullet points so i can make custom ones */
+  list-style-type: none;
+}
+
+footer {
+  background: #000;
+  background: linear-gradient(0deg,rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.05) 100%);
+}
+footer ul{
+  margin: 0;
+  padding: 0;
+}
+footer p{
+  margin: 0;
+  padding: 0.75em;
+}
+
+.nav-item a {
+  color: white;
+  text-decoration: none;
+  height:100%;
+  padding: 0.75em 1.5em;
+  display:block;
+}
+.nav-item a:hover {
+  color: var(--highlightdark);
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+header {
+  padding: 0 2em 2em 2em;
+}
+
+.header-subtitle{
+  font-size: 1em;
+}
+
+/*
+Styles stuff
+*/
 
 .bi-flag {
   color: white;
@@ -89,66 +145,6 @@ body { /* sets up font, background gradient, grid layout on whole website*/
 .bingus-a-style {
   background-image: url('bingus.png');
   background-size: 100% 100%;
-}
-
-* {
-  scrollbar-width: thin;
-}
-
-*, *::before, *::after { /* makes sure before and after pseudo-elements by default inherit size*/
-  box-sizing: inherit;
-}
-
-*::selection { /* makes selected text / items purple */
-  background-color: var(--highlight);
-  color:#FFF;
-}
-
-h1 {
-  font-size: 40px;
-}
-
-h2 {
-  margin: 1em;
-  font-size: 25px;
-  background-color: var(--transparent);
-}
-
-ul { /* removes bullet points so i can make custom ones */
-  list-style-type: none;
-}
-
-footer {
-  background: #000;
-  background: linear-gradient(0deg,rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.05) 100%);
-}
-footer ul{
-  margin: 0;
-  padding: 0;
-}
-footer p{
-  margin: 0;
-  padding: 0.75em;
-}
-
-.nav-item a {
-  color: white;
-  text-decoration: none;
-  height:100%;
-  padding: 0.75em 1.5em;
-  display:block;
-}
-.nav-item a:hover {
-  color: var(--highlightdark);
-  background-color: rgba(0, 0, 0, 0.35);
-}
-
-header {
-  padding: 0 2em 2em 2em;
-}
-
-.header-subtitle{
-  font-size: 1em;
 }
 
 /* 

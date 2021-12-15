@@ -200,7 +200,7 @@ function setStyle(style){
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("bi-flag");
             root.style.setProperty('--highlight', 'rgba(116,77,152,1)');
-            root.style.setProperty("--highlightdark", '#5F3F7D');
+            root.style.setProperty("--highlightdark", 'rgba(85,63,125,1)');
             bgsToNormal();
             break;
 
