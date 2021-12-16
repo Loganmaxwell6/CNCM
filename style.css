@@ -315,9 +315,12 @@ dropdown stuff
 .dropdown-item {
   border-radius: 2px;
 }
-.dropdown-item:hover {
+.dropdown-item a:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.2);
+}
+.dropdown-item input:hover {
+  cursor: pointer;
 }
 
 .dropdown-menu a {
