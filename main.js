@@ -114,6 +114,11 @@ function addGrammar(text){
 }
 
 function cleanText(text){
+    /*
+    Returns a (uppercase series of alphabet letters), 
+    b (all of the punctuation in the spaces where they originally were)
+    c (whether each character in a is uppercase or lowercase)
+    */
     a = [];
     b= {};
     c = [];
@@ -191,7 +196,7 @@ function openStyleDropdown(){
     }
 }
 
-/* changes the highlight colour and background for each style in the dropdown */
+/* changes the highlight colour and background for each style in the style dropdown */
 function setStyle(style){
     var root = document.querySelector(':root');
 
@@ -259,6 +264,7 @@ function setStyle(style){
     }
 }
 
+/* sets background colours to how they are in dark mode. only not used in light mode */
 function bgsToNormal() {
     var root = document.querySelector(':root');
 
@@ -269,6 +275,7 @@ function bgsToNormal() {
 
 
 function findTextOutBreakPoint(){
+    /*returns the value where /n is first (or second?)*/
     let findBreakText = textOut.value.split("");
     let num = 0;
     for (let i = 0 ; i < findBreakText.length; i++){
@@ -276,7 +283,7 @@ function findTextOutBreakPoint(){
             num ++;
         }
         if (num == 2){
-            return i;
+            return i; 
         }
     }
     return 0;
@@ -472,6 +479,7 @@ function substitutionAnnealing(freq, key, length, keyScore){
 applySubstitutionKey = (text, key) => text.map((char)=> key[char]);
 
 function findMostLikely(text, accuracy){
+    // returns a list of the most common letters, accuracy is how many letters are displayed before stopping
     count = observedCount(text);
     a= [];
     for(const [key, value] of Object.entries(count)){
@@ -522,7 +530,7 @@ function decryptTransposition(text ,length){
     var endVal = [-1,0]; //stores the index of the last column
     for (let i =0; i < columns.length; i++){ //loop through each column
         let scores = [];
-        for (let x =0; x<columns.length;x++){ //checking each column against current collumn
+        for (let x =0; x<columns.length;x++){ //checking each column against current column
             if (!(x == i)){ //asserts we are not checking column against the same column
                 let sum = 0;
                 for( let j = 0; j< columns[i].length; j++){ //generate frequency of bigrams
@@ -599,6 +607,7 @@ function getPolybiusEncryptors(text){
 }
 
 function indexOfCoincidence(text){
+    // compares the frequencies of different letters in the text
     let o = observedCount(text);
     let n = 0;
     let sum = 0;
@@ -653,6 +662,7 @@ function isEnglish(text, threshold = 85){
 
 //mapping of alpha to f as a index 0 in both etc.
 function observedCount(text){
+    // returns an array length 26 with all of the frequencies of each letter
     let o = {};
     for (let i = 0; i < 26; i++){
         o[i] = 0;
@@ -832,7 +842,6 @@ function affineDecrypt(text = globalText.slice(0,globalText.length)){
 }
 
 function substitutionAEncrypt(text = globalText.slice(0,globalText.length)){
-    //
     if (!key == ''){
         if (key.length <= 26){
             return applySubstitutionKey(text, generateFullKey(key).map((char) => alphaDict[char]));
