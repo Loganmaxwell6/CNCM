@@ -455,5 +455,5 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
 }
 
 @media only screen and (max-width:355px){
-  body {font-size: 10px;}
+  .data {font-size: 10px;}
 }
