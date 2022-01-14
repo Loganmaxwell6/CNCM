@@ -30,6 +30,7 @@ function init(){
     Chi = document.getElementById("Chi");
     fullLen = document.getElementById("fullLen");
     Len = document.getElementById("Len");
+    longestStr = document.getElementById("longestStr");
     likely = document.getElementById("likely");
     Time = document.getElementById("Time");
     textIn = document.getElementById("textIn");
@@ -735,6 +736,52 @@ function bigramTest(text, cutOff = 2000){
     return Math.sqrt(sum);
 }
 
+const lrs = (s) => [...s.matchAll(/(?=(.+)(?=.*\1))./g)].map(([_,v]) => v).filter((x, _, a) => !a.some((y) => x.length < y.length)); // bruh
+
+const morse = { 
+    '.-':     'a',
+    '-...':   'b',
+    '-.-.':   'c',
+    '-..':    'd',
+    '.':      'e',
+    '..-.':   'f',
+    '--.':    'g',
+    '....':   'h',
+    '..':     'i',
+    '.---':   'j',
+    '-.-':    'k',
+    '.-..':   'l',
+    '--':     'm',
+    '-.':     'n',
+    '---':    'o',
+    '.--.':   'p',
+    '--.-':   'q',
+    '.-.':    'r',
+    '...':    's',
+    '-':      't',
+    '..-':    'u',
+    '...-':   'v',
+    '.--':    'w',
+    '-..-':   'x',
+    '-.--':   'y',
+    '--..':   'z',
+    '.----':  '1',
+    '..---':  '2',
+    '...--':  '3',
+    '....-':  '4',
+    '.....':  '5',
+    '-....':  '6',
+    '--...':  '7',
+    '---..':  '8',
+    '----.':  '9',
+    '-----':  '0',
+};
+
+function morseToText(text){
+    text = text.split("/");
+    return text.map((char) => morse[char]);
+}
+
 //--------------------------------------------------
 
 function caesarEncrypt(text = globalText.slice(0,globalText.length)){
@@ -1087,6 +1134,32 @@ function dotproductEnc(invmat, bigram){
     return prod;
 }
 
+function mostCommonBigram(text){
+    text = text.split("");
+    bgc = {};
+    for (let i = 0; i < text.length - 1; i+=2){
+        bgc[text[i] + text[i+1]] = 0;
+    }
+    for (let i = 0; i < text.length - 1; i+=2){
+        bgc[text[i] + text[i+1]] += 1;
+    }
+    count = bgc;
+    a= [];
+    for(const [key, value] of Object.entries(count)){
+        a.push([key,value])
+    }
+    a = a.sort(function(a,b) {
+        return b[1]-a[1]
+    });
+    return a;
+}
+
+const getMax = object => {
+    return Object.keys(object).filter(x => {
+         return object[x] == Math.max.apply(null, 
+         Object.values(object));
+   });
+};
 
 function hillDecrypt(text = globalText.slice(0, globalText.length)){
     // https://sites.wcsu.edu/mbxml/html/hill_decrypt_section.html
@@ -1128,6 +1201,23 @@ function hillDecrypt(text = globalText.slice(0, globalText.length)){
 
 function hillEncrypt(){
 
+}
+
+function invertBigrams(text){
+    let t = text.match(/.{1,2}/g); // bruh
+    for(let i = 0; i < t.length;i++){
+        t[i] = t[i][1]+t[i][0];
+    }
+    return t;
+}
+
+function a(text){
+    let t = text.match(/.{1,2}/g); // bruh
+    for (i= 0; i < t.length-2; i++){
+        if (t[i] == t[i+2][1]+t[i+2][0]){
+            console.log(t[i], i);
+        }
+    }
 }
 
 function determineCipher(text = globalText.slice(0, globalText.length)){
