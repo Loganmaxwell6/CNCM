@@ -59,8 +59,8 @@ class Obj{
     }
 
     deselect(buffer0, buffer1, dt){
-        this.vx = buffer0[0] - buffer1[0] / dt;
-        this.vy = buffer0[1] - buffer1[1] / dt;
+        this.vx = buffer0[0] - buffer1[0];
+        this.vy = buffer0[1] - buffer1[1];
         if(this.gravity){this.ay = 1;}
     }
   
