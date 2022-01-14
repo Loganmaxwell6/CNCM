@@ -14,7 +14,7 @@ document.oncontextmenu = function() {
 }
 
 function getDtSlider(val){
-  dt = val;
+  dt = val/100;
 }
 
 function setup(){
