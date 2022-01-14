@@ -13,6 +13,12 @@ document.oncontextmenu = function() {
   return false;
 }
 
+var dtSlider = document.getElementById("dtSlider");
+
+dtSlider.oninput = function(){
+  dt = this.value;
+}
+
 function setup(){
   var canvas = createCanvas(MAX_X, MAX_Y);
   canvas.parent("mainCanvas");
