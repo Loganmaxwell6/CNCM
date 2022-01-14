@@ -22,33 +22,25 @@
 
   <!-- Main program file -->
   <script src="main.js"></script>
+  <script src="../main.js"></script>
 </head>
 
 <body class="bi-flag">
-
+  
   <!-- Style Dropdown -->
   <div class="dropdown style-dropdown">
     <button class="style-btn" id="styleDropdownToggle">Select Style</button>
     <ul class="style-dropdown-menu dropdown-menu" id="styleDropdownMenu">
       <li class="dropdown-item bi-flag"><a id="biStyle">Bi flag</a>
-      </li>
-      <li class="dropdown-item pride-flag"><a id="prideStyle">Pride flag</a>
-      </li>
-      <li class="dropdown-item pan-flag"><a id="panStyle">Pan flag</a>
-      </li>
-      <li class="dropdown-item trans-flag"><a id="transStyle">Trans flag</a>
-      </li>
-      <li class="list-divider">
-      </li>
-      <li class="dropdown-item dark-mode"><a id="darkMode">Dark Mode</a>
-      </li>
-      <li class="dropdown-item light-mode"><a id="lightMode">Light Mode</a>
-      </li>
-      <li class="dropdown-item ben-style"><a id="benStyle">Ben Style</a>
-      </li>
-      <li class="dropdown-item bingus-a-style"><a id="bingusStyle">Bingus Style</a>
-      </li>
-      <li class="dropdown-item">Sound<input type="checkbox" id="sound"></li>
+      </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride flag</a>
+      </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan flag</a>
+      </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans flag</a>
+      </li><li class="list-divider">
+      </li><li class="dropdown-item dark-mode"><a id="darkMode">Dark Mode</a>
+      </li><li class="dropdown-item light-mode"><a id="lightMode">Light Mode</a>
+      </li><li class="dropdown-item ben-style"><a id="benStyle">Ben Style</a>
+      </li><li class="dropdown-item bingus-a-style"><a id="bingusStyle">Bingus Style</a>
+      </li><li class="dropdown-item">Sound<input type="checkbox" id="sound"></li>
     </ul>
   </div>
 
@@ -56,18 +48,18 @@
 
   <!-- Header -->
   <header>
-    <h1>Crooked Nazgul Code Men Official Website</h1>
+    <h1>Crooked Nazgul Code Men Cipher Solver</h1>
     <div class="header-subtitle">SEMATARY GRAVE MAN FROM THE HAUNTED MOUND REAL NAZGUL SKINCARVER DEER GOD KEEPER OF THE
       TREES TRUE RELIGION FIEND HAUNTED MOUND LORD</div>
   </header>
 
   <!--Content  (Data, Input/Output, Settings) -->
-  <div class="cipher-grid">
+  <div class="cipher-grid content-panel">
     <!-- Data -->
     <div id="data">
 
       <!-- Panel -->
-      <div class="panel cipher-grid-item data">
+      <div class="content-panel-item data">
         <div class="panel-heading">Data</div>
         <div class="panel-body data-body" id="dataPanelBody">
 
@@ -114,12 +106,12 @@
 
     <!-- Input -->
     <div class="ioTextDiv inputAreaDiv">
-      <textarea class="io-text-area cipher-grid-item" id="textIn" placeholder="Input text here..."></textarea>
+      <textarea class="io-text-area content-panel-item" id="textIn" placeholder="Input text here..."></textarea>
     </div>
 
     <!-- Output -->
     <div class="ioTextDiv outputAreaDiv">
-      <textarea class="io-text-area cipher-grid-item output" id="textOut" placeholder="Output text here..."
+      <textarea class="io-text-area content-panel-item output" id="textOut" placeholder="Output text here..."
         disabled="disabled"></textarea>
     </div>
 
@@ -130,7 +122,7 @@
       <div id="settings">
 
         <!-- Settings Panel -->
-        <div class="panel cipher-grid-item option-panel settings-panel">
+        <div class="content-panel-item option-panel settings-panel">
           <div class="panel-heading">Options</div>
           <div class="panel-body">
 
@@ -139,50 +131,34 @@
               <button class="btn-1" id="cipherDropdownToggle">Select Cipher ↓</button>
               <ul class="cipher-dropdown-menu dropdown-menu" id="cipherDropdownMenu">
                 <li class="dropdown-item"><a id="caesar">Caesar</a>
-                </li>
-                <li class="dropdown-item"><a id="affine">Affine</a>
-                </li>
-                <li class="dropdown-item"><a id="substitutionA">Substitution (automatic)</a>
-                </li>
-                <li class="dropdown-item"><a id="substitutionM">Substitution (manual)</a>
-                </li>
-                <li class="dropdown-item"><a id="transpositionS">Transposition (simple)</a>
-                </li>
-                <li class="dropdown-item"><a id="transpositionC">Transposition (columnar)</a>
-                </li>
-                <li class="dropdown-item"><a id="vigenere">Vigenère</a>
-                </li>
-                <li class="dropdown-item"><a id="keyword">Keyword</a>
-                </li>
-                <li class="dropdown-item"><a id="polybius">Polybius Square</a>
-                </li>
-                <li class="list-divider">
-                </li>
-                <li class="dropdown-item"><a id="determine">Determine cipher</a></li>
+                </li><li class="dropdown-item"><a id="affine">Affine</a>
+                </li><li class="dropdown-item"><a id="substitutionA">Substitution (automatic)</a>
+                </li><li class="dropdown-item"><a id="substitutionM">Substitution (manual)</a>
+                </li><li class="dropdown-item"><a id="transpositionS">Transposition (simple)</a>
+                </li><li class="dropdown-item"><a id="transpositionC">Transposition (columnar)</a>
+                </li><li class="dropdown-item"><a id="vigenere">Vigenère</a>
+                </li><li class="dropdown-item"><a id="keyword">Keyword</a>
+                </li><li class="dropdown-item"><a id="polybius">Polybius Square</a>
+                </li><li class="list-divider">
+                </li><li class="dropdown-item"><a id="determine">Determine cipher</a></li>
               </ul>
             </div>
 
             <!-- Other settings -->
             <div class="options">
-              <button class="btn-1" id="swapText">↑</button>
-              <!-- comments remove weird whitespace
-                --><button class="btn-1" id="clearText">Clear</button>
-              <!--
-                --><button class="btn-1" id="reverseText">Reverse</button>
-              <!--
-                --><button class="btn-1" id="copyText">Copy to Clipboard</button>
-              <!--
-                --><textarea class="input-box" id="encryptInputBox" placeholder="Input key..."></textarea>
-              <!--
-                --><button class="btn-1" id="encrypt">Encrypt</button>
-              <!--
+              <button class="btn-1" id="swapText">↑</button><!-- comments remove weird whitespace
+                --><button class="btn-1" id="clearText">Clear</button><!--
+                --><button class="btn-1" id="reverseText">Reverse</button><!--
+                --><button class="btn-1" id="copyText">Copy to Clipboard</button><!--
+                --><textarea class="input-box" id="encryptInputBox" placeholder="Input key..."></textarea><!--
+                --><button class="btn-1" id="encrypt">Encrypt</button><!--
                 --><button class="btn-1" id="decrypt">Decrypt</button>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="panel cipher-grid-item option-panel">
+      <div class="content-panel-item option-panel">
         <div class="panel-heading">Advert </div>
 
         <div class="panel-body advert">
@@ -216,7 +192,6 @@
   <!-- Input Binding -->
   <script>
     $(document).ready(function () {
-
       $('.cipher-dropdown').each(function (key, cipher_dropdown) {
         var $cipher_dropdown = $(cipher_dropdown);
         $cipher_dropdown.find('.dropdown-item a').on('click', function () {
