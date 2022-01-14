@@ -315,9 +315,12 @@ dropdown stuff
 .dropdown-item {
   border-radius: 2px;
 }
-.dropdown-item:hover {
+.dropdown-item a:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.2);
+}
+.dropdown-item input:hover {
+  cursor: pointer;
 }
 
 .dropdown-menu a {
@@ -419,7 +422,7 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
     grid-template-areas: 
     'data input optionsPanel'
     'data output optionsPanel';
-    grid-template-columns: auto 3fr 30ch;
+    grid-template-columns: auto 3fr 27ch;
     grid-template-rows: 50% 50%;
   }
 }
@@ -455,5 +458,5 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
 }
 
 @media only screen and (max-width:355px){
-  body {font-size: 10px;}
+  .data {font-size: 10px;}
 }
