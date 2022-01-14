@@ -13,10 +13,8 @@ document.oncontextmenu = function() {
   return false;
 }
 
-var dtSlider = document.getElementById("dtSlider");
-
-dtSlider.oninput = function(){
-  dt = this.value / 100;
+function getDtSlider(val){
+  dt = val;
 }
 
 function setup(){
