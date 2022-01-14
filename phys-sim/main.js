@@ -16,7 +16,7 @@ document.oncontextmenu = function() {
 var dtSlider = document.getElementById("dtSlider");
 
 dtSlider.oninput = function(){
-  dt = this.value;
+  dt = this.value / 100;
 }
 
 function setup(){
