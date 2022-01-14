@@ -17,14 +17,10 @@ function setup(){
   var canvas = createCanvas(MAX_X, MAX_Y);
   canvas.parent("mainCanvas");
   frameRate(fr);
-  for(let i = 0; i < 1000; i++){
-    generateGuy();
-  }
 }
 
 function draw(){
   background(200);
-  shuffleGuy();
   if(leftClick){
     if(selected < 0){
       for(let i = 0; i < render.length; i++){
@@ -49,7 +45,7 @@ function draw(){
 
 function mousePressed(){
   if(mouseButton == LEFT){leftClick = true;}
-  if(mouseButton == RIGHT){rightClick = true;}
+  if(mouseButton == RIGHT){rightClick = true;render.push(new Obj(mouseX, mouseY, 20));}
 }
 
 function mouseReleased(){
@@ -90,5 +86,7 @@ function shuffleGuy(){
     render[i].setAX(random(4)-2);
     render[i].setAY(random(4)-2);
     render[i].setMass(random(10));
+    render[i].setDamping(random(10)/10);
+    render[i].setFriction(random(10)/1000);
   }
 }
