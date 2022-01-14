@@ -45,7 +45,12 @@ function draw(){
 
 function mousePressed(){
   if(mouseButton == LEFT){leftClick = true;}
-  if(mouseButton == RIGHT){rightClick = true;}
+  if(mouseButton == RIGHT){
+    rightClick = true;
+    render.push(new Obj(mouseX, mouseY, 30));
+    render[render.length-1].setDamping(0.9);
+    render[render.length-1].setFriction(0.01);
+  }
 }
 
 function mouseReleased(){
@@ -56,12 +61,7 @@ function mouseReleased(){
       selected = -1;
     }
   }
-  if(mouseButton == RIGHT){
-    rightClick = false;
-    render.push(new Obj(mouseX, mouseY, 30));
-    render[render.length-1].setDamping(0.9);
-    render[render.length-1].setFriction(0.01);
-  }
+  if(mouseButton == RIGHT){rightClick = false;}
 }
 
 function keyPressed(){
