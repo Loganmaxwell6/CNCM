@@ -1,5 +1,5 @@
 var fr = 600;
-var dt = 1;
+var dt = 0;
 var render = [];
 var MAX_X = 1500;
 var MAX_Y = 700;
