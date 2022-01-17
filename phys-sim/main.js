@@ -21,8 +21,10 @@ function setup(){
   var canvas = createCanvas(MAX_X, MAX_Y);
   canvas.parent("mainCanvas");
   frameRate(fr);
-  for(let i = 10; i < MAX_X - 10; i+=5){
-    render.push(new Obj(i, MAX_Y - i, 20));
+  for(let i = 10; i < MAX_X - 10; i+=10){
+    if(MAX_Y - i >= 10){
+      render.push(new Obj(i, MAX_Y - i, 20));
+    }   
   }
 }
 
