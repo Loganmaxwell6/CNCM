@@ -9,6 +9,7 @@ navigation parts:
   data panel, table stuff
   dropdown stuff
   panel and cipher grid items stuff (cipher solver stuff mostly)
+  landing page stuff
   media queries
 
 */
@@ -51,6 +52,10 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   color:#FFF;
 }
 
+h3 {
+  margin: 0;
+}
+
 h1 {
   font-size: 40px;
 }
@@ -77,6 +82,12 @@ footer ul{
 footer p{
   margin: 0;
   padding: 0.75em;
+}
+
+a {
+  display: contents;
+  text-decoration: inherit;
+  color: inherit;
 }
 
 .nav-item a {
@@ -364,7 +375,7 @@ dropdown stuff
 panel and cipher item stuff (cipher solver stuff mostly)
 */
 
-.panel-heading {
+.panel-heading h3{
   font-weight: bold;
   font-size: 1.125rem;
   background-color: var(--bgdark);
@@ -404,7 +415,6 @@ panel and cipher item stuff (cipher solver stuff mostly)
 .content-panel {
   margin: 1.5em 2em;
   padding: 1em;
-  display: grid;
   grid-gap: 0.75em;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -417,6 +427,25 @@ panel and cipher item stuff (cipher solver stuff mostly)
 }
 
 /*
+landing page stuff
+*/
+
+.projects-flex {
+  display: flex;
+}
+
+.project-column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+}
+
+.projects-flex-item {
+  margin-bottom: 1em;
+
+}
+
+/*
 media queries. Currently only based on width. Changes cipher grid formatting, text size, and background gradient angle
 */
 
@@ -425,11 +454,17 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
   .outputAreaDiv {padding-bottom: 1em;}
 
   .cipher-grid {
+    display: grid;
     grid-template-areas: 
     'data input optionsPanel'
     'data output optionsPanel';
     grid-template-columns: auto 3fr 27ch;
     grid-template-rows: 50% 50%;
+  }
+
+
+  .projects-flex {
+    flex: 2;
   }
 }
 
@@ -447,6 +482,7 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
   .data-values-header { text-align: center;}
 
   .cipher-grid {
+    display: grid;
     grid-template-areas: 
     'input'
     'output'
@@ -456,10 +492,19 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
     grid-template-rows: 1fr 1fr 3fr auto;
     margin: 2em auto;
     max-width: 50ch;
+  }
 
+
+  .projects-flex {
+    flex: 1;
   }
 }
 
 @media only screen and (max-width:355px){
   .data {font-size: 10px;}
+
+
+  .projects-flex {
+    flex: 1;
+  }
 }
