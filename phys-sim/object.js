@@ -27,7 +27,7 @@ class Obj{
         if(this.y > MAX_Y - this.size / 2){ // bottom wall
             this.vy = this.vy * -this.damping;
             this.vx -= this.vx * this.friction * this.mass;
-            this.y = MAXY_Y - this.size / 2;
+            this.y = MAX_Y - this.size / 2;
             //this.y = MAX_Y - ((this.y + this.size / 2) - MAX_Y) - this.size / 2;
         }
         if(this.y <= 0 + this.size / 2){ // top wall
