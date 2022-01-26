@@ -1,3 +1,5 @@
+//Entire file is just for style dropdown stuff right now
+
 function closeStyleDropdown(){
     document.getElementById("styleDropdownMenu").classList.remove("show");
 }

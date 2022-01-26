@@ -33,10 +33,8 @@ body { /* sets up font, background gradient, grid layout on whole website*/
   margin: 0px;
   font-family: 'Roboto', sans-serif;
   text-align: center;
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto;
   color: white;
+  min-height: 100vh;
 }
 
 * {
@@ -210,6 +208,35 @@ button{
   padding: 0.2em 0.4em;
 }
 
+.wordle-btn-container {
+  width: max-content;
+  height: max-content;
+  margin: auto;
+  background: white;
+  border-radius: 0.5em;
+  border: 0.125em solid rgba(255, 255, 255, 0.7);
+}
+.wordle-btn {
+  width: inherit;
+  height: inherit;
+  box-sizing: border-box;
+  margin: 0;
+  background: linear-gradient(84deg, var(--highlight) 0%, rgba(0,0,0,0.7) 100%);
+  background-clip: border-box; /* This line is here so vscode doesn't get annoyed with me. This doesn't work on firefox etc*/
+  -webkit-background-clip: text;
+  color: var(--transparent);
+  font-weight: bold;
+  font-size: 1.5em;
+  transition: font-size 150ms ease;
+}
+.wordle-btn:hover {
+  font-size: 1.25em;
+}
+.wordle-btn:active {
+  background: black;
+  background-clip: border-box;
+  -webkit-background-clip: text;
+}
 
 /*
 text area stuff
@@ -315,14 +342,16 @@ dropdown stuff
 
 .style-dropdown { 
   height: 3em;
-  width: 10em;
+  width: 100%;
   text-align: left;
+  left: 0;
 }
 .style-dropdown a {
   width: calc(100% - 0.5em);
 }
 
 .style-dropdown-menu {
+  margin-left: 0.2em;
   max-width: 15em;
   border: 3px solid var(--bgdark);
   border-radius: 3px;

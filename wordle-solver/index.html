@@ -1,12 +1,75 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="main.js" type="text/javascript"></script>
-        <script src="./styles.css" type="text/css"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Cipher solving tool for the cipher challenge">
+        <meta name="author" content="Logan Maxwell, Jamie Holloway, Fenwick Thompson">
+
+        <title>CNCM · Wordle Solver</title>
+
+        <!-- Extras -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="../style.css">
+
+        <!-- Main program files -->
+        <script src="main.js"></script>
+        <script src="../main.js"></script>
     </head>
-    <body>
-        <h1>WORDLE SOLVER</h1>
-        <button onClick="findWord()">Solve Wordle</button>
+    <body class="ben-style">
+        <!-- Style Dropdown -->
+        <div class="dropdown style-dropdown">
+            <button class="style-btn" id="styleDropdownToggle">Select Style</button>
+            <ul class="style-dropdown-menu dropdown-menu" id="styleDropdownMenu">
+            <li class="dropdown-item bi-flag"><a id="biStyle">Bi flag</a>
+            </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride flag</a>
+            </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan flag</a>
+            </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans flag</a>
+            </li><li class="list-divider">
+            </li><li class="dropdown-item dark-mode"><a id="darkMode">Dark Mode</a>
+            </li><li class="dropdown-item light-mode"><a id="lightMode">Light Mode</a>
+            </li><li class="dropdown-item ben-style"><a id="benStyle">Ben Style</a>
+            </li><li class="dropdown-item bingus-a-style"><a id="bingusStyle">Bingus Style</a>
+            </li><li class="dropdown-item">Sound<input type="checkbox" id="sound"></li>
+            </ul>
+        </div>
+
+        <header>
+            <a href="../index.html"><h1>Crooked Nazgul Code Men Wordle Solver</h1></a>
+            <div class="header-subtitle"><a href="https://www.youtube.com/watch?v=oOlkcIHVmIE&list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f">
+              SEMATARY GRAVE MAN FROM THE HAUNTED MOUND REAL NAZGUL SKINCARVER DEER GOD KEEPER OF THE
+              TREES TRUE RELIGION FIEND HAUNTED MOUND LORD</a></div>
+          </header>
+        <div class="wordle-btn-container">
+            <button class="wordle-btn" onClick="findWord()">Solve Wordle</button>
+        </div>
         <p id="word"></p>
+        <div style="height:max-content"></div> <!-- help -->
+
+
+        <!-- Input Binding -->
+        <script>
+            $(document).ready(function () {
+            $('.style-dropdown').each(function (key, style_dropdown) {
+                var $style_dropdown = $(style_dropdown);
+                $style_dropdown.find('.style-dropdown-menu a').on('click', function () {
+                setStyle(($(this).attr('id')));
+                });
+            });
+            $('#styleDropdownToggle').on('click', function () { openStyleDropdown(); });
+            $(window).on('click', function (event) {
+                if (!event.target.matches('#styleDropdownToggle')) {
+                closeStyleDropdown();
+                }
+            });
+            });
+            init();
+        </script>
     </body>
 </html>
