@@ -70,8 +70,13 @@ ul { /* removes bullet points so i can make custom ones */
 }
 
 footer {
+  width: 100%;
   background: #000;
   background: linear-gradient(0deg,rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.05) 100%);
+}
+.footer-stretch {
+  position: absolute;
+  bottom: 0px;
 }
 footer ul{
   margin: 0;
@@ -81,6 +86,7 @@ footer p{
   margin: 0;
   padding: 0.75em;
 }
+
 
 a {
   display: contents;
