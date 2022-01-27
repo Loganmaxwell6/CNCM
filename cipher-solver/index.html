@@ -64,7 +64,6 @@
       <div class="content-panel-item data">
         <div class="panel-heading"><h3>Data</h3></div>
         <div class="panel-body data-body" id="dataPanelBody">
-
           <!-- Frequency table -->
           <table class="table" id="frequencyTable">
             <tr>
@@ -127,49 +126,37 @@
         <div class="content-panel-item option-panel settings-panel">
           <div class="panel-heading"><h3>Options</h3></div>
           <div class="panel-body">
+            <div class="subpanel">
+              <!-- Cipher Select Dropdown -->
+              <div class="dropdown cipher-dropdown">
+                <button class="btn-1" id="cipherDropdownToggle">Select Cipher ↓</button>
+                <ul class="cipher-dropdown-menu dropdown-menu" id="cipherDropdownMenu">
+                  <li class="dropdown-item"><a id="caesar">Caesar</a>
+                  </li><li class="dropdown-item"><a id="affine">Affine</a>
+                  </li><li class="dropdown-item"><a id="substitutionA">Substitution (automatic)</a>
+                  </li><li class="dropdown-item"><a id="substitutionM">Substitution (manual)</a>
+                  </li><li class="dropdown-item"><a id="transpositionS">Transposition (simple)</a>
+                  </li><li class="dropdown-item"><a id="transpositionC">Transposition (columnar)</a>
+                  </li><li class="dropdown-item"><a id="vigenere">Vigenère</a>
+                  </li><li class="dropdown-item"><a id="keyword">Keyword</a>
+                  </li><li class="dropdown-item"><a id="polybius">Polybius Square</a>
+                  </li><li class="list-divider">
+                  </li><li class="dropdown-item"><a id="determine">Determine cipher</a></li>
+                </ul>
+              </div>
 
-            <!-- Cipher Select Dropdown -->
-            <div class="dropdown cipher-dropdown">
-              <button class="btn-1" id="cipherDropdownToggle">Select Cipher ↓</button>
-              <ul class="cipher-dropdown-menu dropdown-menu" id="cipherDropdownMenu">
-                <li class="dropdown-item"><a id="caesar">Caesar</a>
-                </li><li class="dropdown-item"><a id="affine">Affine</a>
-                </li><li class="dropdown-item"><a id="substitutionA">Substitution (automatic)</a>
-                </li><li class="dropdown-item"><a id="substitutionM">Substitution (manual)</a>
-                </li><li class="dropdown-item"><a id="transpositionS">Transposition (simple)</a>
-                </li><li class="dropdown-item"><a id="transpositionC">Transposition (columnar)</a>
-                </li><li class="dropdown-item"><a id="vigenere">Vigenère</a>
-                </li><li class="dropdown-item"><a id="keyword">Keyword</a>
-                </li><li class="dropdown-item"><a id="polybius">Polybius Square</a>
-                </li><li class="list-divider">
-                </li><li class="dropdown-item"><a id="determine">Determine cipher</a></li>
-              </ul>
-            </div>
-
-            <!-- Other settings -->
-            <div class="options">
-              <button class="btn-1" id="swapText">↑</button><!-- comments remove weird whitespace
-                --><button class="btn-1" id="clearText">Clear</button><!--
-                --><button class="btn-1" id="reverseText">Reverse</button><!--
-                --><button class="btn-1" id="copyText">Copy to Clipboard</button><!--
-                --><textarea class="input-box" id="encryptInputBox" placeholder="Input key..."></textarea><!--
-                --><button class="btn-1" id="encrypt">Encrypt</button><!--
-                --><button class="btn-1" id="decrypt">Decrypt</button>
+              <!-- Other settings -->
+              <div class="options">
+                <button class="btn-1" id="swapText">↑</button><!-- comments remove weird whitespace
+                  --><button class="btn-1" id="clearText">Clear</button><!--
+                  --><button class="btn-1" id="reverseText">Reverse</button><!--
+                  --><button class="btn-1" id="copyText">Copy to Clipboard</button><!--
+                  --><textarea class="input-box" id="encryptInputBox" placeholder="Input key..."></textarea><!--
+                  --><button class="btn-1" id="encrypt">Encrypt</button><!--
+                  --><button class="btn-1" id="decrypt">Decrypt</button>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="content-panel-item option-panel">
-        <div class="panel-heading"><h3>Advert</h3></div>
-
-        <div class="panel-body advert">
-          <!--<iframe width="250" height="200" src="https://www.youtube.com/embed/videoseries?list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            -->
-          <nft-card class="nft" width="inherit" contractAddress="0x495f947276749ce646f68ac8c248420045cb7b5e"
-            tokenId="87031188673692152413638241493350568345866510012985637045999208393721805537281">
-          </nft-card>
-          <script src="https://unpkg.com/embeddable-nfts/dist/nft-card.min.js"></script>
         </div>
       </div>
 
