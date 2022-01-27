@@ -511,7 +511,9 @@ landing page stuff
 }
 
 .a-fill {
-  background-color: rgba(75, 75, 75, 1);
+  box-sizing: border-box;
+  border: 2px solid rgba(55, 55, 55, 1);
+  background-color: rgba(69, 69, 69, 1);
   padding: 0.5em 0;
   display: block;
   height: 100%;
@@ -521,6 +523,7 @@ landing page stuff
 }
 .a-fill:hover {
   transform: translate(-0.25em, -0.25em);
+  box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.1);
 }
 
 /*
