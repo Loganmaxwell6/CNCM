@@ -223,6 +223,7 @@ button{
   border: 0.125em solid rgba(255, 255, 255, 0.7);
 }
 .wordle-btn {
+  color:black;
   width: inherit;
   height: inherit;
   box-sizing: border-box;
@@ -259,6 +260,7 @@ textarea{
   font-family: 'Roboto', sans-serif;
 }
 textarea::-webkit-scrollbar {
+  cursor:default;
   width: 1.25em;
 }
 textarea::-webkit-scrollbar-thumb {
