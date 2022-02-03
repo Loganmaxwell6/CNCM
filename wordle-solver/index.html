@@ -45,11 +45,20 @@
             <div class="header-subtitle"><a href="https://www.youtube.com/watch?v=oOlkcIHVmIE&list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f">
               SEMATARY GRAVE MAN FROM THE HAUNTED MOUND REAL NAZGUL SKINCARVER DEER GOD KEEPER OF THE
               TREES TRUE RELIGION FIEND HAUNTED MOUND LORD</a></div>
-          </header>
+        </header>
         <div class="wordle-btn-container">
             <button class="wordle-btn" onClick="findWord()">Solve Wordle</button>
         </div>
-        <p id="word"></p>
+        <p id="word" style="margin-bottom:40px"></p>
+        <div class="wordle-btn-container">
+            <button class="wordle-btn" onClick="findWordOnDay()">Find Wordle Solution</button>
+        </div>
+        <div class="date-input-container" onkeypress="return isNumberKey(event)">
+            <textarea placeholder="DD" onInput="dayClick()" id="day" maxlength="2"></textarea>
+            <textarea placeholder="MM" onInput="monthClick()" id="month" maxlength="2"></textarea>
+            <textarea placeholder="YYYY" id="year" maxlength="4"></textarea>
+        </div>
+        <p id="wordAlt"></p> 
 
         <footer class="footer-stretch">
             <div class="nav-item"><a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a></div>
@@ -73,7 +82,6 @@
                 }
             });
             });
-            init();
         </script>
     </body>
 </html>

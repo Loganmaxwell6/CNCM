@@ -425,6 +425,24 @@ dropdown stuff
   visibility: hidden;
 }
 
+/* 
+wordle date input 
+*/
+.date-input-container{
+  margin: 20px;
+}
+
+.date-input-container textarea{
+  resize: none;
+  border-radius: 5px;
+  margin: 10px;
+  font-size: 27px;
+  width: 7%;
+  height: 45px;
+}
+.date-input-container textarea::placeholder {
+  font-size: 27px;
+}
 /*
 panel and cipher item stuff (cipher solver stuff mostly)
 */
