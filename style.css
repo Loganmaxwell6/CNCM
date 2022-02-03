@@ -437,7 +437,7 @@ wordle date input
   border-radius: 5px;
   margin: 10px;
   font-size: 27px;
-  width: 7%;
+  width: 100px;
   height: 45px;
 }
 .date-input-container textarea::placeholder {
