@@ -426,6 +426,46 @@ dropdown stuff
 }
 
 /* 
+wordle grid
+*/
+
+.row1 {grid-area: row1;}
+.row2 {grid-area: row2;}
+.row3 {grid-area: row3;}
+.row4 {grid-area: row4;}
+.row5 {grid-area: row5;}
+.row6 {grid-area: row6;}
+
+.wordle-grid{
+  display: grid;
+  grid-template-areas: 
+  'row1'
+  'row2'
+  'row3'
+  'row4'
+  'row5'
+  'row6';
+  justify-content: center;
+  margin: 20px;
+}
+
+.wordle-grid div{
+  display:flex;
+}
+
+.wordle-row div{
+  margin: 2px;
+  width: 60px;
+  height: 60px;
+  border-style: solid;
+  border-color: #515157;
+  border-width: 2px;
+  background-color: black;
+  justify-content: center;
+  line-height: 60px;
+  font-size: 30px;
+}
+/* 
 wordle date input 
 */
 .date-input-container{

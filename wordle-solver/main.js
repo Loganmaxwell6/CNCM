@@ -1,7 +1,98 @@
-window.onReady = () => {
+class Tile {
+    constructor(colNum, rowNum){
+        this.col = colNum;
+        this.row = rowNum;
+        this.canToggle = this.row == 0;
+
+        this.colour = 0;
+
+        this.num = this.row * 5 + this.col + 1
+        this.id = "tile" + this.num;
+
+        this.element = document.getElementById("tile" + this.num);
+    }
+
+    init(){
+        this.element.onclick = this.click.bind(this, this);
+    }
+
+    click(tile){
+        if (tile.canToggle) {
+            tile.colour = (tile.colour + 1) % 3;
+            tile.setColour(tile);
+        }
+    }
+
+    setColour(tile){
+        document.getElementById(tile.id).style.backgroundColor = colours[tile.colour];
+    }
+
+    setLetter(char){
+        document.getElementById(this.id).innerHTML = char.toLocaleUpperCase();
+    }
+}
+
+colours = ["black", "#b49c3c", "#588c4c"];
+tileList = [];
+
+rowNum = 1;
+
+window.onload = () => {
+    console.log("hd")
     day = document.getElementById("day");
     month = document.getElementById("month");
     year = document.getElementById("year");
+
+    for (let i = 0; i < 30; i++){
+        tileList.push(new Tile(i % 5, Math.floor(i / 5)));
+        tileList[i].init()
+    }
+    setRowsWord(rowNum, "ROATE")
+}
+
+function submitClues(){
+    guesses = [];
+    for (let i = (rowNum - 1 ) * 5 + 1; i < (rowNum - 1 ) * 5 + 6; i++){
+        guesses.push(getTileByNum(i).colour);
+    }
+    console.log(guesses)
+    if (rowNum < 6){
+        setRowToggle(rowNum, false);
+        rowNum ++;
+        setRowsWord(rowNum, "ROATE"); // here, roate would be replaced with the best next guess
+        setRowToggle(rowNum, true);
+    }else{
+        alert("You Lost!")
+    }
+}
+
+function setRowsWord(rowNum, word){
+    if (!word.length == 5)return;
+    for (let i = (rowNum - 1 ) * 5 + 1; i < (rowNum - 1 ) * 5 + 6; i++){
+        getTileByNum(i).setLetter(word[(i -1) % 5]);
+    }
+}
+
+function setRowToggle(rowNum, toggle){
+    for (let i = (rowNum - 1 ) * 5 + 1; i < (rowNum - 1 ) * 5 + 6; i++){
+        getTileByNum(i).canToggle = toggle;
+    }
+}
+
+function getTileById(id){
+    for (let tile of tileList){
+        if (tile.id == id){
+            return tile;
+        }
+    }
+}
+
+function getTileByNum(num){
+    for (let tile of tileList){
+        if (tile.num == num){
+            return tile;
+        }
+    }
 }
 
 function dayClick(){
