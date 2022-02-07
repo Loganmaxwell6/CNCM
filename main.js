@@ -1,8 +1,10 @@
 //cookie for smelly friend
 window.onload = () =>{
-    document.cookie = "style=biStyle";
-    let x = document.cookie;
-    console.log(x);
+    let x  = document.cookie;
+    if (x == ''){
+        document.cookie = "style=biStyle";
+    }
+    setStyle(document.cookie.substring(6));
 }
 
 //Entire file is just for style dropdown stuff right now
@@ -22,10 +24,12 @@ function openStyleDropdown(){
 
 /* changes the highlight colour and background for each style in the style dropdown */
 function setStyle(style){
+    console.log(style , "hye")
     var root = document.querySelector(':root');
 
     switch(style) {
         case "biStyle":
+            document.cookie = "style=biStyle";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("bi-flag");
             root.style.setProperty('--highlight', 'rgba(116,77,152,1)');
@@ -34,6 +38,7 @@ function setStyle(style){
             break;
 
         case "prideStyle":
+            document.cookie = "style=prideStyle";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("pride-flag");
             root.style.setProperty('--highlight', 'rgba(0,121,64,1)');
@@ -42,6 +47,7 @@ function setStyle(style){
             break;
 
         case "panStyle":
+            document.cookie = "style=panStyle";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("pan-flag");
             root.style.setProperty('--highlight', 'rgba(1,148,252,1)');
@@ -49,6 +55,7 @@ function setStyle(style){
             bgsToNormal();
             break;
         case "transStyle":
+            document.cookie = "style=transStyle";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("trans-flag");
             root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
@@ -56,6 +63,7 @@ function setStyle(style){
             bgsToNormal();
             break;
         case 'darkMode':
+            document.cookie = "style=darkMode";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("dark-mode");
             root.style.setProperty('--highlight', '#666666');
@@ -63,6 +71,7 @@ function setStyle(style){
             bgsToNormal();
             break;
         case 'lightMode':
+            document.cookie = "style=lightMode";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("light-mode");
             root.style.setProperty('--bg', 'rgba(240,240,240,1)');
@@ -72,6 +81,7 @@ function setStyle(style){
             root.style.setProperty('--highlightdark', 'rgba(67,62,126,1)');
             break;
         case 'benStyle':
+            document.cookie = "style=benStyle";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("ben-style");
             root.style.setProperty('--highlight', 'rgba(155,46,144,1)');
@@ -79,6 +89,7 @@ function setStyle(style){
             bgsToNormal();
             break;
         case 'bingusStyle':
+            document.cookie = "style=bingusStyle";
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("bingus-style");
             root.style.setProperty('--highlight', 'rgba(198,155,154,1)');

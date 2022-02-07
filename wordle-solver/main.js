@@ -57,6 +57,7 @@ window.onload = () => {
         tileList[i].init()
     }
     setRowsWord(rowNum, "ROATE")
+    //setStyle(document.cookie.substring(6));
 }
 
 function submitClues(){
