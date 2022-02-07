@@ -1,5 +1,11 @@
-//Entire file is just for style dropdown stuff right now
+//cookie for smelly friend
+window.onload = () =>{
+    document.cookie = "style=biStyle";
+    let x = document.cookie;
+    console.log(x);
+}
 
+//Entire file is just for style dropdown stuff right now
 function closeStyleDropdown(){
     document.getElementById("styleDropdownMenu").classList.remove("show");
 }
