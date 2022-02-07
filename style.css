@@ -8,6 +8,7 @@ navigation parts:
   text area stuff
   data panel, table stuff
   dropdown stuff
+  wordle grid stuff
   panel and cipher grid items stuff (cipher solver stuff mostly)
   landing page stuff
   media queries
@@ -426,7 +427,7 @@ dropdown stuff
 }
 
 /* 
-wordle grid
+wordle grid stuff
 */
 
 .row1 {grid-area: row1;}
@@ -437,6 +438,15 @@ wordle grid
 .row6 {grid-area: row6;}
 
 .wordle-grid{
+  padding: 1em;
+  margin-bottom: 20px;
+  padding: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  width: min-content;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0.1em;
+  box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
   display: grid;
   grid-template-areas: 
   'row1'
@@ -446,7 +456,6 @@ wordle grid
   'row5'
   'row6';
   justify-content: center;
-  margin: 20px;
 }
 
 .wordle-grid div{
@@ -533,8 +542,8 @@ panel and cipher item stuff (cipher solver stuff mostly)
 }
 
 .content-panel-item {
-  background-color: var(--bg);
   display: block;
+  background-color: var(--bg);
   border-radius: 0.1em;
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.2);
 }
