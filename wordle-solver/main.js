@@ -190,7 +190,7 @@ function monthClick(){
 }
 
 function findWord(){
-    const startDate = new Date("6/19/2021");  
+    const startDate = new Date("Sat Jun 19 2021 00:00:00 GMT+0000");  
     let currentDate = new Date();
     document.getElementById("word").innerHTML = words[Math.floor((currentDate.getTime() - startDate.getTime())/(1000*60*60*24))];
 }
