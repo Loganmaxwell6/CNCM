@@ -116,7 +116,7 @@ a {
 }
 
 header {
-  padding: 0 2em 2em 2em;
+  padding: 0.75em;
 }
 
 .header-subtitle{
@@ -367,6 +367,7 @@ dropdown stuff
 }
 
 .style-dropdown { 
+  position: absolute;
   height: 3em;
   width: 100%;
   text-align: left;
@@ -538,8 +539,7 @@ panel and cipher item stuff (cipher solver stuff mostly)
 .optionPanels {grid-area: optionsPanel;}
 
 .content-panel { /* margin stuff is in media queries */
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding: 0.75em;
   grid-gap: 0.75em;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -564,7 +564,6 @@ landing page stuff
 .projects-grid {
   display: grid;
   grid-gap: 0.75em;
-  padding: 0.75em;
 }
 
 .project-column {
@@ -604,7 +603,7 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
 
 @media only screen and (min-width:1001px) { /*landscape mode - only grid and min-width stuff*/
   
-  .outputAreaDiv {padding-bottom: 1em;}
+  .outputAreaDiv {padding-bottom: 0.75em;}
 
   .content-panel {
     margin: 1.5em 2em;
@@ -656,7 +655,7 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
   }
 
   .data-values-header { text-align: center;}
-  
+
 }
 
 @media only screen and (max-width:355px){
