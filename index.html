@@ -34,7 +34,7 @@
       </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride flag</a>
       </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan flag</a>
       </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans flag</a>
-      </li><li class="list-divider">
+      </li><li class="text-divider">
       </li><li class="dropdown-item dark-mode"><a id="darkMode">Dark Mode</a>
       </li><li class="dropdown-item light-mode"><a id="lightMode">Light Mode</a>
       </li><li class="dropdown-item ben-style"><a id="benStyle">Ben Style</a>
@@ -54,10 +54,10 @@
   </header>
 
   <!-- Content -->
-  <div class="content-panel projects-flex">
+  <div class="content-panel projects-grid">
     <div class="project-column">
 
-      <div class="content-panel-item projects-flex-item">
+      <div class="content-panel-item projects-grid-item">
         <div class="panel-heading">
           <h3>About us</h3>
         </div>
@@ -66,34 +66,35 @@
             Created by jamieson, log and fen, initially as a Cipher Solver for the National Cipher Challenge, but now as a place
             for us to host and bring attention to further projects, both personal and as a group.
             <!--Maybe here have a section for each of us to write a sentence or to about ourselves?-->
-            <br>
-            Jamie:<br>Please don't bully me for the NFT, its ugliness is a parody of the NFT world which pretends to support art and its
-            creators but actually own cares about making money, obviously. Unless you want to buy it then hello, uhhh NFT go crazy-mode :)
-            <br>
+            <div class="text-divider p-divider"></div>
+            Jamie:<br> Smelly little cipher goblin
+            <br><div class="text-divider p-divider"></div>
             Log:<br> Needs to do physics sim 
-            <br>
-            Fen:<br> CSS GOD
+            <br><div class="text-divider p-divider"></div>
+            Fen:<br> Silly little CSS/HTML guy
           </p> <!--idk if you guys wanna put real names here so i'll do placeholders for now-->
         </div>
       </div>
 
-      <div class="content-panel-item option-panel">
-        <div class="panel-heading"><h3>CNCM NFT</h3></div>
-
-        <div class="panel-body advert">
-          <!--<iframe width="250" height="200" src="https://www.youtube.com/embed/videoseries?list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            -->
-          <nft-card class="nft" width="inherit" contractAddress="0x495f947276749ce646f68ac8c248420045cb7b5e"
-            tokenId="87031188673692152413638241493350568345866510012985637045999208393721805537281">
-          </nft-card>
-          <script src="https://unpkg.com/embeddable-nfts/dist/nft-card.min.js"></script>
+      <div class="content-panel-item projects-grid-item">
+        <div class="panel-heading">
+          <h3>Information</h3>
+        </div>
+        <div class="panel-body subpanel">
+          <p>
+            Our site uses cookies but it's only to track which style you've set.
+            <div class="text-divider p-divider"></div><br>
+            Please don't bully me for the NFT, its ugliness is a parody of the NFT world which pretends to support art and its
+            creators but actually own cares about making money, obviously. Unless you want to buy it then hello, uhhh NFT go crazy-mode :)
+          </p>
         </div>
       </div>
+
     </div>
 
     <div class="project-column">
 
-      <div class="content-panel-item projects-flex-item">
+      <div class="content-panel-item projects-grid-item">
         <div class="panel-heading">
           <h3>Projects</h3>
         </div>
@@ -118,7 +119,19 @@
           </a></div>
         </div>
       </div>
+      
+      <div class="content-panel-item option-panel">
+        <div class="panel-heading"><h3>CNCM NFT</h3></div>
 
+        <div class="panel-body advert">
+          <!--<iframe width="250" height="200" src="https://www.youtube.com/embed/videoseries?list=PLAfFC9KKNN00qj0jluSsVDDJ_HBdlza7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            -->
+          <nft-card class="nft" width="inherit" contractAddress="0x495f947276749ce646f68ac8c248420045cb7b5e"
+            tokenId="87031188673692152413638241493350568345866510012985637045999208393721805537281">
+          </nft-card>
+          <script src="https://unpkg.com/embeddable-nfts/dist/nft-card.min.js"></script>
+        </div>
+      </div>
     </div>
   </div>
 

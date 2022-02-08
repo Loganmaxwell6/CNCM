@@ -416,14 +416,18 @@ dropdown stuff
   transform: translateY(-0.15em);
 }
 
-.list-divider {
+.text-divider {
   border-top: 0.05em solid var(--bglight);
   padding: 0.125em 0;
   height: 0;
   transform: translateY(50%);
 }
-.list-divider::before {
+.text-divider::before { /* For it to work in my lists this hides bullet point stuff */
   visibility: hidden;
+}
+
+.p-divider {
+  margin: 0.5em 0em;
 }
 
 /* 
@@ -558,8 +562,10 @@ panel and cipher item stuff (cipher solver stuff mostly)
 landing page stuff
 */
 
-.projects-flex {
-  display: flex;
+.projects-grid {
+  display: grid;
+  grid-gap: 0.75em;
+  padding: 0.75em;
 }
 
 .project-column {
@@ -568,7 +574,7 @@ landing page stuff
   flex-basis: 100%;
 }
 
-.projects-flex-item {
+.projects-grid-item {
   margin-bottom: 1em;
 }
 
@@ -611,8 +617,8 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
   }
 
 
-  .projects-flex {
-    flex: 2;
+  .projects-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -642,17 +648,11 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
     max-width: 50ch;
   }
 
-
-  .projects-flex {
-    flex: 1;
+  .projects-grid {
+    grid-template-columns: auto;
   }
 }
 
 @media only screen and (max-width:355px){
   .data {font-size: 10px;}
-
-
-  .projects-flex {
-    flex: 1;
-  }
 }
