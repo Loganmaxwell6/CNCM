@@ -116,7 +116,7 @@ a {
 }
 
 header {
-  padding: 0 2em 2em 2em;
+  padding: 0.75em;
 }
 
 .header-subtitle{
@@ -367,6 +367,7 @@ dropdown stuff
 }
 
 .style-dropdown { 
+  position: absolute;
   height: 3em;
   width: 100%;
   text-align: left;
@@ -416,14 +417,18 @@ dropdown stuff
   transform: translateY(-0.15em);
 }
 
-.list-divider {
+.text-divider {
   border-top: 0.05em solid var(--bglight);
   padding: 0.125em 0;
   height: 0;
   transform: translateY(50%);
 }
-.list-divider::before {
+.text-divider::before { /* For it to work in my lists this hides bullet point stuff */
   visibility: hidden;
+}
+
+.p-divider {
+  margin: 0.5em 0em;
 }
 
 /* 
@@ -533,10 +538,8 @@ panel and cipher item stuff (cipher solver stuff mostly)
 .outputAreaDiv { grid-area: output;}
 .optionPanels {grid-area: optionsPanel;}
 
-.content-panel {
-  margin: 1.5em 2em;
-  padding-top: 1em;
-  padding-bottom: 1em;
+.content-panel { /* margin stuff is in media queries */
+  padding: 0.75em;
   grid-gap: 0.75em;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -558,8 +561,9 @@ panel and cipher item stuff (cipher solver stuff mostly)
 landing page stuff
 */
 
-.projects-flex {
-  display: flex;
+.projects-grid {
+  display: grid;
+  grid-gap: 0.75em;
 }
 
 .project-column {
@@ -568,7 +572,7 @@ landing page stuff
   flex-basis: 100%;
 }
 
-.projects-flex-item {
+.projects-grid-item {
   margin-bottom: 1em;
 }
 
@@ -599,7 +603,11 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
 
 @media only screen and (min-width:1001px) { /*landscape mode - only grid and min-width stuff*/
   
-  .outputAreaDiv {padding-bottom: 1em;}
+  .outputAreaDiv {padding-bottom: 0.75em;}
+
+  .content-panel {
+    margin: 1.5em 2em;
+  }
 
   .cipher-grid {
     display: grid;
@@ -611,8 +619,8 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
   }
 
 
-  .projects-flex {
-    flex: 2;
+  .projects-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -622,12 +630,7 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
     font-size: 30px;
   }
 
-  .data {
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  .data-values-header { text-align: center;}
+  .content-panel { margin: 0.75em; }
 
   .cipher-grid {
     display: grid;
@@ -642,17 +645,19 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
     max-width: 50ch;
   }
 
-
-  .projects-flex {
-    flex: 1;
+  .projects-grid {
+    grid-template-columns: auto;
   }
+
+  .data {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .data-values-header { text-align: center;}
+
 }
 
 @media only screen and (max-width:355px){
   .data {font-size: 10px;}
-
-
-  .projects-flex {
-    flex: 1;
-  }
 }
