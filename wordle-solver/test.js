@@ -1,3 +1,4 @@
+/*
 var chart = new Chart('freqChart', {
     type: "bar",
     data: {
@@ -18,3 +19,28 @@ var chart = new Chart('freqChart', {
         }
     }
 });
+*/
+
+function score(word1, word2){
+    let match = [0, 0, 0, 0, 0];
+    for (let a = 0; a < 5; a++){
+        for (let b = 0; b < 5; b++){
+            if (word1[a] == word2[b]){
+                match[a] += 1;
+                if (a == b){
+                    match[a] += 1;
+                }
+            }
+        }
+    }
+    return match;
+}
+
+for (let i = 0; i < allWordsLen; i++){
+    let firstWord = allWords[i];
+    for (let j = 0; j < trainWordsLen; j++){
+        let trainWord = trainWords[j];
+        let match = score(firstWord, trainWord);
+        
+    }
+}
