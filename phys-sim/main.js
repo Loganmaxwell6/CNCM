@@ -3,6 +3,7 @@ var dt = 0;
 var render = [];
 var MAX_X = 1500;
 var MAX_Y = 700;
+var MAX_SPEED = 150;
 var leftClick = false;
 var rightClick = false;
 var selected = -1;
@@ -21,14 +22,6 @@ function setup(){
   var canvas = createCanvas(MAX_X, MAX_Y);
   canvas.parent("mainCanvas");
   frameRate(fr);
-  /*
-  for(let i = 10; i < MAX_X - 10; i+=10){
-    if(MAX_Y - i >= 10){
-      render.push(new Obj(i, MAX_Y - i, 20));
-      render[render.length-1].setDamping(0.98);
-    }   
-  }
-  */
 }
 
 function draw(){
@@ -61,7 +54,6 @@ function mousePressed(){
     rightClick = true;
     render.push(new Obj(mouseX, mouseY, 30));
     render[render.length-1].setDamping(0.9);
-    render[render.length-1].setFriction(0.01);
   }
 }
 
@@ -93,7 +85,6 @@ function generateGuy(){
   render[render.length-1].setAY(random(2)-1);
   render[render.length-1].setMass(random(10));
   render[render.length-1].setDamping(random(10)/10);
-  render[render.length-1].setFriction(random(10)/1000);
 }
 
 function shuffleGuy(){
@@ -104,6 +95,5 @@ function shuffleGuy(){
     render[i].setAY(random(4)-2);
     render[i].setMass(random(10));
     render[i].setDamping(random(10)/10);
-    render[i].setFriction(random(10)/1000);
   }
 }
