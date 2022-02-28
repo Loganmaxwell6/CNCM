@@ -6,10 +6,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 
-        <!-- Get main program and object files -->
-        <script src="object.js"></script>
-        <script src="main.js"></script>
-
         <!-- Get stylesheet + set other metadata -->
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta charset="utf-8">
@@ -22,8 +18,25 @@
         <!-- Empty divs as container panels for content -->
         <div id="main">
             <div id="canvasContainer"></div>
+            <input id="speedControl" class="slider" type="range" min="0" max="300" value="100">
         </div>
-        <div id="graph"></div>
+        <div id="graph">
+            <canvas id="objectGraph"></canvas>
+        </div>
         <div id="settings"></div>
     </body>
+    <!-- Run main program and object files -->
+    <script src="object.js"></script>
+    <script src="main.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $(speedControl).on('input', function(){
+                getDtSlider(this.value);
+            })
+        });
+        $(document).on('contextmenu', function(){
+            return false;
+        })
+    </script>
 </html>

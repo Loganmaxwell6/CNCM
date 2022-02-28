@@ -1,0 +1,32 @@
+html, body {
+    height: 100%;
+    display: flex;
+}
+
+#main {
+    margin: 0;
+    position: relative;
+    display: flex;
+    justify-content: left;
+}
+#main > canvas,
+#main > input {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#main > input {
+    right: 10px;
+    top: 10px;
+    width: 30%;
+    margin-left: 3.5%;
+}
+
+#graph {
+    width: 750px;
+    height: 550px;
+    margin: 10px;
+    position: relative;
+    display: flex;
+    justify-content: right;
+}
