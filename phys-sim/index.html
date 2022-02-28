@@ -1,34 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Get jquery, p5.js and chart.js from CDN  -->
         <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+        <!-- Get main program and object files -->
+        <script src="object.js"></script>
+        <script src="main.js"></script>
+
+        <!-- Get stylesheet + set other metadata -->
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Interactive 2D physics simulator project">
         <meta name="author" content="Logan Maxwell">
-        <title>CNCM · Physics Simulator</title>
+        <title>Physics Simulator · Logan Maxwell</title>
     </head>
     <body>
-        <script src="object.js"></script>
-        <script src="main.js"></script>
-
-        <div id="mainCanvas"></div>
-        <div id="graphPanel"></div>
-        <div id="objectPanel"></div>
-
-        <div id="settingsPanel">
-            <div class="slidercontainer">
-                <input type="range" min="0" max="200" value="0" class="slider" id="dtSlider">
-            </div>
+        <!-- Empty divs as container panels for content -->
+        <div id="main">
+            <div id="canvasContainer"></div>
         </div>
-        <script>
-            $(document).ready(function(){
-                $(dtSlider).on('input', function(){
-                    getDtSlider(this.value);
-                })
-            });
-        </script>
+        <div id="graph"></div>
+        <div id="settings"></div>
     </body>
 </html>

@@ -1,99 +1,32 @@
-var fr = 60;
-var dt = 0;
-var render = [];
-var MAX_X = 1500;
+var render = []; //list of all objects on the canvas
+var dt = 0; //timestep - initially 0 to stop simulation by default
+var MAX_X = 1500; //bounds of canvas
 var MAX_Y = 700;
-var MAX_SPEED = 150;
-var leftClick = false;
-var rightClick = false;
-var selected = -1;
-var buffer0;
-var buffer1;
 
-document.oncontextmenu = function() {
-  return false;
-}
-
-function getDtSlider(val){
-  dt = val / 100;
-}
-
-function setup(){
+function setup(){ //run once to initialise program
   var canvas = createCanvas(MAX_X, MAX_Y);
-  canvas.parent("mainCanvas");
-  frameRate(fr);
+  canvas.parent("canvasContainer");
+  frameRate(60);
+  for (let i = 0; MAX_Y - i >= 10; i += 20){
+    render.push(new Particle((i + 10), (MAX_Y - 10 - i), 20));
+  }
 }
 
-function draw(){
+function draw(){ //run on every frame 
   background(200);
-  if(leftClick){
-    if(selected < 0){
-      for(let i = 0; i < render.length; i++){
-        let pos = render[i].getPosVector();
-        let r = render[i].getSize() / 2;
-        if ((((mouseX - pos[0]) ** 2) + ((mouseY - pos[1]) ** 2)) <= (r ** 2)){
-          selected = i;
-          render[i].clear();
-        }
-      }
-    }
-    else{
-      render[selected].clicked(mouseX, mouseY);
-      buffer1 = buffer0;
-      buffer0 = render[selected].getPosVector();
-    }
+  text(dt.toString(), 10, 30);
+  for (let i = 0; i < render.length; i++){ //iterate through all objects
+    render[i].move(dt); //update each object
   }
-  for (let i = 0; i < render.length; i++){
-    render[i].move(dt);
-  }
-}
-
-function mousePressed(){
-  if(mouseButton == LEFT){leftClick = true;}
-  if(mouseButton == RIGHT){
-    rightClick = true;
-    render.push(new Obj(mouseX, mouseY, 30));
-    render[render.length-1].setDamping(0.9);
-  }
-}
-
-function mouseReleased(){
-  if(mouseButton == LEFT){
-    leftClick = false;
-    if (selected >= 0){
-      render[selected].deselect(buffer0, buffer1, dt);
-      selected = -1;
-    }
-  }
-  if(mouseButton == RIGHT){rightClick = false;}
 }
 
 function keyPressed(){
-  if(key == " "){
-    generateGuy();
+  if(keyCode === RIGHT_ARROW){
+    dt += 0.1;
+    dt = Math.round(dt * 10) / 10; //fix javascript floating point decimal stuff
   }
-  if(key == "s"){
-    shuffleGuy();
-  }
-}
-
-function generateGuy(){
-  render.push(new Obj(MAX_X/2,MAX_Y/2,10));
-  render[render.length-1].setVX(random(6)-3);
-  render[render.length-1].setVY(random(6)-3);
-  render[render.length-1].setAX(random(2)-1);
-  render[render.length-1].setAY(random(2)-1);
-  render[render.length-1].setMass(random(10));
-  render[render.length-1].setDamping(random(10)/10);
-}
-
-function shuffleGuy(){
-  for(let i = 0; i < render.length;i++){
-    render[i].setVX(random(4)-2);
-    render[i].setVY(random(4)-2);
-    render[i].setAX(random(4)-2);
-    render[i].setAY(random(4)-2);
-    render[i].setMass(random(10));
-    render[i].setDamping(random(10)/10);
+  if(keyCode === LEFT_ARROW){
+    dt -= 0.1;
+    dt = Math.round(dt * 10) / 10; //fix javascript floating point decimal stuff
   }
 }
