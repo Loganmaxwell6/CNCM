@@ -1,9 +1,11 @@
 var render = []; //list of all objects on the canvas
 var dt = 0; //timestep - initially 0 to stop simulation by default
-var sdt = 0;
-var MAX_X = 1100; //bounds of canvas
-var MAX_Y = 550;
-var MAX_SPEED = 150;
+var graphDt = 0;
+var selectedObjectGraph;
+var graphThreshold = 0.05;
+var MAX_X; //bounds of canvas
+var MAX_Y;
+var MAX_SPEED = 1500000000000000000000;
 var MIN_SPEED = dt * 0.1; 
 var leftClick = false;
 var rightClick = false;
@@ -24,14 +26,45 @@ var data = {
 var objectGraph = new Chart($('#objectGraph'), {
     type: 'line',
     data: data,
+    options: {
+      animation: false,
+      elements: {
+        point: {
+          radius: 0,
+        }
+      }
+    },
 });
 
-function addDataPointToGraph(val){
+function setGraphObject(i){
+  selectedObjectGraph = i;
+  r = i.getColour().levels[0];
+  g = i.getColour().levels[1];
+  b = i.getColour().levels[2];
+  colour = 'rgb('+r.toString()+','+g.toString()+','+b.toString()+')';
+  data = {
+    labels: [0],
+    datasets: [{
+      label: "Particle",
+      data : [],
+      fill: false,
+      borderColor: colour,
+      fillColor: colour,
+    }]
+  };
+  objectGraph.data = data;
+  objectGraph.update();
+}
+
+function addDataPointToGraph(val, valPrevious, i){
   let labels = objectGraph.data.labels;
-  objectGraph.data.labels.push(labels[labels.length - 1] + dt);
+  let last = labels[labels.length - 1];
+  objectGraph.data.labels.push(Math.round((last + graphDt - dt) * 100) / 100);
+  objectGraph.data.datasets[0].data.push(valPrevious);
+  objectGraph.data.labels.push(Math.round((last + graphDt) * 100) / 100);
   objectGraph.data.datasets[0].data.push(val);
   objectGraph.update();
-};
+}
 
 function resetGraph(){
   objectGraph.data = data;
@@ -43,15 +76,23 @@ function getDtSlider(val){
 }
 
 function setup(){ //run once to initialise program
-  var canvas = createCanvas(MAX_X, MAX_Y);
+  var canvas = createCanvas(windowWidth * 0.6, windowHeight * 0.6);
   canvas.parent("canvasContainer");
   frameRate(60);
+  MAX_X = windowWidth * 0.6;
+  MAX_Y = windowHeight * 0.6;
   /*
   for (let i = 0; MAX_Y - i >= 10; i += 20){
     render.push(new Particle((i + 10), (MAX_Y - 10 - i), 20));
   }
   */
 };
+
+function windowResized(){
+  resizeCanvas(windowWidth * 0.6, windowHeight * 0.6);
+  MAX_X = windowWidth * 0.6;
+  MAX_Y = windowHeight * 0.6;
+}
 
 function draw(){ //run on every frame 
   background(200);
@@ -74,7 +115,15 @@ function draw(){ //run on every frame
     }
   }
   for (let i = 0; i < render.length; i++){ //iterate through all objects
+    let previous = selectedObjectGraph.vx;
     render[i].move(dt); //update each object
+    if (Math.abs(selectedObjectGraph.vx - previous) > graphThreshold){
+      addDataPointToGraph(selectedObjectGraph.vx, previous);
+      graphDt = 0;
+    }
+    else{
+      graphDt += dt;
+    }
   }
   //console.log(render[0]);
 };
@@ -84,6 +133,7 @@ function mousePressed(){
   if(mouseButton == RIGHT){
     rightClick = true;
     render.push(new Particle(mouseX, mouseY, 30));
+    setGraphObject(render[render.length - 1]);
   }
 }
 
