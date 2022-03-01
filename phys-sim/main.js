@@ -5,7 +5,7 @@ var selectedObjectGraph;
 var graphThreshold = 0.05;
 var MAX_X; //bounds of canvas
 var MAX_Y;
-var MAX_SPEED = 1500000000000000000000;
+var MAX_SPEED;
 var MIN_SPEED = dt * 0.1; 
 var leftClick = false;
 var rightClick = false;
@@ -81,6 +81,7 @@ function setup(){ //run once to initialise program
   frameRate(60);
   MAX_X = windowWidth * 0.6;
   MAX_Y = windowHeight * 0.6;
+  MAX_SPEED = Math.min(MAX_Y, MAX_X) - 50
   /*
   for (let i = 0; MAX_Y - i >= 10; i += 20){
     render.push(new Particle((i + 10), (MAX_Y - 10 - i), 20));
@@ -92,6 +93,7 @@ function windowResized(){
   resizeCanvas(windowWidth * 0.6, windowHeight * 0.6);
   MAX_X = windowWidth * 0.6;
   MAX_Y = windowHeight * 0.6;
+  MAX_SPEED = Math.min(MAX_Y, MAX_X) - 50
 }
 
 function draw(){ //run on every frame 
