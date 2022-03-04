@@ -21,7 +21,10 @@
             <input id="speedControl" class="slider" type="range" min="0" max="300" value="100">
         </div>
         <div id="graph">
-            <canvas id="objectGraph"></canvas>
+            <div id="graphContainer">
+                <canvas id="objectGraph"></canvas>
+            </div>
+            <button onclick="resetGraph()">Reset Graph</button>
         </div>
         <div id="settings"></div>
     </body>

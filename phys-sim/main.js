@@ -12,6 +12,7 @@ var rightClick = false;
 var selected = -1;
 var buffer0;
 var buffer1;
+var fCount = 0;
 
 var data = {
   labels: [0],
@@ -23,6 +24,8 @@ var data = {
   }]
 };
 
+
+// change to scatter + https://stackoverflow.com/questions/46232699/display-line-chart-with-connected-dots-using-chartjs
 var objectGraph = new Chart($('#objectGraph'), {
     type: 'line',
     data: data,
@@ -56,12 +59,22 @@ function setGraphObject(i){
   objectGraph.update();
 }
 
-function addDataPointToGraph(val, valPrevious, i){
+function addDataPointToGraph(val, valPrevious){
   let labels = objectGraph.data.labels;
   let last = labels[labels.length - 1];
-  objectGraph.data.labels.push(Math.round((last + graphDt - dt) * 100) / 100);
+  let newTime = last + graphDt;
+  objectGraph.data.labels.push(Math.round((newTime - dt) * 100) / 100);
   objectGraph.data.datasets[0].data.push(valPrevious);
-  objectGraph.data.labels.push(Math.round((last + graphDt) * 100) / 100);
+  objectGraph.data.labels.push(Math.round(newTime * 100) / 100);
+  objectGraph.data.datasets[0].data.push(val);
+  objectGraph.update();
+}
+
+function addDataPointToGraph(val){
+  let labels = objectGraph.data.labels;
+  let last = labels[labels.length - 1];
+  let newTime = last + graphDt;
+  objectGraph.data.labels.push(Math.round((newTime + dt) * 100) / 100);
   objectGraph.data.datasets[0].data.push(val);
   objectGraph.update();
 }
@@ -76,11 +89,11 @@ function getDtSlider(val){
 }
 
 function setup(){ //run once to initialise program
-  var canvas = createCanvas(windowWidth * 0.6, windowHeight * 0.6);
+  var canvas = createCanvas(windowWidth * 0.55, windowHeight * 0.55);
   canvas.parent("canvasContainer");
   frameRate(60);
-  MAX_X = windowWidth * 0.6;
-  MAX_Y = windowHeight * 0.6;
+  MAX_X = windowWidth * 0.55;
+  MAX_Y = windowHeight * 0.55;
   MAX_SPEED = Math.min(MAX_Y, MAX_X) - 50
   /*
   for (let i = 0; MAX_Y - i >= 10; i += 20){
@@ -90,9 +103,9 @@ function setup(){ //run once to initialise program
 };
 
 function windowResized(){
-  resizeCanvas(windowWidth * 0.6, windowHeight * 0.6);
-  MAX_X = windowWidth * 0.6;
-  MAX_Y = windowHeight * 0.6;
+  resizeCanvas(windowWidth * 0.55, windowHeight * 0.55);
+  MAX_X = windowWidth * 0.55;
+  MAX_Y = windowHeight * 0.55;
   MAX_SPEED = Math.min(MAX_Y, MAX_X) - 50
 }
 
@@ -117,17 +130,29 @@ function draw(){ //run on every frame
     }
   }
   for (let i = 0; i < render.length; i++){ //iterate through all objects
-    let previous = selectedObjectGraph.vx;
-    render[i].move(dt); //update each object
-    if (Math.abs(selectedObjectGraph.vx - previous) > graphThreshold){
-      addDataPointToGraph(selectedObjectGraph.vx, previous);
-      graphDt = 0;
+    if (render[i] == selectedObjectGraph){
+      let previous = selectedObjectGraph.vx;
+      render[i].move(dt); //update each object
+      if (Math.abs(selectedObjectGraph.vx - previous) > graphThreshold){
+        addDataPointToGraph(selectedObjectGraph.vx, previous);
+        graphDt = 0;
+      }
+      else{
+        graphDt += dt;
+      }
     }
     else{
-      graphDt += dt;
+      render[i].move(dt);
     }
   }
-  //console.log(render[0]);
+  if (dt != 0 && selected == -1){
+    if (fCount >= (dt * Math.abs(selectedObjectGraph.vx))){
+      addDataPointToGraph(selectedObjectGraph.vx);
+      fCount = 0;
+      graphDt = 0;
+    }
+    fCount++;
+  }
 };
 
 function mousePressed(){

@@ -13,6 +13,7 @@ body {
 }
 
 #main {
+    height: 40%;
     margin: 0;
     position: relative;
     display: flex;
@@ -31,10 +32,24 @@ body {
     margin-left: 3.5%;
 }
 
-#graph {
-    height: 40%;
-    margin: 10px;
+#objectGraph {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#graphContainer {
     position: relative;
     display: flex;
-    justify-content: right;
+    justify-content: left;
+    width: 43vw;
+}
+
+#graph {
+    height: 55vh;
+    width: 40vw;
+    margin-left: 10px;
+}
+
+#graph button {
+    position: relative;
 }
