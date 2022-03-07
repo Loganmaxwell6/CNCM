@@ -7,6 +7,8 @@ var MAX_X; //bounds of canvas
 var MAX_Y;
 var MAX_SPEED;
 var MIN_SPEED = dt * 0.1; 
+var G = 1000;
+var GRAV = true;
 var leftClick = false;
 var rightClick = false;
 var selected = -1;
@@ -18,7 +20,7 @@ var data = {
   labels: [0],
   datasets: [{
     label: "",
-    data: [],
+    data: [0],
     fill: false,
     borderColor: 'rgb(0,0,0)',
   }]
@@ -49,7 +51,7 @@ function setGraphObject(i){
     labels: [0],
     datasets: [{
       label: "Particle",
-      data : [],
+      data : [i.vx],
       fill: false,
       borderColor: colour,
       fillColor: colour,
@@ -80,6 +82,7 @@ function addDataPointToGraph(val){
 }
 
 function resetGraph(){
+  setGraphObject(selectedObjectGraph);
   objectGraph.data = data;
   objectGraph.update();
 };
@@ -129,38 +132,47 @@ function draw(){ //run on every frame
       buffer0 = render[selected].getPosVector();
     }
   }
-  for (let i = 0; i < render.length; i++){ //iterate through all objects
-    if (render[i] == selectedObjectGraph){
-      let previous = selectedObjectGraph.vx;
-      render[i].move(dt); //update each object
-      if (Math.abs(selectedObjectGraph.vx - previous) > graphThreshold){
-        addDataPointToGraph(selectedObjectGraph.vx, previous);
-        graphDt = 0;
+  if(GRAV){
+    attractiveForces(render, dt);
+  }
+  else{
+    for (let i = 0; i < render.length; i++){ //iterate through all objects
+      if (render[i] == selectedObjectGraph){
+        let previous = selectedObjectGraph.vx;
+        render[i].move(dt); //update each object
+        if (Math.abs(selectedObjectGraph.vx - previous) > graphThreshold){
+          addDataPointToGraph(selectedObjectGraph.vx, previous);
+          graphDt = 0;
+        }
+        else{
+          graphDt += dt;
+        }
       }
       else{
-        graphDt += dt;
+        render[i].move(dt);
       }
     }
-    else{
-      render[i].move(dt);
-    }
   }
+  /*
   if (dt != 0 && selected == -1){
-    if (fCount >= (dt * Math.abs(selectedObjectGraph.vx))){
+    if (fCount >= (30)){
       addDataPointToGraph(selectedObjectGraph.vx);
       fCount = 0;
       graphDt = 0;
     }
     fCount++;
   }
+  */
 };
 
 function mousePressed(){
   if(mouseButton == LEFT){leftClick = true;}
   if(mouseButton == RIGHT){
     rightClick = true;
-    render.push(new Particle(mouseX, mouseY, 30));
-    setGraphObject(render[render.length - 1]);
+    if (mouseX < MAX_X && mouseY < MAX_Y){
+      render.push(new Particle(mouseX, mouseY, 30));
+      //setGraphObject(render[render.length - 1]);
+    };
   }
 }
 
@@ -168,7 +180,7 @@ function mouseReleased(){
   if(mouseButton == LEFT){
     leftClick = false;
     if (selected >= 0){
-      render[selected].deselect(buffer0, buffer1, dt);
+      render[selected].deselect(buffer0, buffer1);
       selected = -1;
     }
   }
