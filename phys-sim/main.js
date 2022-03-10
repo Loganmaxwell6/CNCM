@@ -1,7 +1,7 @@
 var render = []; //list of all objects on the canvas
 var dt = 0; //timestep - initially 0 to stop simulation by default
 var graphDt = 0;
-var selectedObjectGraph;
+var selectedObjectGraph = -1;
 var graphThreshold = 0.05;
 var MAX_X; //bounds of canvas
 var MAX_Y;
@@ -107,6 +107,10 @@ function setup(){ //run once to initialise program
 
 function windowResized(){
   resizeCanvas(windowWidth * 0.55, windowHeight * 0.55);
+  for(let i = 0; i < render.length; i++){
+    render[i].x = 0.55 * windowWidth * (render[i].x / MAX_X);
+    render[i].y = 0.55 * windowHeight * (render[i].y / MAX_Y);
+  }
   MAX_X = windowWidth * 0.55;
   MAX_Y = windowHeight * 0.55;
   MAX_SPEED = Math.min(MAX_Y, MAX_X) - 50
@@ -116,7 +120,6 @@ function draw(){ //run on every frame
   background(200);
   fill(0);
   stroke(0);
-  ellipse(100,100,30,30);
   text(dt.toString(), 10, 25);
   if(leftClick){
     if(selected < 0){
@@ -125,6 +128,7 @@ function draw(){ //run on every frame
         let r = render[i].getSize() / 2;
         if ((((mouseX - pos[0]) ** 2) + ((mouseY - pos[1]) ** 2)) <= (r ** 2)){
           selected = i;
+          render[i].selected = true;
           render[i].clear();
         }
       }
@@ -135,13 +139,25 @@ function draw(){ //run on every frame
       buffer0 = render[selected].getPosVector();
     }
   }
-  if(GRAV){
-    /*
+  if(GRAV && dt != 0 && render.length != 0){
+    attractiveForces();
+    let collisions = [];
+    for (let [i, o1] of render.entries()) {
+        for (let [j, o2] of render.entries()) {
+            if (i < j) {
+                let {collisionInfo, collided} = checkCollision(o1, o2);
+                if (collided) {
+                    collisions.push(collisionInfo);
+                }
+            }
+        }
+    }
+    for(let col of collisions){
+      resolveCollisionWithBounce(col);
+    }
     for(let i = 0; i < render.length; i++){
       render[i].move(dt);
     }
-    */
-    attractiveForces(render, dt);
   }
   else{
     for (let i = 0; i < render.length; i++){ //iterate through all objects
@@ -161,8 +177,7 @@ function draw(){ //run on every frame
       }
     }
   }
-  /*
-  if (dt != 0 && selected == -1){
+  if (dt != 0 && selected != selectedObjectGraph && selectedObjectGraph != -1){
     if (fCount >= (30)){
       addDataPointToGraph(selectedObjectGraph.vx);
       fCount = 0;
@@ -170,7 +185,6 @@ function draw(){ //run on every frame
     }
     fCount++;
   }
-  */
 };
 
 function mousePressed(){
@@ -179,7 +193,7 @@ function mousePressed(){
     rightClick = true;
     if (mouseX < MAX_X && mouseY < MAX_Y){
       render.push(new Particle(mouseX, mouseY, 30));
-      //setGraphObject(render[render.length - 1]);
+      setGraphObject(render[render.length - 1]);
     };
   }
 }
@@ -195,7 +209,7 @@ function mouseReleased(){
   if(mouseButton == RIGHT){rightClick = false;}
 }
 
-function attractiveForces(dt, render){
+function attractiveForces(){
   for(let i = 0; i < render.length; i++){
       render[i].setFX(0);
       render[i].setFY(0);
@@ -222,8 +236,10 @@ function attractiveForces(dt, render){
       }
   }
   for(let i = 0; i < render.length; i++){
+    if(i != selected){
       render[i].setAX(render[i].getFX() / render[i].getMass());
       render[i].setAY(render[i].getFY() / render[i].getMass());
-      render[i].move(dt);
+      if(render[i].gravity){render[i].setAY(render[i].getAY() + 1);}
+    }
   }
 }

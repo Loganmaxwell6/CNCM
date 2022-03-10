@@ -11,30 +11,34 @@ class Particle{
         this.mass = 1;
         this.size = size;
         this.colour = color(random(255), random(255), random(255));
-        this.damping = 0.97;
+        this.damping = 1;
         this.gravity = false;
+        this.fixed = false;
+        this.selected = false;
     }
 
     move(dt){
-        //update velocity
-        this.vx += this.ax * dt;
-        this.vy += this.ay * dt;
-        //validate velocity
-        if (this.vx > MAX_SPEED || this.vx < -MAX_SPEED){
-            this.vx = Math.sign(this.vx) * MAX_SPEED;
+        if(!this.fixed){
+            //update velocity
+            this.vx += this.ax * dt;
+            this.vy += this.ay * dt;
+            //validate velocity
+            if (this.vx > MAX_SPEED || this.vx < -MAX_SPEED){
+                this.vx = Math.sign(this.vx) * MAX_SPEED;
+            }
+            if (this.vy > MAX_SPEED || this.vy < -MAX_SPEED){
+                this.vy = Math.sign(this.vy) * MAX_SPEED;
+            }
+            if (this.vx < MIN_SPEED && this.vx > -MIN_SPEED){
+                this.vx = 0;
+            }
+            if (this.vy < MIN_SPEED && this.vy > -MIN_SPEED){
+                this.vy = 0;
+            }
+            //update position based off velocity
+            this.x += this.vx * dt;
+            this.y += this.vy * dt;
         }
-        if (this.vy > MAX_SPEED || this.vy < -MAX_SPEED){
-            this.vy = Math.sign(this.vy) * MAX_SPEED;
-        }
-        if (this.vx < MIN_SPEED && this.vx > -MIN_SPEED){
-            this.vx = 0;
-        }
-        if (this.vy < MIN_SPEED && this.vy > -MIN_SPEED){
-            this.vy = 0;
-        }
-        //update position based off velocity
-        this.x += this.vx * dt;
-        this.y += this.vy * dt;
         //validate new position 
         this.checkWallCollisions();
         //display at new position
@@ -84,11 +88,32 @@ class Particle{
     }
 
     deselect(buffer0, buffer1){
+        this.selected = false;
         this.vx = buffer0[0] - buffer1[0];
         this.vy = buffer0[1] - buffer1[1];
-        if(this.gravity){this.ay = 1;}
+        if(this.gravity){
+            this.ay = 1;
+        }
     }
 
+    toggleGrav(){
+        if(this.gravity){
+            this.ay -= 1;
+        }
+        else{
+            this.ay += 1;
+        }
+        this.gravity = !this.gravity;
+    }
+
+    toggleFixed(){
+        this.fixed = !this.fixed;
+    }
+
+    setDamping(damping){
+        this.damping = damping;
+    }
+        
     getColour(){
         return this.colour;
     }
@@ -120,6 +145,14 @@ class Particle{
     setVY(vy){
         this.vy = vy;
     }
+    
+    getAX(){
+        return this.ax;
+    }
+
+    getAY(){
+        return this.ay;
+    }
 
     setAX(ax){
         this.ax = ax;
@@ -145,8 +178,7 @@ class Particle{
         this.fy = fy;
     }
 
-}
-
-function interactionForces(){
-
+    setMass(mass){
+        this.mass = mass;
+    }
 }
