@@ -114,6 +114,9 @@ function windowResized(){
 
 function draw(){ //run on every frame 
   background(200);
+  fill(0);
+  stroke(0);
+  ellipse(100,100,30,30);
   text(dt.toString(), 10, 25);
   if(leftClick){
     if(selected < 0){
@@ -133,6 +136,11 @@ function draw(){ //run on every frame
     }
   }
   if(GRAV){
+    /*
+    for(let i = 0; i < render.length; i++){
+      render[i].move(dt);
+    }
+    */
     attractiveForces(render, dt);
   }
   else{
@@ -185,4 +193,37 @@ function mouseReleased(){
     }
   }
   if(mouseButton == RIGHT){rightClick = false;}
+}
+
+function attractiveForces(dt, render){
+  for(let i = 0; i < render.length; i++){
+      render[i].setFX(0);
+      render[i].setFY(0);
+  }
+  for(let i = 0; i < render.length; i++){
+      for(let j = 0; j < render.length; j++){
+          if(i < j){
+              let posi = render[i].getPosVector();
+              let posj = render[j].getPosVector();
+              let distX = posj[0] - posi[0];
+              let distY = posj[1] - posi[1];
+              let dist = Math.sqrt(distX ** 2 + distY ** 2);
+              if(dist <= 0){
+                  dist = 0.1;
+              }
+              let force = G * (render[i].getMass() * render[j].getMass()) / (dist ** 2); //f = GmM/r^2
+              let fx = force * distX / dist;
+              let fy = force * distY / dist;
+              render[i].setFX(render[i].getFX() + fx);
+              render[i].setFY(render[i].getFY() + fy);
+              render[j].setFX(render[j].getFX() - fx);
+              render[j].setFY(render[j].getFY() - fy);
+          }
+      }
+  }
+  for(let i = 0; i < render.length; i++){
+      render[i].setAX(render[i].getFX() / render[i].getMass());
+      render[i].setAY(render[i].getFY() / render[i].getMass());
+      render[i].move(dt);
+  }
 }

@@ -5,7 +5,7 @@ class Particle{
         this.vx = 0;
         this.vy = 0;
         this.ax = 0;
-        this.ay = 1;
+        this.ay = 0;
         this.fx = 0;
         this.fy = 0;
         this.mass = 1;
@@ -145,40 +145,6 @@ class Particle{
         this.fy = fy;
     }
 
-}
-
-function attractiveForces(dt, render){
-    for(let i = 0; i < render.length; i++){
-        render[i].setFX(0);
-        render[i].setFY(0);
-    }
-    for(let i = 0; i < render.length; i++){
-        for(let j = 0; j < render.length; j++){
-            if(i < j){
-                let posi = render[i].getPosVector();
-                let posj = render[j].getPosVector();
-                let distX = posj[0] - posi[0];
-                let distY = posj[1] - posi[1];
-                let dist = Math.sqrt(distX ** 2 + distY ** 2);
-                if(dist <= 0){
-                    dist = 0.1;
-                }
-                let force = G * (render[i].getMass() * render[j].getMass()) / (dist ** 2); //f = GmM/r^2
-                let fx = force * distX / dist;
-                let fy = force * distY / dist;
-                render[i].setFX(render[i].getFX() + fx);
-                render[i].setFY(render[i].getFY() + fy);
-                render[j].setFX(render[j].getFX() - fx);
-                render[j].setFY(render[j].getFY() - fy);
-            }
-        }
-    }
-    for(let i = 0; i < render.length; i++){
-        let object = render[i];
-        object.setAX(object.getFX() / object.getMass());
-        object.setAY(object.getFY() / object.getMass());
-        object.move(dt);
-    }
 }
 
 function interactionForces(){
