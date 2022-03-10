@@ -29,10 +29,20 @@ function resolveCollision(info) {  // "info" is a Collision object from above
     let nx = info.dx /info.d;  // Compute eigen vectors
     let ny = info.dy /info.d;
     let s = info.o1.size/2 + info.o2.size/2 - info.d;
-    info.o1.x -= nx * s/2;  // Move first object by half of collision size
-    info.o1.y -= ny * s/2;
-    info.o2.x += nx * s/2;  // Move other object by half of collision size in opposite direction
-    info.o2.y += ny * s/2;
+    if(info.o1.seleted){
+        info.o2.x += nx * s/2;
+        info.o2.y += ny * s/2;
+    }
+    else if(info.o2.selected){
+        info.o1.x -= nx * s/2;
+        info.o1.y -= ny * s/2;
+    }
+    else{
+        info.o1.x -= nx * s/2;
+        info.o1.y -= ny * s/2;
+        info.o2.x += nx * s/2;
+        info.o2.y += ny * s/2;
+    }
 }
 
 function resolveCollisionWithBounce(info) {
@@ -54,7 +64,6 @@ function resolveCollisionWithBounce(info) {
         info.o2.y += ny * s/2;
     }
     
-
     let k = -2 * ((info.o2.vx - info.o1.vx) * nx + (info.o2.vy - info.o1.vy) * ny) / (1/info.o1.mass + 1/info.o2.mass);
     info.o1.vx -= k * nx / info.o1.mass;  // Same as before, just added "k" and switched to "m" instead of "s/2"
     info.o1.vy -= k * ny / info.o1.mass;
