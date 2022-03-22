@@ -74,17 +74,7 @@ function setStyle(style){
             root.style.setProperty('--highlightdark', 'rgba(117,34,109,1)');
             bgsToNormal();
             break;
-
-        case 'lightMode':
-            document.body.classList.remove(...document.body.classList);
-            document.body.classList.add("light-mode");
-            root.style.setProperty('--bg', 'rgba(240,240,240,1)');
-            root.style.setProperty('--bgdark', 'rgba(200,200,200,1)');
-            root.style.setProperty('--bglight', 'rgba(255,255,255,1)');
-            root.style.setProperty('--highlight', 'rgba(86,80,163,1)');
-            root.style.setProperty('--highlightdark', 'rgba(67,62,126,1)');
-            break;
-
+            
         case 'benStyle':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("ben-style");
