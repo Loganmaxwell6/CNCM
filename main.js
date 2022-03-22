@@ -2,7 +2,7 @@
 window.onload = () =>{
     let x  = document.cookie;
     if (x == ''){
-        document.cookie = "style=biStyle;path=/";
+        document.cookie = "style=defaultStyle;path=/";
     }
     setStyle(document.cookie.substring(6));
 }
@@ -50,6 +50,7 @@ function setStyle(style){
             root.style.setProperty("--highlightdark", 'rgba(0,87,150,1)');
             bgsToNormal();
             break;
+
         case "transStyle":
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("trans-flag");
@@ -57,6 +58,7 @@ function setStyle(style){
             root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
             bgsToNormal();
             break;
+
         case 'darkMode':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("dark-mode");
@@ -64,6 +66,15 @@ function setStyle(style){
             root.style.setProperty('--highlightdark', '#555555');
             bgsToNormal();
             break;
+
+        case 'defaultStyle':
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("default-style");
+            root.style.setProperty('--highlight', 'rgba(155,46,144,1)');
+            root.style.setProperty('--highlightdark', 'rgba(117,34,109,1)');
+            bgsToNormal();
+            break;
+
         case 'lightMode':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("light-mode");
@@ -73,6 +84,7 @@ function setStyle(style){
             root.style.setProperty('--highlight', 'rgba(86,80,163,1)');
             root.style.setProperty('--highlightdark', 'rgba(67,62,126,1)');
             break;
+
         case 'benStyle':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("ben-style");
@@ -80,6 +92,7 @@ function setStyle(style){
             root.style.setProperty('--highlightdark', 'rgba(117,34,109,1)');
             bgsToNormal();
             break;
+
         case 'bingusStyle':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("bingus-style");
