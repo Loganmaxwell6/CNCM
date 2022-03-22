@@ -1,28 +1,55 @@
-.slidercontainer{
+html {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+body {
+    height: 100%;
     width: 100%;
+    display: flex;
 }
 
-.slider{
-    -webkit-appearance: none;
-    appearance: none;
+#main {
+    height: 40%;
+    margin: 0;
+    position: relative;
+    display: flex;
+    justify-content: left;
+}
+#main > canvas,
+#main > input {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#main > input {
+    right: 10px;
+    top: 10px;
+    width: 30%;
+    margin-left: 3.5%;
+}
+
+#objectGraph {
     width: 100%;
-    height: 25px;
-    background: #d3d3d3;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
+    margin-bottom: 10px;
 }
 
-.slider:hover{
-    opacity: 1;
+#graphContainer {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    width: 43vw;
 }
 
-.slider::-webkit-slider-thumb{
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    background: #04aa6d;
-    cursor: pointer;
+#graph {
+    height: 55vh;
+    width: 40vw;
+    margin-left: 10px;
+}
+
+#graph button {
+    position: relative;
 }
