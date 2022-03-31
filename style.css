@@ -598,6 +598,43 @@ landing page stuff
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.1);
 }
 
+.body-divider {
+  height: 3rem;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.breaking-news-bar {
+  height: 3em;
+  box-sizing: border-box;
+  background-color: var(--bg);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .20);
+}
+
+.breaking-news {
+  display: inline-block;
+  position: relative;
+  height: 3em;
+  width: 25em;
+  background-color: var(--bgdark);
+  border-radius: 0.5em;
+  color: white;
+  font-weight: bold;
+}
+
+.breaking-text{
+  margin: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 50%;
+  transform: translate(0, -50%)
+}
+
 /*
 media queries. Currently only based on width. Changes cipher grid formatting, text size, and background gradient angle
 */
