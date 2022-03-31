@@ -115,6 +115,13 @@ a {
   background-color: rgba(0, 0, 0, 0.35);
 }
 
+
+.hundo {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
 header {
   padding: 0.75em;
 }
