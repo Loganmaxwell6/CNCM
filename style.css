@@ -157,6 +157,12 @@ Styles stuff
   background: linear-gradient(96deg, rgba(85,205,252,1) 26%, rgba(247,168,184,1) 26%, rgba(247,168,184,1) 42%, rgba(255,255,255,1) 42%, rgba(255,255,255,1) 58%, rgba(247,168,184,1) 58%, rgba(247,168,184,1) 74%, rgba(85,205,252,1) 74%);
 }
 
+.lesbian-flag {
+  color: white;
+  background: rgb(213,40,0);
+  background: linear-gradient(96deg, rgba(213,40,0,1) 20%, rgba(253,153,84,1) 20% 40%, rgba(255,255,255,1) 40% 60%, rgba(212,97,166,1) 60% 80%, rgba(165,0,98,1) 80%);
+}
+
 .ben-style {
   color: white;
   background: rgb(16,4,40);

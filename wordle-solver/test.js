@@ -44,3 +44,32 @@ for (let i = 0; i < allWordsLen; i++){
         
     }
 }
+function add(a, b){
+    let carry = 0;
+    let str = "";
+    for (let i = 0; i < Math.max(Math.floor(Math.log10(a)) + 1, Math.floor(Math.log10(b)) + 1); i++){
+        str = (((a % (10**(i+1))) + (b % (10**(i+1))) + carry) % (10**(i+1))).toString()[0] + str;
+        carry = Math.floor(((a % (10 ** (i+1))) + (b % (10 ** (i+1))) + carry) / (10 ** (i+1)));
+    }
+    if (carry > 0){
+        str = carry.toString() + str;
+    }
+    return parseInt(str);
+}
+memo = [0, 1, 1]
+function fib(n){
+    if (memo[n] === undefined) memo[n] = add(fib(n-1), fib(n-2))
+    return memo[n];
+}
+// start = performance.now()
+// for (let i = 0; i < 10; i++){
+//     fib(i);//console.log(i + ": " + fib(i))
+// }
+// console.log("Array: " + (performance.now() - start) / 1000);
+
+// memo = {[0]: 0, [1]: 1, [2]: 1};
+// start = performance.now()
+// for (let i = 0; i < 10; i++){
+//     fib(i);//console.log(i + ": " + fib(i))
+// }
+// console.log("Dictionary: " + (performance.now() - start) / 1000);

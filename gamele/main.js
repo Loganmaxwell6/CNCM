@@ -24,7 +24,7 @@ const randList = genRand()
 
 const games = ['Absurdle', 'Antiwordle', 'Crosswordle', 'Dordle', 'Foodle', 'Globle', 'Heardle', 'Kilordle', 'Letterle', 'Lewdle', 'Nerdle', 'Octordle', 'Primle', 'Quordle', 'Scholardle', 'Semantle', 'Squirdle', 'Sweardle', 'Taylordle', 'Tradle', 'Wordle', 'Worldle']
 
-const wordToday = 
+const wordToday = []
 
 function genRand(){
     let randMax = 2147483647
@@ -38,3 +38,4 @@ function genRand(){
     let generator = pseudoRandom(randSeed);
     return Array(randSize).fill(0).map(()=>Math.floor(generator() * games.length / randMax));
 }
+

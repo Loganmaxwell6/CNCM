@@ -59,6 +59,13 @@ function setStyle(style){
             bgsToNormal();
             break;
 
+        case "lesbianStyle":
+            console.log("he")
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("lesbian-flag");
+            bgsToNormal();
+            break;
+
         case 'darkMode':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("dark-mode");
