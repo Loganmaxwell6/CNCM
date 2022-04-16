@@ -60,9 +60,14 @@ function setStyle(style){
             break;
 
         case "lesbianStyle":
-            console.log("he")
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("lesbian-flag");
+            bgsToNormal();
+            break;
+
+        case "transbianStyle":
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("transbian-flag");
             bgsToNormal();
             break;
 
