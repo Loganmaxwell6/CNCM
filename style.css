@@ -165,13 +165,13 @@ Styles stuff
 }
 
 .lesbian-flag {
-  color: white;
+  color: #ddd;
   background: rgb(213,40,0);
   background: linear-gradient(96deg, rgba(213,40,0,1) 20%, rgba(253,153,84,1) 20% 40%, rgba(255,255,255,1) 40% 60%, rgba(212,97,166,1) 60% 80%, rgba(165,0,98,1) 80%);
 }
 
 .transbian-flag {
-  color: white;
+  color: #ddd;
   background: rgb(85,205,252);
   background: linear-gradient(96deg, rgba(85,205,252,1) 20%, rgba(247,168,184,1) 20% 40%, rgba(255,255,255,1) 40% 60%, rgba(253,153,84,1) 60% 80%, rgba(165,0,98,1) 80%);
 }

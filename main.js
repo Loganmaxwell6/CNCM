@@ -62,12 +62,16 @@ function setStyle(style){
         case "lesbianStyle":
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("lesbian-flag");
+            root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
+            root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
             bgsToNormal();
             break;
 
         case "transbianStyle":
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("transbian-flag");
+            root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
+            root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
             bgsToNormal();
             break;
 
