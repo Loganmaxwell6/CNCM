@@ -43,6 +43,7 @@
       </li><li class="dropdown-item ben-style"><a id="benStyle">Ben Style</a>
       </li><li class="dropdown-item bingus-a-style"><a id="bingusStyle">Bingus Style</a>
       </li><li class="dropdown-item">Sound<input type="checkbox" id="sound"></li>
+    </li><li class="dropdown-item">Moving Background<input type="checkbox" id="move"></li>
     </ul>
   </div>
 
@@ -166,6 +167,7 @@
         });
       });
       $('#styleDropdownToggle').on('click', function () { openStyleDropdown(); });
+      $('#move').on('click', function () { toggleMovingBackground(); });
       $(window).on('click', function (event) {
         if (!event.target.matches('#styleDropdownToggle')) {
           closeStyleDropdown();

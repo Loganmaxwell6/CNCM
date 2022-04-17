@@ -1,3 +1,5 @@
+scrollTime = 15;
+
 //cookie for smelly friend
 window.onload = () =>{
     let x  = document.cookie;
@@ -19,6 +21,15 @@ function openStyleDropdown(){
     }
     else{
         d.classList.add("show");
+    }
+}
+
+function toggleMovingBackground(){
+    console.log(document.getElementById('move').value)
+    if (document.getElementById('move').checked){
+        document.body.style.animation = "marquee 20s infinite linear"
+    }else{
+        document.body.style.animation = "marquee 0s infinite linear"
     }
 }
 
