@@ -156,7 +156,10 @@ function draw(){ //run on every frame
       resolveCollisionWithBounce(col);
     }
     for(let i = 0; i < render.length; i++){
+      
+      if(d > MAX_D)// if move dt/2 != move dt / 2
       render[i].move(dt);
+      render[i].display(render[i].getPosVector()[0], render[i].getPosVector()[1], render[i].getSize())
     }
   }
   else{

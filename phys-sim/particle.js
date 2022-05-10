@@ -41,8 +41,6 @@ class Particle{
         }
         //validate new position 
         this.checkWallCollisions();
-        //display at new position
-        this.display(this.x, this.y, this.size);
     }
 
     checkWallCollisions(){
@@ -136,6 +134,10 @@ class Particle{
 
     getVY(){
         return this.vy;
+    }
+
+    getV(){
+        return Math.sqrt((this.vx ** 2) + (this.vy ** 2));
     }
 
     setVX(vx){
