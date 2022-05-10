@@ -44,7 +44,6 @@ lettersNotInWord = [];
 
 rowNum = 1;
 
-
 //stuff here for interacting with wordle board
 window.onload = () => {
     console.log("hd")

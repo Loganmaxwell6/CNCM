@@ -115,6 +115,13 @@ a {
   background-color: rgba(0, 0, 0, 0.35);
 }
 
+
+.hundo {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
 header {
   padding: 0.75em;
 }
@@ -126,6 +133,11 @@ header {
 /*
 Styles stuff
 */
+.default-style {
+  color: white;
+  background: rgb(60,25,60);
+  background: linear-gradient(96deg, rgba(60,25,60,1) 0%, rgba(79,26,79,1) 35%, rgba(59,22,59,1) 70%, rgba(0,0,0,1) 100%);
+}
 
 .bi-flag {
   color: white;
@@ -151,6 +163,18 @@ Styles stuff
   background: linear-gradient(96deg, rgba(85,205,252,1) 26%, rgba(247,168,184,1) 26%, rgba(247,168,184,1) 42%, rgba(255,255,255,1) 42%, rgba(255,255,255,1) 58%, rgba(247,168,184,1) 58%, rgba(247,168,184,1) 74%, rgba(85,205,252,1) 74%);
 }
 
+.lesbian-flag {
+  color: white;
+  background: rgb(213,40,0);
+  background: linear-gradient(96deg, rgba(213,40,0,1) 20%, rgba(253,153,84,1) 20% 40%, rgba(255,255,255,1) 40% 60%, rgba(212,97,166,1) 60% 80%, rgba(165,0,98,1) 80%);
+}
+
+.transbian-flag {
+  color: white;
+  background: rgb(85,205,252);
+  background: linear-gradient(96deg, rgba(85,205,252,1) 20%, rgba(247,168,184,1) 20% 40%, rgba(255,255,255,1) 40% 60%, rgba(253,153,84,1) 60% 80%, rgba(165,0,98,1) 80%);
+}
+
 .ben-style {
   color: white;
   background: rgb(16,4,40);
@@ -162,12 +186,6 @@ Styles stuff
   background-color: #333;
 }
 
-.light-mode {
-  color: black;
-  background-color: rgba(240,240,240,1);
-
-}
-
 .bingus-style {
   color: white;
   background-image: url('bingus.png');
@@ -176,6 +194,17 @@ Styles stuff
 .bingus-a-style {
   background-image: url('bingus.png');
   background-size: 100% 100%;
+}
+
+/* background marquee */
+@keyframes marquee {
+  0% {
+    background-position: 0;
+  }
+
+  100% {
+    background-position: -1190px;
+  }
 }
 
 /* 
@@ -230,22 +259,23 @@ button{
 
 /*wordle-btn*/
 .wordle-btn-container {
-  width: max-content;
-  height: max-content;
+  position: relative;
+  width:fit-content;
+  height: 2.75em;
   margin: auto;
   background: white;
   border-radius: 0.5em;
-  border: 0.125em solid rgba(255, 255, 255, 0.7);
 }
 
 .wordle-btn {
   color:black;
   width: inherit;
   height: inherit;
-  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+  position: absolute;
   background: linear-gradient(84deg, var(--highlight) 0%, rgba(0,0,0,0.7) 100%);
-  background-clip: border-box; /* This line is here so vscode doesn't get annoyed with me. This doesn't work on firefox etc*/
+  background-clip: border-box; /* This line is here so vscode doesn't get annoyed with me. This doesn't work on some browsers i think */
   -webkit-background-clip: text;
   color: var(--transparent);
   font-weight: bold;
@@ -595,6 +625,43 @@ landing page stuff
 .a-fill:hover {
   transform: translate(-0.25em, -0.25em);
   box-shadow: 0.1em 0.1em 0.1em rgba(0,0,0,0.1);
+}
+
+.body-divider {
+  height: 3rem;
+  background-color: rgba(0, 0, 0, .1);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.breaking-news-bar {
+  height: 3em;
+  box-sizing: border-box;
+  background-color: var(--bg);
+  border: solid rgba(0, 0, 0, .15);
+  border-width: 1px 0;
+  box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .20);
+}
+
+.breaking-news {
+  display: inline-block;
+  position: relative;
+  height: 3em;
+  width: 25em;
+  background-color: var(--bgdark);
+  border-radius: 0.5em;
+  color: white;
+  font-weight: bold;
+}
+
+.breaking-text{
+  margin: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 50%;
+  transform: translate(0, -50%)
 }
 
 /*

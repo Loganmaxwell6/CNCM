@@ -1,8 +1,10 @@
+scrollTime = 15;
+
 //cookie for smelly friend
 window.onload = () =>{
     let x  = document.cookie;
     if (x == ''){
-        document.cookie = "style=biStyle;path=/";
+        document.cookie = "style=defaultStyle;path=/";
     }
     setStyle(document.cookie.substring(6));
 }
@@ -19,6 +21,15 @@ function openStyleDropdown(){
     }
     else{
         d.classList.add("show");
+    }
+}
+
+function toggleMovingBackground(){
+    console.log(document.getElementById('move').value)
+    if (document.getElementById('move').checked){
+        document.body.style.animation = "marquee 20s infinite linear"
+    }else{
+        document.body.style.animation = "marquee 0s infinite linear"
     }
 }
 
@@ -50,6 +61,7 @@ function setStyle(style){
             root.style.setProperty("--highlightdark", 'rgba(0,87,150,1)');
             bgsToNormal();
             break;
+
         case "transStyle":
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("trans-flag");
@@ -57,6 +69,23 @@ function setStyle(style){
             root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
             bgsToNormal();
             break;
+
+        case "lesbianStyle":
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("lesbian-flag");
+            root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
+            root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
+            bgsToNormal();
+            break;
+
+        case "transbianStyle":
+            document.body.classList.remove(...document.body.classList);
+            document.body.classList.add("transbian-flag");
+            root.style.setProperty('--highlight', 'rgba(247,168,184,1)');
+            root.style.setProperty("--highlightdark", 'rgba(196,133,146,1)');
+            bgsToNormal();
+            break;
+
         case 'darkMode':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("dark-mode");
@@ -64,15 +93,15 @@ function setStyle(style){
             root.style.setProperty('--highlightdark', '#555555');
             bgsToNormal();
             break;
-        case 'lightMode':
+
+        case 'defaultStyle':
             document.body.classList.remove(...document.body.classList);
-            document.body.classList.add("light-mode");
-            root.style.setProperty('--bg', 'rgba(240,240,240,1)');
-            root.style.setProperty('--bgdark', 'rgba(200,200,200,1)');
-            root.style.setProperty('--bglight', 'rgba(255,255,255,1)');
-            root.style.setProperty('--highlight', 'rgba(86,80,163,1)');
-            root.style.setProperty('--highlightdark', 'rgba(67,62,126,1)');
+            document.body.classList.add("default-style");
+            root.style.setProperty('--highlight', 'rgba(155,46,144,1)');
+            root.style.setProperty('--highlightdark', 'rgba(117,34,109,1)');
+            bgsToNormal();
             break;
+            
         case 'benStyle':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("ben-style");
@@ -80,6 +109,7 @@ function setStyle(style){
             root.style.setProperty('--highlightdark', 'rgba(117,34,109,1)');
             bgsToNormal();
             break;
+
         case 'bingusStyle':
             document.body.classList.remove(...document.body.classList);
             document.body.classList.add("bingus-style");
