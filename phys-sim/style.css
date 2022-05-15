@@ -7,49 +7,128 @@ html {
 }
 
 body {
+    display: grid;
     height: 100%;
     width: 100%;
-    display: flex;
+    column-gap: 15px;
+    row-gap: 15px;
 }
 
 #main {
+    position: relative;
+    justify-content: left;
     height: 40%;
     margin: 0;
-    position: relative;
-    display: flex;
-    justify-content: left;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
 }
+
 #main > canvas,
-#main > input {
+#main > #dtSlider {
     position: absolute;
     left: 0;
     top: 0;
 }
-#main > input {
+
+#main > #dtSlider {
     right: 10px;
     top: 10px;
-    width: 30%;
-    margin-left: 3.5%;
+    width: 25%;
+    margin-left: 1%;
 }
 
-#objectGraph {
-    width: 100%;
-    margin-bottom: 10px;
+#main > #top1{
+    position: absolute;
+    left: 306px;
+    top: 8px;
 }
 
-#graphContainer {
-    position: relative;
-    display: flex;
-    justify-content: left;
-    width: 43vw;
+#main > #top2{
+    position: absolute;
+    left: 338px;
+    top: 8px;
+}
+
+#main > #bot1{
+    position: absolute;
+    right: 8px;
+    bottom: -250px;
+}
+
+#main > #bot2{
+    position: absolute;
+    right: 38px;
+    bottom: -250px;
+    z-index: 2;
+}
+
+#main > #bot3{
+    position: absolute;
+    right: 90px;
+    bottom: -250px;
+    display: none;
+}
+
+#main > label{
+    position: absolute;
+    right: 90px;
+    bottom: -250px;
+    border: 1px solid #666;
+    border-radius: 2px;
+    padding: 2px;
+    background: #EEE;
+    display: inline-block;
 }
 
 #graph {
-    height: 55vh;
-    width: 40vw;
-    margin-left: 10px;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 2;
 }
 
-#graph button {
-    position: relative;
+#graphContainer {
+    width: 43vw;
+    height: 47vh;
+}
+
+#graphSettings {
+    display: flex;
+    flex-direction: row;
+}
+
+#graphSettings > select,
+#graphSettings > button {
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#settings {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    margin-top: -110px;
+    margin-bottom: -100px;
+}
+
+#panelContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.objectPanelObject{
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.objectPanelObject > input{
+    margin-bottom: 5px;
+    width: 30px;
 }
