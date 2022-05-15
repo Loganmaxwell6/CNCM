@@ -212,6 +212,7 @@
           closeStyleDropdown();
         }
       });
+      $('#move').on('click', function () { toggleMovingBackground(); });
 
       $('#textIn').on('input', function () { updateText(); });
       $('#swapText').on('click', function () { swapText(); });

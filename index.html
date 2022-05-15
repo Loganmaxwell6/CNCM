@@ -167,12 +167,12 @@
         });
       });
       $('#styleDropdownToggle').on('click', function () { openStyleDropdown(); });
-      $('#move').on('click', function () { toggleMovingBackground(); });
       $(window).on('click', function (event) {
         if (!event.target.matches('#styleDropdownToggle')) {
           closeStyleDropdown();
         }
       });
+      $('#move').on('click', function () { toggleMovingBackground(); });
     });
   </script>
 </body>
