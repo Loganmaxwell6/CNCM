@@ -246,6 +246,12 @@ function changeKeyInput(){
         case "determine":
             encryptInputBox.placeholder = "No key needed...";
             break;
+        case "frens":
+            if (textIn.value == "jamey"){
+                alert("The truth is i love all of you but sadly the fog is coming so goodbye")
+            }else{
+                alert("Type the name of your favourite lovable classmates's epic nickname in lower case an reclick the button for swag secret")
+            }
         default:
             alert("Something gone big wrong :(");
     }
