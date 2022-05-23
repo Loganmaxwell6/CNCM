@@ -252,6 +252,7 @@ function changeKeyInput(){
             }else{
                 alert("Type the name of your favourite lovable classmates's epic nickname in lower case an reclick the button for swag secret")
             }
+            return;
         default:
             alert("Something gone big wrong :(");
     }
