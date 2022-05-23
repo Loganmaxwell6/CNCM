@@ -1,0 +1,206 @@
+class Particle{
+    constructor(Float x, Float y, Int radius){
+        this.x = x
+        ...
+        this.vx = 0
+        ...
+        this.fixed = false
+        ...
+    }
+    move(dt){
+        if not fixed then
+            update acceleration
+            update speed
+            update position
+        endif
+        validatePosition()
+    }
+    validatePosition(){
+        if this.interaction then
+            checkObjectCollision()
+        endif
+        checkWallCollisions()
+    }
+    draw(){
+        fill(colour)
+        ellipse(x, y, r, r)
+    }
+    getX(){
+        return this.x
+    }
+    setX(Float x){
+        this.x = x
+    ...
+    isFixed(){
+        return this.fixed
+    }
+    setFixed(Boolean val){
+        this.fixed = val
+    }  
+}
+
+    checkWallCollision(){
+        if outisde bounds then
+            reset position to within bounds
+            reverse velocity in direction of clip
+        endif
+    }
+    checkObjectCollision(){
+        for object in objectList
+            if not this object then
+                if object collides with this then
+                    resolveObjectCollision(object)
+                endif
+            endif
+        endfor
+    }
+
+class Particle{
+    constructor(Float x, Float y, Int radius){
+        this.x = x
+        this.y = y
+        this.vx = 0
+        this.vy = 0
+        this.ax = 0
+        this.ay = 0
+        this.mass = 1
+        this.r = radius
+        this.colour = randomColour()
+        this.fixed = false
+        this.attraction = false
+        this.interaction = false
+        this.gravity = false
+        this.index = objectList.indexOf(this)
+    }
+
+    move(Float dt){
+        if not this.fixed then
+            this.vx += this.ax * dt
+            this.vy += this.ay * dt
+            this.x += this.vx * dt
+            this.y += this.y * dt
+        endif
+
+        this.validatePosition()
+    }
+
+    validatePosition(){
+        if this.interaction then
+            this.checkObjectCollisions()
+        endif
+        this.checkWallCollisions()
+    }
+
+    checkWallCollisions(){
+        if this.x + this.r >= MAX_X then
+            this.x = MAX_X - this.r
+            this.vx = -this.vx * this.damping
+        endif
+        if this.x - this.r <= 0 then
+            this.x = this.r
+            this.vx = -this.vx * this.damping
+        endif
+        if this.y + this.r >= MAX_Y then
+            this.y = MAX_Y - this.r
+            this.vy = -this.vy * this.damping
+        endif
+        if this.y - this.r <= 0 then
+            this.y = this.r
+            this.vy = -this.vy * this.damping
+        endif
+    }
+
+    checkObjectCollisions(){
+        Int index = objectList.indexOf(this)
+        for i = 0 to objectList.length inclusive
+            if not i == index then
+                let o = objectList[i]
+                Float dx = this.x - o.getX()
+                Float dy = this.y - o.getY()
+                let d = sqrt((dx^2) + (dy^2))
+                if d < (this.r + o.getR()) then
+                    this.resolveObjectCollision(i, dx, dy, d)
+                endif
+            endif
+    }
+
+    resolveObjectCollision(index, dx, dy, d){
+        let nx = dx / d
+        let ny = dy / d
+        let overlap = this.r + objectList[index].getR() - d
+        if this.fixed then
+            objectlist[index].setX(objectList[index].getX() + nx * overlap * 0.5)
+            objectlist[index].setY(objectList[index].getY() + ny * overlap * 0.5)                     
+        else if objectList[index].isFixed() then
+            this.x -= nx * overlap * 0.5
+            this.y -= nx * overlap * 0.5
+        else 
+            objectlist[index].setX(objectList[index].getX() + nx * overlap * 0.5)
+            objectlist[index].setY(objectList[index].getY() + ny * overlap * 0.5)                     
+            this.x -= nx * overlap * 0.5
+            this.y -= nx * overlap * 0.5
+        endif
+
+        let dvx = objectList[index].getVX() - this.vx
+        let dvy = objectList[index].getVY() - this.vy
+        let dm = 1/this.mass + 1/objectList[index].getMass()
+        let k = -2 * (dvx * nx + dvy * ny) / dm
+        this.vx -= k * nx / this.mass
+        this.vy -= k * ny / this.mass
+        objectList[index].setVX(objectList[index].getVX() + (k * nx / objectList[index].getMass()))
+        objectList[index].setVY(objectList[index].getVY() + (k * ny / objectList[index].getMass()))
+    }
+
+    draw(){
+        fill(this.colour)
+        stroke(this.colour)
+        ellipse(this.x, this.y, this.r, this.r)
+    }
+
+    getX(){
+        return this.x
+    }
+
+    setX(Float x){
+        this.x = x
+    ...
+    isFixed(){
+        return this.fixed
+    }
+
+    setFixed(Boolean val){
+        this.fixed = val
+    }
+}
+
+if leftclick and no selected object then
+    for i = 0 to objectList.length inclusive
+        calculate distance of cursor from circle centre
+        if it is less than radius then
+            select object i
+        endif
+    endfor
+else if leftclick and selected object then
+    move selected object to mouse position
+    buffer1 = buffer0
+    buffer0 = x position of object
+endif
+
+on mousePressed
+    if left click then leftclick = true
+    if right click then
+        rightclick = true
+        if mouseposition within canvas then
+            add object to objectList
+        endif
+    endif
+
+on mousereleased 
+    if left click then
+        leftclick = false
+        if an object was selected then
+            run deselect method with both buffer frames
+            deselect object
+        endif
+    if right click then rightclick = false
+    endif

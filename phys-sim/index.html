@@ -10,39 +10,81 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Interactive 2D physics simulator project">
+        <meta name="description" content="Interactive 2D particle simulator project">
         <meta name="author" content="Logan Maxwell">
-        <title>Physics Simulator · Logan Maxwell</title>
+        <title>Particle Simulator · Logan Maxwell</title>
+        
     </head>
     <body>
         <!-- Empty divs as container panels for content -->
         <div id="main">
-            <div id="canvasContainer" oncontextmenu="return false;"></div>
-            <input id="speedControl" class="slider" type="range" min="0" max="300" value="100">
+            <div id="canvasContainer"></div>
+            <input id="dtSlider" type="range" min="0" max="200" value="100">
+            <button onClick="pause()" id="top1">&#x23F8;</button>
+            <button onClick="play()" id="top2">&#x23F5;</button>
+            <button onClick="reset()" id="bot1">&#x21BA;</button>
+            <button onClick="save()" id="bot2">Save</button>
+            <!-- https://stackoverflow.com/questions/21842274/cross-browser-custom-styling-for-file-upload-button/21842275#21842275 -->
+            <input type="file" id="bot3" title=" "></input>
+            <label for="bot3">Select file</label> 
         </div>
+
         <div id="graph">
             <div id="graphContainer">
                 <canvas id="objectGraph"></canvas>
             </div>
-            <button onclick="resetGraph()">Reset Graph</button>
+            <form id="graphSettings">
+                <select id="objectSelect">
+                    <option value="" disabled selected>Select object</option>
+                </select>
+                <select id="propertySelect">
+                    <option value="" disabled selected>Select property</option>
+                    <option val="X">x</option>
+                    <option val="Y">y</option>
+                    <option val="VX">vx</option>
+                    <option val="VY">vy</option>
+                    <option val="AX">ax</option>
+                    <option val="AY">ay</option>
+                    <option val="FX">fx</option>
+                    <option val="FY">fy</option>
+                </select>
+                <button id="resetGraph">Reset Graph</button>
+            </form>
         </div>
-        <div id="settings"></div>
+
+        <div id="settings">
+            <div id="panelContainer">
+                <p><i>Right click on the canvas to add an object...</i></p>
+            </div>
+        </div>
+
     </body>
-    <!-- Run main program and object files -->
-    <script src="object.js"></script>
-    <script src="collision.js"></script>
-    <script src="main.js"></script>
 
     <script>
         $(document).ready(function(){
-            $(speedControl).on('input', function(){
+            $("#dtSlider").on('input', function(){
                 getDtSlider(this.value);
-            })
+            });
+            $("#bot3").change(function(){
+                load(this.files[0]);
+            });
+            $("#objectSelect").change(function(){
+                setSelectedObject(this.value);
+            });
+            $("#propertySelect").change(function(){
+                setSelectedProperty(this.value);
+            });
+            $("#resetGraph").on('click', function(){
+                resetGraph();
+            });
+            $("#main").on('contextmenu', function(){
+                return false;
+            });
         });
-        /*
-        $(document).on('contextmenu', function(){
-            return false;
-        })
-        */
     </script>
+
+    <!-- Load main program and other files -->
+    <script src="particle.js"></script>
+    <script src="main.js"></script>
+
 </html>
