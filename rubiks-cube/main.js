@@ -1,5 +1,6 @@
 var scaleVal = 1
 var MAX_X, MAX_Y;
+var MIN_SIZE = 500;
 var entity;
 var initialX = 0;
 var initalY = 0;
@@ -8,6 +9,12 @@ var created = false;
 function setup(){
     MAX_X = window.outerWidth * 0.75;
     MAX_Y = window.outerHeight * 0.75;
+    if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
+        scaleVal = Math.min(MAX_X/MIN_SIZE, MAX_Y/MIN_SIZE)
+    }else{
+        scaleVal = 1;
+    }
+
     var canvas = createCanvas(MAX_X, MAX_Y);
     canvas.parent("canvasContainer");
   

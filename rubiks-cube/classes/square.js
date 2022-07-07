@@ -14,7 +14,6 @@ class Square{
     }
 
     draw(){
-
         fill(this.colour);
         quad(this.points[0].x2d, this.points[0].y2d,
             this.points[1].x2d, this.points[1].y2d,
