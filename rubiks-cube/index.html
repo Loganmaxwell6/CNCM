@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="../style.css" rel="stylesheet">
+    </head>
+    <body class="">
+        <div class="dropdown style-dropdown">
+            <button class="style-btn" id="styleDropdownToggle">Select Style</button>
+            <ul class="style-dropdown-menu dropdown-menu" id="styleDropdownMenu">
+            <li class="dropdown-item bi-flag"><a id="biStyle">Bi flag</a>
+            </li><li class="dropdown-item pride-flag"><a id="prideStyle">Pride flag</a>
+            </li><li class="dropdown-item pan-flag"><a id="panStyle">Pan flag</a>
+            </li><li class="dropdown-item trans-flag"><a id="transStyle">Trans flag</a>
+            </li><li class="dropdown-item lesbian-flag"><a id="lesbianStyle">Lesbian flag</a>
+            </li><li class="dropdown-item transbian-flag"><a id="transbianStyle">Transbian flag</a>
+            </li><li class="text-divider">
+            </li><li class="dropdown-item default-style"><a id="defaultStyle">Default Style</a>
+            </li><li class="dropdown-item dark-mode"><a id="darkMode">Dark Mode</a>
+            </li><li class="dropdown-item ben-style"><a id="benStyle">Ben Style</a>
+            </li><li class="dropdown-item bingus-a-style"><a id="bingusStyle">Bingus Style</a>
+            </li><li class="dropdown-item">Sound<input type="checkbox" id="sound"></li>
+            </li><li class="dropdown-item">Moving Background<input type="checkbox" id="move"></li>
+            </ul>
+        </div>
+        <header>
+            <a href="../"><h1>Crooked Nazgul Code Men RUBIK'S CUBE</h1></a>
+            <div class="header-subtitle">ROTATE THAT CUBE</div>
+        </header>
+        <div class="dropdown cube-dropdown">
+            <button class="style-btn" id="cubeDropdownToggle">Options</button>
+            <ul class="cube-dropdown-menu dropdown-menu" id="cubeDropdownMenu">
+            <li class="dropdown-item reset"><a id="reset">Reset Cube</a>
+        </div>
+        <div id="canvasContainer"></div>
+        <script src="classes/point.js"></script>
+        <script src="classes/square.js"></script>
+        <script src="classes/cube.js"></script>
+        <script src="classes/entity.js"></script>
+        <script src="main.js"></script>
+        <script src="../main.js"></script>
+        <script>
+            $(document).ready(function () {
+            $('.style-dropdown').each(function (key, style_dropdown) {
+                var $style_dropdown = $(style_dropdown);
+                $style_dropdown.find('.style-dropdown-menu a').on('click', function () {
+                setStyle(($(this).attr('id')));
+                });
+            });
+            $('#styleDropdownToggle').on('click', function () { openStyleDropdown(); });
+            $(window).on('click', function (event) {
+                if (!event.target.matches('#styleDropdownToggle')) {
+                closeStyleDropdown();
+                }
+            });
+            $('.cube-dropdown').each(function (key, cube_dropdown) {
+                var $cube_dropdown = $(cube_dropdown);
+                $cube_dropdown.find('.cube-dropdown-menu a').on('click', function () {
+                updateOptions(($(this).attr('id')));
+                });
+            });
+            $('#cubeDropdownToggle').on('click', function () { openCubeDropdown(); });
+            $(window).on('click', function (event) {
+                if (!event.target.matches('#cubeDropdownToggle')) {
+                closeCubeDropdown();
+                }
+            });
+            $('#move').on('click', function () { toggleMovingBackground(); });
+            });
+        </script>
+    </body>
+</html>

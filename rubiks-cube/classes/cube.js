@@ -1,0 +1,48 @@
+class Cube{
+    constructor(s, c, centrePoints, faces){
+        this.size = s
+        this.colour = c;
+        this.squares = [];
+        this.createCubeAboutPoint(centrePoints, faces);
+        this.sortSquares();
+    }
+
+    createCubeAboutPoint(cP, faces){
+        let colours = [color(255, 0, 0), color(255, 255, 255), color(0, 0, 255), color(0, 255, 0), color(255, 110, 0), color(255, 255, 0)]
+        let black = color(0, 0, 0);
+        let points = [new Point(cP[0]-this.size/2, cP[1]-this.size/2, cP[2]+this.size/2), 
+        new Point(cP[0]-this.size/2, cP[1]+this.size/2, cP[2]+this.size/2),
+        new Point(cP[0]-this.size/2, cP[1]+this.size/2, cP[2]-this.size/2),
+        new Point(cP[0]-this.size/2, cP[1]-this.size/2, cP[2]-this.size/2), 
+        new Point(cP[0]+this.size/2, cP[1]-this.size/2, cP[2]+this.size/2), 
+        new Point(cP[0]+this.size/2, cP[1]+this.size/2, cP[2]+this.size/2),
+        new Point(cP[0]+this.size/2, cP[1]+this.size/2, cP[2]-this.size/2),
+        new Point(cP[0]+this.size/2, cP[1]-this.size/2, cP[2]-this.size/2)]; 
+
+        this.squares.push(new Square(faces.includes(0) ? colours[4] : black, points[0], points[1], points[2], points[3]),
+        new Square(faces.includes(1) ? colours[1] : black, points[0], points[1], points[5], points[4]),
+        new Square(faces.includes(2) ? colours[2] : black, points[5], points[1], points[2], points[6]),
+        new Square(faces.includes(3) ? colours[3] : black, points[0], points[4], points[7], points[3]),
+        new Square(faces.includes(4) ? colours[5] : black, points[3], points[2], points[6], points[7]),
+        new Square(faces.includes(5) ? colours[0] : black, points[4], points[5], points[6], points[7]))
+    }
+
+    sortSquares(){
+        this.squares.sort(function(a, b){return a.getAverageX() - b.getAverageX()})
+    }
+
+    rotate(cP, CW, xD, yD, zD){
+        this.squares.forEach((square) => square.rotate(cP, CW, xD, yD, zD));
+        this.sortSquares()
+    }
+
+    getAverageX(){
+        let sum = 0;
+        this.squares.forEach((square) => sum+= square.getAverageX());
+        return sum / 6
+    }
+
+    draw(){
+        this.squares.forEach((square) => square.draw())
+    }
+}

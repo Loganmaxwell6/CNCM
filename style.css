@@ -664,6 +664,14 @@ landing page stuff
   transform: translate(0, -50%)
 }
 
+/* 
+Rubiks cube shit
+*/
+
+#canvasContainer{
+  text-align: center;
+}
+
 /*
 media queries. Currently only based on width. Changes cipher grid formatting, text size, and background gradient angle
 */
