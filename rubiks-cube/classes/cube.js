@@ -3,8 +3,8 @@ class Cube{
         this.size = s
         this.colour = c;
         this.squares = [];
+        this.faces = faces
         this.createCubeAboutPoint(centrePoints, faces);
-        this.sortSquares();
     }
 
     createCubeAboutPoint(cP, faces){
@@ -27,13 +27,8 @@ class Cube{
         new Square(faces.includes(5) ? colours[0] : black, copyI(points[4]), copyI(points[5]), copyI(points[6]), copyI(points[7])))
     }
 
-    sortSquares(){
-        this.squares.sort(function(a, b){return a.getAverageX() - b.getAverageX()})
-    }
-
     rotate(cP, CW, xD, yD, zD){
         this.squares.forEach((square) => square.rotate(cP, CW, xD, yD, zD));
-        this.sortSquares()
     }
 
     getAverageX(){
@@ -52,9 +47,5 @@ class Cube{
         let sum = 0;
         this.squares.forEach((square) => sum+= square.getAverageZ());
         return sum / 6
-    }
-
-    draw(){
-        this.squares.forEach((square) => square.draw())
     }
 }

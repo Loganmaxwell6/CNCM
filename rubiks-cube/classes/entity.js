@@ -41,7 +41,6 @@ class Entity{
         let xD =  Math.asin(x / 100) * 180/Math.PI;
         let yD = Math.asin(y / 100) * 180/Math.PI;
         let zD = Math.asin(z / 100) * 180/Math.PI;
-        console.log(xD, yD, zD);
         this.exclusiveRotate([0,0,0], false, isNaN(xD) ? 90 : xD, isNaN(yD) ? 90 : yD, isNaN(zD) ? 90: zD, [6,7,8,14,15,16,23,24,25]);
     }
 
@@ -58,8 +57,17 @@ class Entity{
         this.sortCubes();
     }
 
+    sortSquares(squares){
+        return squares.sort(function(a, b){return a.getAverageX() - b.getAverageX()})
+    }
+
     draw(){
-        let temp = this.sortCubes()
-        temp.forEach((cube) => cube.draw())
+        let temp = [];
+        for (let i in this.cubes){
+            for (let j in this.cubes[i].squares){
+                temp.push(this.cubes[i].squares[j])
+            }
+        }
+        this.sortSquares(temp).forEach((square)=>square.draw());
     }
 }

@@ -5,25 +5,16 @@ var entity;
 var initialX = 0;
 var initalY = 0;
 var mouseSens = 2;
-var created = false;
 var justPressed = null;
+
 function setup(){
-    MAX_X = window.outerWidth * 0.75;
-    MAX_Y = window.outerHeight * 0.75;
-    if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
-        scaleVal = Math.min(MAX_X/MIN_SIZE, MAX_Y/MIN_SIZE)
-    }else{
-        scaleVal = 1;
-    }
+    handleWindowResize()
 
     var canvas = createCanvas(MAX_X, MAX_Y);
     canvas.parent("canvasContainer");
   
     frameRate(60);
-    if (!created){
-        created = true;
-        entity = new Entity(100);
-    }
+    entity = new Entity(100);
 }
 
 function draw(){
@@ -57,6 +48,17 @@ function handleMoves(){
 
 function keyPressed(){
     justPressed = keyCode;
+}
+
+window.addEventListener("resize", handleWindowResize);
+function handleWindowResize(){
+    MAX_X = window.outerWidth * 0.75;
+    MAX_Y = window.outerHeight * 0.75;
+    if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
+        scaleVal = Math.min(MAX_X/MIN_SIZE, MAX_Y/MIN_SIZE)
+    }else{
+        scaleVal = 1;
+    }
 }
 
 //stuff for options dropdown
@@ -95,3 +97,13 @@ function copyI(original) {
     );
     return copied;
 }
+
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }
