@@ -9,11 +9,6 @@ var created = false;
 function setup(){
     MAX_X = window.outerWidth * 0.75;
     MAX_Y = window.outerHeight * 0.75;
-    if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
-        scaleVal = Math.min(MAX_X/MIN_SIZE, MAX_Y/MIN_SIZE)
-    }else{
-        scaleVal = 1;
-    }
 
     var canvas = createCanvas(MAX_X, MAX_Y);
     canvas.parent("canvasContainer");
@@ -26,7 +21,14 @@ function setup(){
 }
 
 function draw(){
-    setup()
+    MAX_X = window.outerWidth * 0.75;
+    MAX_Y = window.outerHeight * 0.75;
+    if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
+        scaleVal = Math.min(MAX_X/MIN_SIZE, MAX_Y/MIN_SIZE)
+    }else{
+        scaleVal = 1;
+    }
+
     if (mouseIsPressed){
         let xDif = mouseX - initialX;
         let yDif = mouseY - initialY;
@@ -39,7 +41,8 @@ function draw(){
     initialX = mouseX;
     initialY = mouseY;
 
-    background(0, 0);
+    //background(0, 0);
+    clear();
     entity.draw(scaleVal)
 }
 
