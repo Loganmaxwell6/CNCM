@@ -29,7 +29,7 @@ class Point {
 		this.x3d = radius * Math.sin(theta) + centrePoints[0];
 		this.z3d = radius * Math.cos(theta) + centrePoints[2];
     }
-
+    
     rotateZ(centrePoints, CW, degrees){
         let distX = this.x3d - centrePoints[0];
         let distY = this.y3d - centrePoints[1];

@@ -4,6 +4,7 @@ class Entity{
         this.cubes = [];
         this.createEntity();
         this.sortCubes();
+        this.rotate([0,0,0], true, 13, -13,45)
     }
 
     createEntity(){
@@ -29,15 +30,35 @@ class Entity{
     }
 
     sortCubes(){
-        this.cubes.sort(function(a, b){return a.getAverageX() - b.getAverageX()})
+        let tempCubes = this.cubes.slice()
+        return tempCubes.sort(function(a, b){return a.getAverageX() - b.getAverageX()})
+    }
+
+    rotateR(){
+        let x = this.cubes[15].getAverageX();
+        let y = this.cubes[15].getAverageY();
+        let z = this.cubes[15].getAverageZ();
+        let xD =  Math.asin(x / 100) * 180/Math.PI;
+        let yD = Math.asin(y / 100) * 180/Math.PI;
+        let zD = Math.asin(z / 100) * 180/Math.PI;
+        this.exclusiveRotate([0,0,0], false, isNaN(xD) ? 0 : xD, isNaN(yD) ? 0 : yD, isNaN(zD) ? 0: zD, [6,7,8,14,15,16,23,24,25]);
     }
 
     rotate(cP, CW, xD, yD, zD){
         this.cubes.forEach((cube) => cube.rotate(cP, CW, xD, yD, zD));
-        this.sortCubes()
+        this.sortCubes();
+        this.x += xD;
+        this.y+= yD;
+        this.z += zD;
+    }
+
+    exclusiveRotate(cP, CW, xD, yD, zD, p){
+        this.cubes.forEach((cube, index) => {if(p.includes(index)) {cube.rotate(cP, CW, xD, yD, zD)}});
+        this.sortCubes();
     }
 
     draw(){
-        this.cubes.forEach((cube) => cube.draw())
+        let temp = this.sortCubes()
+        temp.forEach((cube) => cube.draw())
     }
 }

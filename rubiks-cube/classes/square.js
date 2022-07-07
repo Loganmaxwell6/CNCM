@@ -26,4 +26,16 @@ class Square{
         this.points.forEach((point) => sum+=point.x3d);
         return sum / 4;
     }
+
+    getAverageY(){
+        let sum = 0;
+        this.points.forEach((point) => sum+=point.y3d);
+        return sum / 4;
+    }
+
+    getAverageZ(){
+        let sum = 0;
+        this.points.forEach((point) => sum+=point.z3d);
+        return sum / 4;
+    }
 }

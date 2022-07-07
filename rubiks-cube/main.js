@@ -6,6 +6,7 @@ var initialX = 0;
 var initalY = 0;
 var mouseSens = 2;
 var created = false;
+var justPressed = null;
 function setup(){
     MAX_X = window.outerWidth * 0.75;
     MAX_Y = window.outerHeight * 0.75;
@@ -21,6 +22,16 @@ function setup(){
 }
 
 function draw(){
+    handleWindowSize();
+    handleCubeRotation();
+    handleMoves();
+
+    justPressed = null;
+    clear();
+    entity.draw(scaleVal)
+}
+
+function handleWindowSize(){
     MAX_X = window.outerWidth * 0.75;
     MAX_Y = window.outerHeight * 0.75;
     if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
@@ -28,7 +39,9 @@ function draw(){
     }else{
         scaleVal = 1;
     }
+}
 
+function handleCubeRotation(){
     if (mouseIsPressed){
         let xDif = mouseX - initialX;
         let yDif = mouseY - initialY;
@@ -40,10 +53,16 @@ function draw(){
     }
     initialX = mouseX;
     initialY = mouseY;
+}
 
-    //background(0, 0);
-    clear();
-    entity.draw(scaleVal)
+function handleMoves(){
+    if (justPressed == 82){
+        //entity.rotateR();
+    }
+}
+
+function keyPressed(){
+    justPressed = keyCode;
 }
 
 //stuff for options dropdown
@@ -67,4 +86,15 @@ function updateOptions(id){
             entity = new Entity(100);
             break;
     }
+}
+
+//util functions
+function copyI(original) {
+    var copied = Object.assign(
+      Object.create(
+        Object.getPrototypeOf(original)
+      ),
+      original
+    );
+    return copied;
 }
