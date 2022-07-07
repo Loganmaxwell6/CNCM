@@ -1,4 +1,4 @@
-var scaleVal = 1
+var scaleVal = 0.1
 var MAX_X, MAX_Y;
 var MIN_SIZE = 500;
 var entity;
@@ -10,6 +10,11 @@ var justPressed = null;
 function setup(){
     MAX_X = window.outerWidth * 0.75;
     MAX_Y = window.outerHeight * 0.75;
+    if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
+        scaleVal = Math.min(MAX_X/MIN_SIZE, MAX_Y/MIN_SIZE)
+    }else{
+        scaleVal = 1;
+    }
 
     var canvas = createCanvas(MAX_X, MAX_Y);
     canvas.parent("canvasContainer");
@@ -22,23 +27,12 @@ function setup(){
 }
 
 function draw(){
-    handleWindowSize();
     handleCubeRotation();
     handleMoves();
 
     justPressed = null;
     clear();
     entity.draw(scaleVal)
-}
-
-function handleWindowSize(){
-    MAX_X = window.outerWidth * 0.75;
-    MAX_Y = window.outerHeight * 0.75;
-    if (MAX_X < MIN_SIZE || MAX_Y < MIN_SIZE){
-        scaleVal = Math.min(MAX_X/MIN_SIZE, MAX_Y/MIN_SIZE)
-    }else{
-        scaleVal = 1;
-    }
 }
 
 function handleCubeRotation(){
@@ -57,7 +51,7 @@ function handleCubeRotation(){
 
 function handleMoves(){
     if (justPressed == 82){
-        //entity.rotateR();
+        entity.rotateR();
     }
 }
 
@@ -85,6 +79,9 @@ function updateOptions(id){
         case("reset"):
             entity = new Entity(100);
             break;
+        case("zoom"):
+            scaleVal = document.getElementById("zoomSlider").value / 100;
+            console.log(document.getElementById("zoomSlider").value)
     }
 }
 

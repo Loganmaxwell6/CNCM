@@ -4,7 +4,7 @@ class Entity{
         this.cubes = [];
         this.createEntity();
         this.sortCubes();
-        this.rotate([0,0,0], true, 13, -13,45)
+        //this.rotate([0,0,0], true, 13, -13,45)
     }
 
     createEntity(){
@@ -41,7 +41,8 @@ class Entity{
         let xD =  Math.asin(x / 100) * 180/Math.PI;
         let yD = Math.asin(y / 100) * 180/Math.PI;
         let zD = Math.asin(z / 100) * 180/Math.PI;
-        this.exclusiveRotate([0,0,0], false, isNaN(xD) ? 0 : xD, isNaN(yD) ? 0 : yD, isNaN(zD) ? 0: zD, [6,7,8,14,15,16,23,24,25]);
+        console.log(xD, yD, zD);
+        this.exclusiveRotate([0,0,0], false, isNaN(xD) ? 90 : xD, isNaN(yD) ? 90 : yD, isNaN(zD) ? 90: zD, [6,7,8,14,15,16,23,24,25]);
     }
 
     rotate(cP, CW, xD, yD, zD){
