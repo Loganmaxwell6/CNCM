@@ -2,8 +2,10 @@ class Entity{
     constructor(cS){
         this.cubeSize = cS;
         this.cubes = [];
+
+        this.faces = [[8,7,6,5,4,3,2,1,0],[2,11,19,5,13,22,8,16,25],[25,24,23,16,15,14,8,7,6], 
+                [2,1,0,11,10,9,19,18,17], [0,9,17,3,12,20,6,14,23], [19,18,17,22,21,20,25,24,23]];
         this.createEntity();
-        this.sortCubes();
         //this.rotate([0,0,0], true, 13, -13,45)
     }
 
@@ -28,12 +30,7 @@ class Entity{
         if (z == 1)faces.push(1);
         return faces
     }
-
-    sortCubes(){
-        let tempCubes = this.cubes.slice()
-        return tempCubes.sort(function(a, b){return a.getAverageX() - b.getAverageX()})
-    }
-
+    
     rotateR(){
         let x = this.cubes[15].getAverageX();
         let y = this.cubes[15].getAverageY();
@@ -41,12 +38,11 @@ class Entity{
         let xD =  Math.asin(x / 100) * 180/Math.PI;
         let yD = Math.asin(y / 100) * 180/Math.PI;
         let zD = Math.asin(z / 100) * 180/Math.PI;
-        this.exclusiveRotate([0,0,0], false, isNaN(xD) ? 90 : xD, isNaN(yD) ? 90 : yD, isNaN(zD) ? 90: zD, [6,7,8,14,15,16,23,24,25]);
+        this.exclusiveRotate([0,0,0], false, isNaN(xD) ? 90 : xD, isNaN(yD) ? 90 : yD, isNaN(zD) ? 90: zD, this.faces[2]);
     }
 
     rotate(cP, CW, xD, yD, zD){
         this.cubes.forEach((cube) => cube.rotate(cP, CW, xD, yD, zD));
-        this.sortCubes();
         this.x += xD;
         this.y+= yD;
         this.z += zD;
@@ -54,7 +50,6 @@ class Entity{
 
     exclusiveRotate(cP, CW, xD, yD, zD, p){
         this.cubes.forEach((cube, index) => {if(p.includes(index)) {cube.rotate(cP, CW, xD, yD, zD)}});
-        this.sortCubes();
     }
 
     sortSquares(squares){
@@ -62,6 +57,7 @@ class Entity{
     }
 
     draw(){
+        //this.sortCubes()
         let temp = [];
         for (let i in this.cubes){
             for (let j in this.cubes[i].squares){
