@@ -143,7 +143,7 @@ function updateOptions(id){
 
 function moveEdgeFace(faceNum, prime, wide, double){
     for (let i = 0; i < (double? 2: (prime? 3: 1)); i++){
-        moveSide(moveFaces[faceNum], true);
+        moveSide(moveFaces[faceNum], faceNum > 5);
     }
     if (wide && faceNum < 6){
         moveEdgeFace(6 + (faceNum > 2? 5-faceNum:faceNum), prime, false, double)
@@ -164,9 +164,9 @@ function moveSide(s, sliceMove) {
     swapFaces(s[2], s[12], s[7], s[10]);
     swapFaces(s[2], s[12], s[8], s[11]);
     if (!(sliceMove)) {
-        swapFaces(s[10], s[3], s[1], s[3]);
-        swapFaces(s[10], s[3], s[4], s[3]);
-        swapFaces(s[10], s[3], s[5], s[3]);
+        swapFaces(s[0], s[3], s[1], s[3]);
+        swapFaces(s[0], s[3], s[4], s[3]);
+        swapFaces(s[0], s[3], s[5], s[3]);
         
         swapFaces(s[2], s[3], s[6], s[3]);
         swapFaces(s[2], s[3], s[7], s[3]);
