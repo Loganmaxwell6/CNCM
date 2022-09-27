@@ -672,6 +672,11 @@ Rubiks cube shit
   text-align: center;
 }
 
+#moveEdits{
+  visibility:hidden;
+  padding-top: 1em;
+}
+
 /*
 media queries. Currently only based on width. Changes cipher grid formatting, text size, and background gradient angle
 */

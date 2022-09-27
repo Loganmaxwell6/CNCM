@@ -16,6 +16,8 @@ const constMoveFaces = [[6, 8, 7, 0, 2, 0, 5, 1, 3, 1, 3, 4, 2], [19, 2, 11, 1, 
  [9, 11, 10, -1, 16, 14, 13, 15, 12, 1, 2, 4, 3], [18, 1, 10, -1, 7, 24, 4, 15, 21, 0, 2, 5, 3], [20, 22, 21, -1, 5, 3, 13, 4, 12, 1, 0, 4, 5]]
 var moveFaces = constMoveFaces.slice(0);
 
+const moves = ["B", "U", "R", "L", "D", "F", "S", "E", "M"]
+
 function setup(){
     handleWindowResize()
 
@@ -30,6 +32,7 @@ function draw(){
     handleCubeRotation();
     handleMoves();
     handleMoveEdits();
+    handleMoveEditLabels();
 
     justPressed = null;
     clear();
@@ -54,31 +57,31 @@ function handleMoves(){
     handleRotatedCube();
     switch(justPressed){
         case(66)://B
-            moveEdgeFace(0, primeMove, wideMove, doubleMove);
+            moveFace(0, primeMove, wideMove, doubleMove);
             break;
         case(85)://U
-            moveEdgeFace(1, primeMove, wideMove, doubleMove);
+            moveFace(1, primeMove, wideMove, doubleMove);
             break;
         case(82)://R
-            moveEdgeFace(2, primeMove, wideMove, doubleMove);
+            moveFace(2, primeMove, wideMove, doubleMove);
             break;
         case(76)://L
-            moveEdgeFace(3, primeMove, wideMove, doubleMove);
+            moveFace(3, primeMove, wideMove, doubleMove);
             break;
         case(68)://D
-            moveEdgeFace(4, primeMove, wideMove, doubleMove);
+            moveFace(4, primeMove, wideMove, doubleMove);
             break;
         case(70)://F
-            moveEdgeFace(5, primeMove, wideMove, doubleMove);
+            moveFace(5, primeMove, wideMove, doubleMove);
             break;
         case(83)://S
-            moveEdgeFace(6, primeMove, wideMove, doubleMove);
+            moveFace(6, primeMove, wideMove, doubleMove);
             break;
         case(69)://E
-            moveEdgeFace(7, primeMove, wideMove, doubleMove);
+            moveFace(7, primeMove, wideMove, doubleMove);
             break;
         case(77)://M
-            moveEdgeFace(8, primeMove, wideMove, doubleMove);
+            moveFace(8, primeMove, wideMove, doubleMove);
             break;
     }
     if (keyIsDown(RIGHT_ARROW)){
@@ -96,6 +99,12 @@ function handleMoveEdits(){
     if (justPressed == 16){primeMove = !primeMove};
     if (justPressed == 17){wideMove = !wideMove};
     if (justPressed == 81){doubleMove = !doubleMove};
+}
+
+function handleMoveEditLabels(){
+    document.getElementById("prime").style.visibility = primeMove ? "visible": "hidden";
+    document.getElementById("wide").style.visibility = wideMove ? "visible": "hidden";
+    document.getElementById("double").style.visibility = doubleMove ? "visible": "hidden";
 }
 
 function keyPressed(){
@@ -134,19 +143,46 @@ function updateOptions(id){
         case("reset"):
             entity = new Entity(100);
             break;
+        case("scramble"):
+            scrambleCube();
+            break;
         case("zoom"):
             scaleVal = document.getElementById("zoomSlider").value / 100;
+            break;
     }
+}
+
+//scramble cube
+
+function scrambleCube(){
+    let scramble = ""
+    for (let i = 0; i < 20; i++){
+        let rand = Math.random();
+        let randMove = Math.floor(Math.random() * moves.length);
+        let move = moves[randMove];
+        console.log(move)
+        if (rand > 0.5 && rand < 0.75 && randMove < 6){
+            move += "W";
+        }else if (rand > 0.6 && rand < 0.85){
+            move += "2";
+        }
+        if (!(move[move.length -1] == "2") && rand > 0.5){
+            move.push += "/";
+        }
+        scramble += move + (i == 19? "":",");
+    }
+    performAlgorithm(scramble)
 }
 
 //move faces
 
-function moveEdgeFace(faceNum, prime, wide, double){
+function moveFace(faceNum, prime, wide, double){
+    console.log(faceNum)
     for (let i = 0; i < (double? 2: (prime? 3: 1)); i++){
         moveSide(moveFaces[faceNum], faceNum > 5);
     }
     if (wide && faceNum < 6){
-        moveEdgeFace(6 + (faceNum > 2? 5-faceNum:faceNum), prime, false, double)
+        moveFace(6 + (faceNum > 2? 5-faceNum:faceNum), prime, false, double)
     }
 }
 
@@ -199,7 +235,30 @@ function handleRotatedCube(){
     moveFaces[3] = constMoveFaces[5-trackY[1]];
     moveFaces[4] = constMoveFaces[5-trackZ[1]];
     moveFaces[5] = constMoveFaces[trackX[1]];
+    moveFaces[6] = constMoveFaces[6 + (trackX[1] > 2? 5-trackX[1]:trackX[1])];
+    moveFaces[7] = constMoveFaces[6 + (trackZ[1] > 2? 5-trackZ[1]:trackZ[1])];
+    moveFaces[8] = constMoveFaces[6 + (trackY[1] > 2? 5-trackY[1]:trackY[1])];
 
+    
+}
+
+//algorithm stuff
+function performAlgorithm(algorithm){
+    algorithm = algorithm.split(",")
+    for (let move of algorithm) {
+        pW = move.length > 1 ? move[1] == 'W' : false;
+        if (pW) {
+            pP = move.length > 2 ? move.charAt[2] == '/' : false;
+        }else {
+            pP = move.length > 1 ? move.charAt[1] == '/' : false;
+        }
+        pD = move[move.length - 1] == '2';
+        performMove(move[0], pP, pW, pD);
+    }
+}
+
+function performMove(move, prime, wide, double){
+    moveFace(moves.indexOf(move), prime, wide, double);
 }
 
 //util functions
