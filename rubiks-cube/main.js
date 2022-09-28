@@ -11,6 +11,8 @@ var primeMove = false;
 var wideMove = false;
 var doubleMove = false;
 
+var animationTime = 1000
+
 const constMoveFaces = [[6, 8, 7, 0, 2, 0, 5, 1, 3, 1, 3, 4, 2], [19, 2, 11, 1, 8, 25, 5, 16, 22, 0, 2, 5, 3], [23, 25, 24, 2, 8, 6, 16, 7, 14, 1, 0, 4, 5],
  [0, 2, 1, 3, 19, 17, 11, 18, 9, 1, 5, 4, 0], [0, 17, 9, 4, 23, 6, 20, 14, 3, 5, 2, 0, 3], [17, 19, 18, 5, 25, 23, 22, 24, 20, 1, 2, 4, 3],
  [9, 11, 10, -1, 16, 14, 13, 15, 12, 1, 2, 4, 3], [18, 1, 10, -1, 7, 24, 4, 15, 21, 0, 2, 5, 3], [20, 22, 21, -1, 5, 3, 13, 4, 12, 1, 0, 4, 5]]
@@ -83,6 +85,15 @@ function handleMoves(){
         case(77)://M
             moveFace(8, primeMove, wideMove, doubleMove);
             break;
+        case(90)://Z
+            moveFullCube(0, primeMove, wideMove, doubleMove);
+            break;
+        case(89)://Y
+            moveFullCube(1, primeMove, wideMove, doubleMove);
+            break;
+        case(88)://X
+            moveFullCube(2, primeMove, wideMove, doubleMove);
+            break;
     }
     if (keyIsDown(RIGHT_ARROW)){
         entity.rotate([0,0,0], false, 0, 0, 2)
@@ -149,6 +160,9 @@ function updateOptions(id){
         case("zoom"):
             scaleVal = document.getElementById("zoomSlider").value / 100;
             break;
+        case("solve"):
+            solveCube();
+            break;
     }
 }
 
@@ -160,7 +174,6 @@ function scrambleCube(){
         let rand = Math.random();
         let randMove = Math.floor(Math.random() * moves.length);
         let move = moves[randMove];
-        console.log(move)
         if (rand > 0.5 && rand < 0.75 && randMove < 6){
             move += "W";
         }else if (rand > 0.6 && rand < 0.85){
@@ -177,13 +190,30 @@ function scrambleCube(){
 //move faces
 
 function moveFace(faceNum, prime, wide, double){
-    console.log(faceNum)
     for (let i = 0; i < (double? 2: (prime? 3: 1)); i++){
         moveSide(moveFaces[faceNum], faceNum > 5);
     }
     if (wide && faceNum < 6){
         moveFace(6 + (faceNum > 2? 5-faceNum:faceNum), prime, false, double)
     }
+}
+
+function moveFullCube(moveNum, prime, double){
+    let moves;
+    switch(moveNum){
+        case(0)://S
+            moves = [5, 6, 0];
+            break;
+        case(1)://E
+            moves = [1, 7, 4]
+            break;
+        case(2)://M
+            moves = [2, 8, 3]
+            break;
+    }
+    moveFace(moves[0], prime, false, double)
+    moveFace(moves[1], prime, false, double)
+    moveFace(moves[2], !prime, false, double)
 }
 
 
