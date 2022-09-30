@@ -11,7 +11,10 @@ var primeMove = false;
 var wideMove = false;
 var doubleMove = false;
 
-var animationTime = 1000
+var animationTime = 200;
+var animationSteps = 40;
+var animatedCube = null;
+var animating = false;
 
 const constMoveFaces = [[6, 8, 7, 0, 2, 0, 5, 1, 3, 1, 3, 4, 2], [19, 2, 11, 1, 8, 25, 5, 16, 22, 0, 2, 5, 3], [23, 25, 24, 2, 8, 6, 16, 7, 14, 1, 0, 4, 5],
  [0, 2, 1, 3, 19, 17, 11, 18, 9, 1, 5, 4, 0], [0, 17, 9, 4, 23, 6, 20, 14, 3, 5, 2, 0, 3], [17, 19, 18, 5, 25, 23, 22, 24, 20, 1, 2, 4, 3],
@@ -38,7 +41,12 @@ function draw(){
 
     justPressed = null;
     clear();
-    entity.draw(scaleVal)
+
+    if (!(animatedCube == null)){
+        animatedCube.draw(scaleVal);
+    }else{
+        entity.draw(scaleVal);
+    }
 }
 
 function handleCubeRotation(){
@@ -56,53 +64,54 @@ function handleCubeRotation(){
 }
 
 function handleMoves(){
-    handleRotatedCube();
-    switch(justPressed){
-        case(66)://B
-            moveFace(0, primeMove, wideMove, doubleMove);
-            break;
-        case(85)://U
-            moveFace(1, primeMove, wideMove, doubleMove);
-            break;
-        case(82)://R
-            moveFace(2, primeMove, wideMove, doubleMove);
-            break;
-        case(76)://L
-            moveFace(3, primeMove, wideMove, doubleMove);
-            break;
-        case(68)://D
-            moveFace(4, primeMove, wideMove, doubleMove);
-            break;
-        case(70)://F
-            moveFace(5, primeMove, wideMove, doubleMove);
-            break;
-        case(83)://S
-            moveFace(6, primeMove, wideMove, doubleMove);
-            break;
-        case(69)://E
-            moveFace(7, primeMove, wideMove, doubleMove);
-            break;
-        case(77)://M
-            moveFace(8, primeMove, wideMove, doubleMove);
-            break;
-        case(90)://Z
-            moveFullCube(0, primeMove, wideMove, doubleMove);
-            break;
-        case(89)://Y
-            moveFullCube(1, primeMove, wideMove, doubleMove);
-            break;
-        case(88)://X
-            moveFullCube(2, primeMove, wideMove, doubleMove);
-            break;
-    }
-    if (keyIsDown(RIGHT_ARROW)){
-        entity.rotate([0,0,0], false, 0, 0, 2)
-    }else if(keyIsDown(LEFT_ARROW)){
-        entity.rotate([0,0,0], true, 0, 0, 2)
-    }else if(keyIsDown(UP_ARROW)){
-        entity.rotate([0,0,0], true, 0, 2, 0)
-    }else if(keyIsDown(DOWN_ARROW)){
-        entity.rotate([0,0,0], false, 0, 2, 0)
+    if (!animating){
+        switch(justPressed){
+            case(66)://B
+                startAnimatedMove(0);
+                break;
+            case(85)://U
+                startAnimatedMove(1);
+                break;
+            case(82)://R
+                startAnimatedMove(2);                
+                break;
+            case(76)://L
+                startAnimatedMove(3);
+                break;
+            case(68)://D
+                startAnimatedMove(4);
+                break;
+            case(70)://F
+                startAnimatedMove(5);
+                break;
+            case(83)://S
+                startAnimatedMove(6);
+                break;
+            case(69)://E
+                startAnimatedMove(7);
+                break;
+            case(77)://M
+                startAnimatedMove(8);
+                break;
+            case(90)://Z
+                moveFullCube(0, primeMove, wideMove, doubleMove);
+                break;
+            case(89)://Y
+                moveFullCube(1, primeMove, wideMove, doubleMove);
+                break;
+            case(88)://X
+                moveFullCube(2, primeMove, wideMove, doubleMove);
+                break;
+        }
+        if (keyIsDown(RIGHT_ARROW)){
+            entity.rotate([0,0,0], false, 0, 0, 2)
+        }else if(keyIsDown(LEFT_ARROW)){
+            entity.rotate([0,0,0], true, 0, 0, 2)
+        }else if(keyIsDown(UP_ARROW)){
+            entity.rotate([0,0,0], true, 0, 2, 0)
+        }else if(keyIsDown(DOWN_ARROW)){
+            entity.rotate([0,0,0], false, 0, 2, 0)
+        }
     }
 }
 
@@ -269,7 +278,18 @@ function handleRotatedCube(){
     moveFaces[7] = constMoveFaces[6 + (trackZ[1] > 2? 5-trackZ[1]:trackZ[1])];
     moveFaces[8] = constMoveFaces[6 + (trackY[1] > 2? 5-trackY[1]:trackY[1])];
 
-    
+    animatedCube.tempFaces = [];
+    animatedCube.tempFaces[0] = animatedCube.faces[5-trackX[1]];
+    animatedCube.tempFaces[1] = animatedCube.faces[trackZ[1]];
+    animatedCube.tempFaces[2] = animatedCube.faces[trackY[1]];
+    animatedCube.tempFaces[3] = animatedCube.faces[5-trackY[1]];
+    animatedCube.tempFaces[4] = animatedCube.faces[5-trackZ[1]];
+    animatedCube.tempFaces[5] = animatedCube.faces[trackX[1]];
+    animatedCube.tempFaces[6] = animatedCube.faces[6 + (trackX[1] > 2? 5-trackX[1]:trackX[1])];
+    animatedCube.tempFaces[7] = animatedCube.faces[6 + (trackZ[1] > 2? 5-trackZ[1]:trackZ[1])];
+    animatedCube.tempFaces[8] = animatedCube.faces[6 + (trackY[1] > 2? 5-trackY[1]:trackY[1])];
+
+    animatedCube.faces = animatedCube.tempFaces;
 }
 
 //algorithm stuff
@@ -289,6 +309,35 @@ function performAlgorithm(algorithm){
 
 function performMove(move, prime, wide, double){
     moveFace(moves.indexOf(move), prime, wide, double);
+}
+
+//animation
+
+function startAnimatedMove(moveNum){
+    animating = true;
+    animatedCube = copyCube();
+
+    handleRotatedCube();
+
+    animatedCube.calculateAnimatedRotateDegrees(moveNum);
+    animate = setInterval(animateCube.bind(this, moveNum), animationTime/animationSteps);
+}
+
+function animateCube(moveNum){
+    if (animatedCube.animationFrames >= animationSteps){
+        clearInterval(animate)
+        finishAnimating(moveNum);
+    }else{
+        let step = animationSteps * (doubleMove? 0.5:1)
+        animatedCube.exclusiveRotate([0,0,0], !primeMove, animatedCube.xD/step, animatedCube.yD/step, animatedCube.zD/step, animatedCube.faces[moveNum]);
+        animatedCube.animationFrames ++;
+    }
+}
+
+function finishAnimating(moveNum){
+    animating = false;
+    animatedCube = null;
+    moveFace(moveNum, primeMove, wideMove, doubleMove)
 }
 
 //util functions
@@ -311,3 +360,17 @@ function arraysEqual(a, b) {
     }
     return true;
   }
+
+function copyCube(){
+    let copy = new Entity(100);
+    for (let i = 0; i < (copy.faces.length -3); i++){
+        for (let j = 0; j < copy.faces[i].length; j++){
+            copy.cubes[copy.faces[i][j]].squares[i].colour = entity.cubes[entity.faces[i][j]].squares[i].colour
+        }
+    }
+
+    for (rotation of entity.rotations){
+        copy.rotate([0,0,0], rotation[0], rotation[1], rotation[2], rotation[3]);
+    }
+    return copy
+}

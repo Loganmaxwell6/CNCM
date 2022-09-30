@@ -4,12 +4,17 @@ class Entity{
         this.cubes = [];
 
         this.faces = [[8,7,6,5,4,3,2,1,0],[2,11,19,5,13,22,8,16,25],[25,24,23,16,15,14,8,7,6], 
-                [2,1,0,11,10,9,19,18,17], [0,9,17,3,12,20,6,14,23], [19,18,17,22,21,20,25,24,23]];
+                [2,1,0,11,10,9,19,18,17], [0,9,17,3,12,20,6,14,23], [19,18,17,22,21,20,25,24,23],
+            [11,10,9,13,12,16,15,14],[1,10,18,4,21,7,15,24],[22,21,20,13,12,5,4,3]];
         this.createEntity();
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
+        this.animationFrames = 0;
         //this.rotate([0,0,0], true, 13, -13,45)
+
+        this.xD = 0;
+        this.yD = 0;
+        this.zD = 0;
+
+        this.rotations = [];
     }
 
     createEntity(){
@@ -34,29 +39,17 @@ class Entity{
         return faces
     }
     
-    animatedRotate(){
-        function animatedRotate(ent){
-            console.log(ent)
-            ent.exclusiveRotate([0,0,0], true, x/animationTime, y/animationTime, z/animationTime, ent.faces[2]);
-        }
-        let x = this.cubes[15].getAverageX() * 0.9;
-        let y = this.cubes[15].getAverageY() * 0.9;
-        let z = this.cubes[15].getAverageZ() * 0.9;
-        
-
-        for (let i = 0; i < animationTime; i++){
-            setTimeout(animatedRotate.bind(this, this), 1);
-        }
-        // let xD =  Math.asin(x / 100) * (180/Math.PI);
-        // let yD = Math.asin(y / 100) * (180/Math.PI);
-        // let zD = Math.asin(z / 100) * (180/Math.PI);
+    calculateAnimatedRotateDegrees(faceNum){
+        let target = this.faces[faceNum][4]
+        this.xD = 1 + this.cubes[target].getAverageX() * 0.9;
+        this.yD = 1 + this.cubes[target].getAverageY() * 0.9;
+        this.zD = 1 + this.cubes[target].getAverageZ() * 0.9;
     }
 
     rotate(cP, CW, xD, yD, zD){
         this.cubes.forEach((cube) => cube.rotate(cP, CW, xD, yD, zD));
-        this.x += xD;
-        this.y+= yD;
-        this.z += zD;
+
+        this.rotations.push([CW, xD, yD, zD]);
     }
 
     exclusiveRotate(cP, CW, xD, yD, zD, p){
