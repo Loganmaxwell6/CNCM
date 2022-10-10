@@ -1,5 +1,5 @@
 class Entity{
-    constructor(cS){
+    constructor(cS, aQ){
         this.cubeSize = cS;
         this.cubes = [];
 
@@ -15,6 +15,7 @@ class Entity{
         this.zD = 0;
 
         this.rotations = [];
+        this.arrayEquals = aQ
     }
 
     createEntity(){
@@ -41,9 +42,9 @@ class Entity{
     
     calculateAnimatedRotateDegrees(faceNum){
         let target = this.faces[faceNum][4]
-        this.xD = 1 + this.cubes[target].getAverageX() * 0.9;
-        this.yD = 1 + this.cubes[target].getAverageY() * 0.9;
-        this.zD = 1 + this.cubes[target].getAverageZ() * 0.9;
+        this.xD = this.cubes[target].getAverageX() * 0.9;
+        this.yD = this.cubes[target].getAverageY() * 0.9;
+        this.zD = this.cubes[target].getAverageZ() * 0.9;
     }
 
     rotate(cP, CW, xD, yD, zD){
@@ -58,6 +59,18 @@ class Entity{
 
     sortSquares(squares){
         return squares.sort(function(a, b){return a.getAverageX() - b.getAverageX()})
+    }
+
+    checkSolved(){
+        for (let i = 0; i < this.faces.length - 3; i++){
+            let checkColour = this.cubes[this.faces[i][4]].squares[i].colour.levels;
+            for (let j = 0; j < this.faces[i].length; j++){
+                if (!(this.arrayEquals(this.cubes[this.faces[i][j]].squares[i].colour.levels, checkColour))){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     draw(){

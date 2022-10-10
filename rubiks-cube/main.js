@@ -11,10 +11,17 @@ var primeMove = false;
 var wideMove = false;
 var doubleMove = false;
 
-var animationTime = 200;
-var animationSteps = 40;
+var animationTime = 50;
+var animationSteps = 5;
 var animatedCube = null;
 var animating = false;
+
+var scrambleMoveNum = 0;
+var scrambleMoves = [];
+var scrambleLength = 2000;
+
+var timer = 0;
+var randMoveNum = 0;
 
 const constMoveFaces = [[6, 8, 7, 0, 2, 0, 5, 1, 3, 1, 3, 4, 2], [19, 2, 11, 1, 8, 25, 5, 16, 22, 0, 2, 5, 3], [23, 25, 24, 2, 8, 6, 16, 7, 14, 1, 0, 4, 5],
  [0, 2, 1, 3, 19, 17, 11, 18, 9, 1, 5, 4, 0], [0, 17, 9, 4, 23, 6, 20, 14, 3, 5, 2, 0, 3], [17, 19, 18, 5, 25, 23, 22, 24, 20, 1, 2, 4, 3],
@@ -30,7 +37,7 @@ function setup(){
     canvas.parent("canvasContainer");
   
     frameRate(60);
-    entity = new Entity(100);
+    entity = new Entity(100, arraysEqual);
 }
 
 function draw(){
@@ -161,7 +168,7 @@ function openCubeDropdown(){
 function updateOptions(id){
     switch(id){
         case("reset"):
-            entity = new Entity(100);
+            entity = new Entity(100, arraysEqual);
             break;
         case("scramble"):
             scrambleCube();
@@ -173,27 +180,6 @@ function updateOptions(id){
             solveCube();
             break;
     }
-}
-
-//scramble cube
-
-function scrambleCube(){
-    let scramble = ""
-    for (let i = 0; i < 20; i++){
-        let rand = Math.random();
-        let randMove = Math.floor(Math.random() * moves.length);
-        let move = moves[randMove];
-        if (rand > 0.5 && rand < 0.75 && randMove < 6){
-            move += "W";
-        }else if (rand > 0.6 && rand < 0.85){
-            move += "2";
-        }
-        if (!(move[move.length -1] == "2") && rand > 0.5){
-            move.push += "/";
-        }
-        scramble += move + (i == 19? "":",");
-    }
-    performAlgorithm(scramble)
 }
 
 //move faces
@@ -293,22 +279,86 @@ function handleRotatedCube(){
 }
 
 //algorithm stuff
+
+function generateRandomMove(){
+    let rand = Math.random();
+    let randMove = Math.floor(Math.random() * moves.length);
+    let move = moves[randMove];
+    if (rand > 0.5 && rand < 0.75 && randMove < 6){
+        move += "W";
+    }else if (rand > 0.6 && rand < 0.85){
+        move += "2";
+    }
+    if (!(move[move.length -1] == "2") && rand > 0.5){
+        move.push += "/";
+    }
+    return move;
+}
+
+function decryptMove(move){
+    pW = move.length > 1 ? move[1] == 'W' : false;
+    pD = move[move.length - 1] == '2';
+    pP = move[move.length - 1] == "/";
+    return [move[0], pP, pW, pD];
+}
+
 function performAlgorithm(algorithm){
-    algorithm = algorithm.split(",")
-    for (let move of algorithm) {
-        pW = move.length > 1 ? move[1] == 'W' : false;
-        if (pW) {
-            pP = move.length > 2 ? move.charAt[2] == '/' : false;
-        }else {
-            pP = move.length > 1 ? move.charAt[1] == '/' : false;
-        }
-        pD = move[move.length - 1] == '2';
-        performMove(move[0], pP, pW, pD);
+    let moves = algorithm.split(",");
+    for (move of moves){
+        performMove(decryptMove(move));
     }
 }
 
-function performMove(move, prime, wide, double){
-    moveFace(moves.indexOf(move), prime, wide, double);
+function performMove(move){
+    moveFace(moves.indexOf(move[0]), move[1], move[2], move[3]);
+}
+
+function performRandomMoves(){
+    randomMoves = setInterval(performRandomMove, 1);
+}
+
+function performRandomMove(){
+    performAlgorithm(generateRandomMove());
+    randMoveNum ++;
+    if (randMoveNum % 1000 == 0){
+        let t = performance.now()
+        console.log((t - timer) / 1000);
+        timer = t;
+    }
+    if (entity.checkSolved()){
+        clearInterval(randomMoves);
+    }
+}
+
+//scramble stuff
+
+function scrambleCube(){
+    let scramble = ""
+    for (let i = 0; i < scrambleLength; i++){
+        let move = generateRandomMove();
+        scramble += move + (i == 19? "":",");
+    }
+    performScrambleAlgorithm(scramble)
+}
+
+function performScrambleAlgorithm(algorithm){
+    algorithm = algorithm.split(",");
+    for (let move of algorithm) {
+        scrambleMoves.push(decryptMove(move));
+    }
+    scramble = setInterval(performScrambleMove, 10);
+}
+
+function performScrambleMove(){
+    if (!animating){
+        startAnimatedMove(moves.indexOf(scrambleMoves[scrambleMoveNum][0]), scrambleMoves[scrambleMoveNum][1], scrambleMoves[scrambleMoveNum][2], scrambleMoves[scrambleMoveNum][3]);
+        scrambleMoveNum ++;
+    }
+    if (scrambleMoveNum >= scrambleMoves.length){
+        scrambleMoveNum = 0;
+        scrambleMoves = [];
+        clearInterval(scramble);
+    }
 }
 
 //animation
@@ -319,7 +369,7 @@ function startAnimatedMove(moveNum){
 
     handleRotatedCube();
 
-    animatedCube.calculateAnimatedRotateDegrees(moveNum);
+    animatedCube.calculateAnimatedRotateDegrees(moveNum > 5 ? moveNum - (moveNum == 6 ? 1 : 6) : moveNum);
     animate = setInterval(animateCube.bind(this, moveNum), animationTime/animationSteps);
 }
 
@@ -337,7 +387,7 @@ function animateCube(moveNum){
 function finishAnimating(moveNum){
     animating = false;
     animatedCube = null;
-    moveFace(moveNum, primeMove, wideMove, doubleMove)
+    moveFace(moveNum, primeMove, wideMove, doubleMove);
 }
 
 //util functions
@@ -362,7 +412,7 @@ function arraysEqual(a, b) {
   }
 
 function copyCube(){
-    let copy = new Entity(100);
+    let copy = new Entity(100, arraysEqual);
     for (let i = 0; i < (copy.faces.length -3); i++){
         for (let j = 0; j < copy.faces[i].length; j++){
             copy.cubes[copy.faces[i][j]].squares[i].colour = entity.cubes[entity.faces[i][j]].squares[i].colour
