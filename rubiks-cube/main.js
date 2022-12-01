@@ -18,7 +18,7 @@ var animating = false;
 
 var scrambleMoveNum = 0;
 var scrambleMoves = [];
-var scrambleLength = 2000;
+var scrambleLength = 20;
 
 var timer = 0;
 var randMoveNum = 0;
