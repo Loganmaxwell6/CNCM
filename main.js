@@ -15,6 +15,7 @@ function closeStyleDropdown(){
 }
 
 function openStyleDropdown(){
+    console.log("hwy")
     let d = document.getElementById("styleDropdownMenu");
     if (d.classList.contains("show")){
         d.classList.remove("show");
