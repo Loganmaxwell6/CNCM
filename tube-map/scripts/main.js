@@ -3,7 +3,7 @@ let img;
 
 var radius;
 
-var crowdData = Array(data.length).fill(null);
+const crowdMap = new Map(Object.entries(crowdData));
 
 var comp = false;
 
@@ -25,11 +25,6 @@ function setup(){
     canvas.parent("canvasContainer");
 
     image(img,0,0,MAX_X,MAX_Y);
-
-    for (let i = 0; i < data.length; i++){
-        updateCrowdData(i)
-    }
-    console.log("done", crowdData)
 }
 
 function draw(){
@@ -39,26 +34,36 @@ function draw(){
     image(img,0,0,MAX_X,MAX_Y);
 
     for (let i = 0; i < data.length; i++){
-        if (crowdData[i] == null){
-            fill(0,100,50)
+        let c = getCrowdData(i);
+        if (c == null){
+            fill(0, 100, 0)
         }else{
-            let c = crowdData[i] * 5;
-            fill((1 - c) * 120, 100, 25)
+            fill((1 - (c * 5)) * 120, 100, 25);
         }
         circle(mapPositions[i][0] * MAX_X, mapPositions[i][1] * MAX_Y, radius);
     }
 }
 
-async function updateCrowdData(index){
-    fetch("https://api.tfl.gov.uk/Crowding/"+data[index][2]+"/Live?app_key=a9f08fafd4b2480bb559b986c7b06acb").then(res => {
-        if (res.status == 200){
-            return res.text();
-        }else{
-            return JSON.stringify({'percentageOfBaseline' : null})
+var num = 48;
+function getCrowdData(index){
+
+    const days = ["SUN", "MON", "TUE", "WED","THU","FRI","SAT"];
+
+    const d = new Date();
+    let dayNum = d.getDay()
+    let day = days[dayNum]
+
+    try{
+        let stationID = data[index][2];
+        if (stationID == "940GZZLUMMT"){
+            stationID = "940GZZLUBNK"
+        }else if(stationID == "940GZZLUHSD"){
+            stationID = "940GZZLUHSC"
         }
-    })
-    .then(text => {
-        let value = JSON.parse(text).percentageOfBaseline;
-        crowdData[index] = value
-    });
+    
+        return crowdMap.get(stationID)[day][d.getHours() * 4 + Math.floor(d.getMinutes() / 15)];
+    }catch{
+        return null;
+    }
 }
+
