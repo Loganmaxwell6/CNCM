@@ -1,6 +1,8 @@
 var MAX_X, MAX_Y;
 let img;
 
+var heatMapMultiplier = 5;
+
 var radius;
 
 const crowdMap = new Map(Object.entries(crowdData));
@@ -38,13 +40,12 @@ function draw(){
         if (c == null){
             fill(0, 100, 0)
         }else{
-            fill((1 - (c * 5)) * 120, 100, 25);
+            fill((1 - (c * heatMapMultiplier)) * 200, 100, 25);
         }
         circle(mapPositions[i][0] * MAX_X, mapPositions[i][1] * MAX_Y, radius);
     }
 }
 
-var num = 48;
 function getCrowdData(index){
 
     const days = ["SUN", "MON", "TUE", "WED","THU","FRI","SAT"];
@@ -60,10 +61,8 @@ function getCrowdData(index){
         }else if(stationID == "940GZZLUHSD"){
             stationID = "940GZZLUHSC"
         }
-    
-        return crowdMap.get(stationID)[day][d.getHours() * 4 + Math.floor(d.getMinutes() / 15)];
+        return crowdMap.get(stationID)[day][d.getHours() * 4 + Math.floor(d.getMinutes()/ 15)];
     }catch{
         return null;
     }
 }
-
