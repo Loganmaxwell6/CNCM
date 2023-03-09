@@ -424,3 +424,16 @@ function copyCube(){
     }
     return copy
 }
+
+
+function recursiveAdd(num1, num2){
+    if (num1 == 1 && num2 == 1){
+        return 2;
+    }else if(num1 == 1){
+        return num1 + recursiveAdd(num1, num2 - 1);
+    }else if(num2 == 1){
+        return num2 + recursiveAdd(num1 - 1, num2);
+    }else{
+        return recursiveAdd(num1 - 1, 1) + recursiveAdd(1, num2 - 1);
+    }
+}
