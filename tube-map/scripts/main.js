@@ -47,20 +47,6 @@ function draw(){
         }
         circle(mapPositions[i][0] * MAX_X, mapPositions[i][1] * MAX_Y, radius);
     }
-
-    circle(mouseX, mouseY, radius);
-}
-
-function mouseClicked(){
-    mapPositions.push([mouseX / MAX_X, mouseY / MAX_Y]);
-    console.log(mapPositions.length + " :Next:" + data[mapPositions.length][0]);
-}
-
-function keyPressed(){
-    if(keyCode == 109){
-        mapPositions.pop();
-        console.log("Next:" + data[mapPositions.length][0]);
-    }
 }
 
 async function updateCrowdData(index){
