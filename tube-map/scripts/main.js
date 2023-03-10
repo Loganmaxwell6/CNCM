@@ -1,3 +1,4 @@
+
 var MAX_X, MAX_Y;
 let img;
 
@@ -65,4 +66,14 @@ function getCrowdData(index){
     }catch{
         return null;
     }
+}
+
+async function mousePressed(){
+    fetch("https://tube-map.herokuapp.com/",{
+        method: 'GET',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text' }
+    }).then(res => res.text())
+    .then(text => console.log(JSON.parse(text)))
+    .catch(err => console.log(err));
 }
