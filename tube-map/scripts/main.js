@@ -8,7 +8,8 @@ var radius;
 
 const crowdMap = new Map(Object.entries(crowdData));
 
-var comp = false;
+const tubeLines = ["bakerloo", "central", "circle", "district","hammersmith-city", "jubilee", "metropolitan",
+"northern", "piccadilly", "victoria", "waterloo-city"];
 
 function preload() {
     img = loadImage('tube_map.png');
@@ -68,12 +69,40 @@ function getCrowdData(index){
     }
 }
 
-async function mousePressed(){
-    fetch("https://tube-map.herokuapp.com/",{
-        method: 'GET',
-        mode: 'cors',
-        headers: { 'Content-Type': 'text' }
-    }).then(res => res.text())
-    .then(text => console.log(JSON.parse(text)))
-    .catch(err => console.log(err));
+function getClosestStation(xClick, yClick){
+    let closest = [1000000000, []];
+    for (let i = 0; i < data.length; i++){
+        let xDist = mapPositions[i][0] * MAX_X - xClick;
+        let yDist = mapPositions[i][1] * MAX_Y - yClick;
+        let dist = Math.sqrt(xDist ** 2 + yDist ** 2);
+
+        if (dist < closest[0]){
+            closest = [dist, data[i]];
+        }
+    }
+    return closest
+}
+
+function mousePressed(){
+    let closestStation = getClosestStation(mouseX, mouseY);
+    if (closestStation[0] < radius / 2 ){
+        fetch("https://tube-map.herokuapp.com/arrivals").then(res => res.json())
+        .then(arrivals => getArrivalsForStation(closestStation[1], arrivals));
+    }
+}
+
+function getArrivalsForStation(station, arrivals){
+
+    let lineIndexes = station[1].split(", ").map(elem => tubeLines.indexOf(elem));
+
+    arrivals = arrivals.filter( (elem, index) => lineIndexes.includes(index));
+    
+    let stationArrivals = arrivals.map(elem => elem.filter(arrival => arrival.stationId == station[2]));
+    
+    stationArrivals.forEach(line => {
+        console.log(line[0].lineName);
+        line.forEach(arrival => {
+            console.log("to " + arrival.destinationName + " at " + arrival.expectedArrival);
+        })
+    });
 }
