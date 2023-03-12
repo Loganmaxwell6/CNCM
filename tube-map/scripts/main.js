@@ -1,5 +1,9 @@
 
 var MAX_X, MAX_Y;
+
+var scal = 1;
+var offset;
+
 let img;
 
 var heatMapMultiplier = 5;
@@ -28,14 +32,29 @@ function setup(){
     var canvas = createCanvas(MAX_X, MAX_Y);
     canvas.parent("canvasContainer");
 
+    offset = createVector(0, 0);
+
+    window.addEventListener("wheel", e => {
+       zoomDetected(e);
+    });
+
+    window.addEventListener("gesturechange", e => {
+        zoomDetected(e);
+    })
+
     image(img,0,0,MAX_X,MAX_Y);
 }
 
 function draw(){
 
+    const mouse = createVector(mouseX, mouseY);
+    const relativeMouse = mouse.copy().sub(offset);
+
     background(220);
 
-    image(img,0,0,MAX_X,MAX_Y);
+    translate(offset.x, offset.y);
+
+    image(img,0,0, MAX_X * scal, MAX_Y * scal);
 
     for (let i = 0; i < data.length; i++){
         let c = getCrowdData(i);
@@ -44,8 +63,29 @@ function draw(){
         }else{
             fill((1 - (c * heatMapMultiplier)) * 200, 100, 25);
         }
-        circle(mapPositions[i][0] * MAX_X, mapPositions[i][1] * MAX_Y, radius);
+        circle(mapPositions[i][0] * MAX_X * scal, mapPositions[i][1] * MAX_Y * scal, radius * scal);
     }
+
+    if (mouseIsPressed) {
+        offset.x = Math.max(MAX_X - (MAX_X*scal), Math.min(0, offset.x - (pmouseX - mouseX)));
+        offset.y = Math.max(MAX_Y - (MAX_Y*scal), Math.min(0, offset.y - (pmouseY - mouseY)));
+        
+    }
+}
+
+function zoomDetected(e){
+    const s = e.deltaY > 0 ? 0.95 : 1.05;
+    scal = Math.max(scal * s, 1);
+
+    const mouse = createVector(mouseX, mouseY);
+    
+    offset
+      .sub(mouse)
+      .mult(s)
+      .add(mouse)
+
+    offset.x = Math.max(MAX_X - (MAX_X*scal), Math.min(0, offset.x - (pmouseX - mouseX)));
+    offset.y = Math.max(MAX_Y - (MAX_Y*scal), Math.min(0, offset.y - (pmouseY - mouseY)));
 }
 
 function getCrowdData(index){
@@ -72,8 +112,8 @@ function getCrowdData(index){
 function getClosestStation(xClick, yClick){
     let closest = [1000000000, []];
     for (let i = 0; i < data.length; i++){
-        let xDist = mapPositions[i][0] * MAX_X - xClick;
-        let yDist = mapPositions[i][1] * MAX_Y - yClick;
+        let xDist = mapPositions[i][0] * MAX_X * scal + offset.x - xClick;
+        let yDist = mapPositions[i][1] * MAX_Y * scal + offset.y - yClick;
         let dist = Math.sqrt(xDist ** 2 + yDist ** 2);
 
         if (dist < closest[0]){
@@ -85,9 +125,10 @@ function getClosestStation(xClick, yClick){
 
 function mousePressed(){
     let closestStation = getClosestStation(mouseX, mouseY);
-    if (closestStation[0] < radius / 2 ){
-        fetch("https://tube-map.herokuapp.com/arrivals").then(res => res.json())
-        .then(arrivals => getArrivalsForStation(closestStation[1], JSON.parse(arrivals)));
+    if (closestStation[0] / scal < radius){
+        console.log(closestStation[1][0]);
+        // fetch("https://tube-map.herokuapp.com/arrivals").then(res => res.json())
+        // .then(arrivals => getArrivalsForStation(closestStation[1], JSON.parse(arrivals)));
     }
 }
 
