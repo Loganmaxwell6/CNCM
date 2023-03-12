@@ -87,7 +87,7 @@ function mousePressed(){
     let closestStation = getClosestStation(mouseX, mouseY);
     if (closestStation[0] < radius / 2 ){
         fetch("https://tube-map.herokuapp.com/arrivals").then(res => res.json())
-        .then(arrivals => getArrivalsForStation(closestStation[1], arrivals));
+        .then(arrivals => getArrivalsForStation(closestStation[1], JSON.parse(arrivals)));
     }
 }
 
