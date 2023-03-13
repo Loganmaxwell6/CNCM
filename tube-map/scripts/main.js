@@ -127,9 +127,8 @@ function mousePressed(){
     let closestStation = getClosestStation(mouseX, mouseY);
     if (closestStation[0] / scal < radius){
         console.log(closestStation[1][0]);
-        // fetch("https://tube-map.herokuapp.com/arrivals").then(res => res.json())
-        // .then(arrivals => getArrivalsForStation(closestStation[1], JSON.parse(arrivals)));
-        getArrivalsForStation(closestStation[1], JSON.parse(arrivals));
+        fetch("https://tube-map.herokuapp.com/arrivals").then(res => res.json())
+        .then(arrivals => getArrivalsForStation(closestStation[1], JSON.parse(arrivals)));
     }
 }
 
@@ -158,3 +157,4 @@ function getArrivalsForStation(station, arrivals){
         destination[0].destinationName+"\n"))
     })})
 }
+
