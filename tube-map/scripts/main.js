@@ -129,6 +129,7 @@ function mousePressed(){
         console.log(closestStation[1][0]);
         // fetch("https://tube-map.herokuapp.com/arrivals").then(res => res.json())
         // .then(arrivals => getArrivalsForStation(closestStation[1], JSON.parse(arrivals)));
+        getArrivalsForStation(closestStation[1], JSON.parse(arrivals));
     }
 }
 
@@ -140,10 +141,20 @@ function getArrivalsForStation(station, arrivals){
     
     let stationArrivals = arrivals.map(elem => elem.filter(arrival => arrival.stationId == station[2]));
     
-    stationArrivals.forEach(line => {
-        console.log(line[0].lineName);
-        line.forEach(arrival => {
-            console.log("to " + arrival.destinationName + " at " + arrival.expectedArrival);
-        })
-    });
+    stationArrivals = stationArrivals.map(line => 
+        Object.values(line.reduce((acc, cur) => { 
+            acc[cur.destinationName] = [...(acc[cur.destinationName] || []), cur];
+            return acc;
+        }, 
+        {}))
+    );
+
+    stationArrivals = stationArrivals.map(line => line.map(destination =>
+        destination.sort((a, b) => a.timeToStation - b.timeToStation)
+    ));
+    console.log(stationArrivals)
+    stationArrivals.forEach(line => {console.log(line[0][0].lineName+"\n");return line.forEach(destination => {
+        console.log(destination.reduce((acc, cur) => {return acc+cur.timeToStation / 60 +",\n"},
+        destination[0].destinationName+"\n"))
+    })})
 }
