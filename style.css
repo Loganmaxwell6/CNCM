@@ -741,3 +741,5 @@ media queries. Currently only based on width. Changes cipher grid formatting, te
 @media only screen and (max-width:355px){
   .data {font-size: 10px;}
 }
+
+#map { height: 700px; }

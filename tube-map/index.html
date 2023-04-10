@@ -6,6 +6,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         <link href="../style.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
+
     </head>
     <body class="">
         <div class="dropdown style-dropdown">
@@ -31,9 +40,13 @@
         </header>
         <div id="canvasContainer" style="text-align: center;"></div>
 
+        <div id="map"></div>
+
         <script src="scripts/util.js"></script>
         <script src="scripts/data.js"></script>
-        <script src="scripts/main.js"></script>
+        <script src="scripts/tube-map.js"></script>
+        <script src="scripts/geo-map-data.js"></script>
+        <script src="scripts/geo-map.js"></script>
 
         <script src="../main.js"></script>
         <script>
