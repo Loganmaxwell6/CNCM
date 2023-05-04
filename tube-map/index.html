@@ -10,13 +10,20 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
         crossorigin=""/>
-
+        
         <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
         crossorigin=""></script>
 
     </head>
     <body class="">
+
+        <header>
+            <a href="../"><h1>Crooked Nazgul Code Men Tube Map</h1></a>
+        </header>
+        
+        <div id="map"></div>
+        
         <div class="dropdown style-dropdown">
             <button class="style-btn" id="styleDropdownToggle">Select Style</button>
             <ul class="style-dropdown-menu dropdown-menu" id="styleDropdownMenu">
@@ -35,12 +42,7 @@
             </li><li class="dropdown-item">Moving Background<input type="checkbox" id="move"></li>
             </ul>
         </div>
-        <header>
-            <a href="../"><h1>Crooked Nazgul Code Men Tube Map</h1></a>
-        </header>
         <div id="canvasContainer" style="text-align: center;"></div>
-
-        <div id="map"></div>
 
         <script src="scripts/util.js"></script>
         <script src="scripts/data.js"></script>

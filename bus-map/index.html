@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <link href="../style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+    
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+</head>
+<body>
+    <div id="map" style="height:400px;z-index: 1;">
+        
+    </div>
+    <div style="width:15%;height:5%;align-self: center;position: absolute;margin-top: 10px;top:0%; left: 42.5%;z-index: 10;">
+      <input type="search" id="searchInput" placeholder="Search..." style="height:100%;width:100%; border-radius: 10px;">
+      <ul id="searchList" style="background-color: #fff;text-align: left;padding-left:0%;margin:0px;width: 100%;"></ul>
+    </div>
+
+    <div  style="width:15%;height:5%;align-self: center;position: absolute;margin-top: 10px;top:0%; left: 80%;z-index: 10;">
+      <div id="current" style="height:100%;width:100%; border-radius: 10px;background-color: #fff;color:#000;text-align: left;vertical-align: middle;">
+        Current Route:
+      </div>
+    </div>
+    
+    <script src="data.js"></script>
+    <script src="main.js"></script>
+</body>
