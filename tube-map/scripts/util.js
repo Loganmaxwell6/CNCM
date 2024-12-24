@@ -47,3 +47,11 @@ function findClosestStation(coord){
 function randomColour(){
     return 'rgb('+Math.random()*256+","+Math.random()*256+","+Math.random()*256+")";
 }
+
+function codeToName(code){
+    return data[code][0]
+}
+
+function nameToCode(name){
+    return Object.keys(data).find(k => data[k][0] == name);
+}
