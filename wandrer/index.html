@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    </head>
+    <body>
+        <link rel="stylesheet" href="css/style.css">
+
+        
+        <div id="map"></div>
+        
+        <!-- Slider Container -->
+        <div class="ui">
+            <label for="slider">Adjust Value:</label>
+            <div id="sliderContainer">
+                <span id="sliderValue">1</span>
+                <input type="range" id="slider" min="10" max="50" value="20" />
+                <span>5</span>
+            </div>
+            
+            <!-- Buttons for Selection -->
+            <div id="toggleButtons">
+                <button id="button1" class="toggleButton">Path</button>
+                <button id="button2" class="toggleButton">Fill</button>
+            </div>
+            
+            <button id="downloadButton">📥</button>
+
+            <div id="uploadContainer">
+                <div id="loadingContainer">
+                    <div id="loadingCircle"></div>
+                </div>
+                <input type="file" id="kmzUploader" accept=".kmz" onchange="handleFileUpload(event)">
+                <span id="removeFileButton" onclick="removeFile()">X</span>
+            </div>
+        </div>
+        
+
+        <script src="https://unpkg.com/leaflet-omnivore/leaflet-omnivore.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/rbush@3.0.1/rbush.min.js"></script>
+        <script src="https://unpkg.com/hungarian-algorithm@1.0.0/dist/hungarian.js"></script>
+        <script src="https://unpkg.com/@tmcw/togeojson"></script>
+
+        <!-- <script src="./js/data.js"></script> -->
+        <script src="./js/util.js"></script>
+        <script src="./js/graph.js"></script>
+        <script src="./js/kmz.js"></script>
+        <script src="./js/ui.js"></script>
+        <script src="./js/fillArea.js"></script>
+        <script src="./js/fillPath.js"></script>
+        <script src="./js/main.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,143 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Courier New', Courier, monospace
+}
+
+#map {
+    height: 100vh;
+}
+
+/* Slider container */
+.ui {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000; /* Ensures it stays above the map */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.ui label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#sliderContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+}
+
+#slider {
+    width: 85%;
+}
+
+#downloadButton {
+    margin-top: 10px;
+    width: 20%;
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: 1px solid black; /* Add black border */
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+/* Styling for Toggle Buttons */
+#toggleButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+}
+
+.toggleButton {
+    border: 1px solid black; /* Add black border */
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+}
+
+.toggleButton.active {
+    background-color: #007bff; /* Highlight color for active button */
+}
+
+.toggleButton:hover {
+    background-color: #007bff;
+}
+
+#kmzUploader::-webkit-file-upload-button {
+    border: 1px solid black; /* Add black border */
+    background-color: #007bff;
+    color: black;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-family: 'Courier New', Courier, monospace
+}
+
+/* Add hover effect for the button */
+#kmzUploader:not(:disabled)::-webkit-file-upload-button:hover {
+    background-color: #0056b3;
+}
+
+#kmzUploader:disabled::-webkit-file-upload-button:hover {
+    cursor: auto;
+}
+
+#uploadContainer {
+    display: flex;
+    align-items: center; /* Align vertically center */
+}
+
+#kmzUploader {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#removeFileButton {
+    cursor: pointer;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    display: none;
+}
+
+#loadingContainer {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+/* Style for the loading circle */
+#loadingCircle {
+    border: 8px solid #f3f3f3; /* Light grey background */
+    border-top: 8px solid #3498db; /* Blue color for the animation */
+    border-radius: 50%; /* Make it circular */
+    width: 5px; /* Size of the circle */
+    height: 5px; /* Size of the circle */
+    animation: spin 2s linear infinite; /* Spin animation */
+}
+
+/* Keyframes for the spinning animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Start at 0 degrees */
+    }
+    100% {
+        transform: rotate(360deg); /* Rotate 360 degrees */
+    }
+}
